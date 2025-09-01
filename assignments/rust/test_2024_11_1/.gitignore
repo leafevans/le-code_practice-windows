@@ -1,0 +1,33 @@
+# Rust build output
+/target/
+**/*.rs.bk
+**/*.rmeta
+**/*.d
+**/*.pdb
+**/*.exe
+**/*.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Cargo files
+Cargo.lock
+
+# By-products
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test output
+/test-output/
+
+# Misc
+*.bak
+*.old
+*.orig
