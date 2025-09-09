@@ -867,6 +867,37 @@
 
 package main
 
-func main() {
+import (
+	"fmt"
+	"math"
+)
 
+// func solve(k1 float32, b1 float32, k2 float32, b2 float32) (float32, float32) {
+// 	const eps = 1e-6
+// 	if math.Abs(float64(k1-k2)) < eps {
+// 		n := float32(math.NaN())
+// 		return n, n
+// 	}
+// 	x := (b2 - b1) / (k1 - k2)
+// 	y := k1*x + b1
+// 	return x, y
+// }
+
+func solve(k1 float32, b1 float32, k2 float32, b2 float32) (float32, float32) {
+	const eps = 1e-6
+	if math.Abs(float64(k1-k2)) < eps {
+		n := float32(math.NaN())
+		return n, n
+	}
+	x := (b2 - b1) / (k1 - k2)
+	y := k1*x + b1
+	return x, y
+}
+
+func main() {
+	x, y := solve(2.0, 1.0, -1.0, 4.0)
+	fmt.Printf("交点: x=%v, y=%v\n", x, y)
+
+	x2, y2 := solve(2.0, 1.0, 2.0, 3.0)
+	fmt.Printf("平行交点: x=%v, y=%v (NaN 表示无交点)\n", x2, y2)
 }
