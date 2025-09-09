@@ -396,20 +396,205 @@
 // import "fmt"
 
 // func main() {
-// 	str := "a"
-// 	switch str {
-// 	case "a":
-// 		fmt.Println("a")
-// 		fallthrough
-// 	case "b":
-// 		fmt.Println("b")
-// 		fallthrough
-// 	case "c":
-// 		fmt.Println("c")
-// 		fallthrough
-// 	default:
-// 		fmt.Println("...")
+// 	// for i := 1; i <= 10; i++ {
+// 	// 	if i == 2 {
+// 	// 		break
+// 	// 	}
+// 	// 	fmt.Println(i)
+// 	// }
+// 	// fmt.Println("继续执行")
+// 	// for i := range 2 {
+// 	// 	for j := range 10 {
+// 	// 		if j == 3 {
+// 	// 			break
+// 	// 		}
+// 	// 		fmt.Printf("i = %v, j = %v\n", i, j)
+// 	// 	}
+// 	// }
+// 	// 一次跳出多层循环
+// 	// label1:
+// 	// 	for i := range 2 {
+// 	// 		for j := range 10 {
+// 	// 			if j == 3 {
+// 	// 				break label1
+// 	// 			}
+// 	// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 	// 		}
+// 	// 	}
+// 	// for i := range 10 {
+// 	// 	if i%2 == 0 {
+// 	// 		continue
+// 	// 	}
+// 	// 	fmt.Println(i)
+// 	// }
+// 	// 	for i := range 2 {
+// 	// 		for j := range 10 {
+// 	// 			if j == 3 {
+// 	// 				continue
+// 	// 			}
+// 	// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 	// 		}
+// 	// 	}
+// 	// 	fmt.Println()
+
+// 	// label2:
+// 	// 	for i := range 2 {
+// 	// 		for j := range 10 {
+// 	// 			if j == 3 {
+// 	// 				continue label2
+// 	// 			}
+// 	// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 	// 		}
+// 	// 	}
+// 	var n = 30
+// 	if n > 24 {
+// 		fmt.Println("成年人")
+// 		goto label
 // 	}
+// 	fmt.Println("aaa")
+// 	fmt.Println("bbb")
+// label:
+// 	fmt.Println("ccc")
+// 	fmt.Println("ddd")
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	for i := range 2 {
+// 		for j := range 10 {
+// 			if j == 3 {
+// 				break
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	k := 1
+// 	for {
+// 		if k <= 10 {
+// 			fmt.Println("ok~~~", k)
+// 		} else {
+// 			break
+// 		}
+// 		k++
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+// 	for i := range 2 {
+// 		for j := range 10 {
+// 			if j == 3 {
+// 				break label
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+// 	for i := range 2 {
+// 		for j := range 4 {
+// 			if j == 2 {
+// 				continue label
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	n := 30
+// 	fmt.Println("ok1")
+// 	if n > 20 {
+// 		goto label
+// 	}
+// 	fmt.Println("ok2")
+// 	fmt.Println("ok2")
+// 	fmt.Println("ok4")
+// label:
+// 	fmt.Println("ok5")
+// 	fmt.Println("ok6")
+// 	fmt.Println("ok7")
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	for i := range 10 {
+// 		for j := range 10 {
+// 			if j == 2 {
+// 				goto breakTag
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// 	return
+// breakTag:
+// 	fmt.Println("结束循环")
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// 	"unsafe"
+// )
+
+// func main() {
+// 	str := `哈基米喔南北绿豆
+// 波压库奶龙`
+// 	fmt.Println(str)
+// 	fmt.Println(len(str))
+// 	str += "\n曼波欧马吉利曼波"
+// 	fmt.Println(str)
+// 	str1 := "123-456-789"
+// 	arr := strings.Split(str1, "-")
+// 	fmt.Printf("%v %T\n", arr, arr)
+// 	fmt.Println(strings.Contains(str, "哈基米"))
+// 	fmt.Println(strings.HasPrefix(str, "哈基米"))
+// 	fmt.Println(strings.HasSuffix(str, "曼波"))
+// 	fmt.Println(strings.Index(str, "曼波"))
+// 	fmt.Println(strings.LastIndex(str, "曼波"))
+// 	str2 := strings.Join(arr, "*")
+// 	fmt.Printf("%v %T\n", str2, str2)
+// 	fmt.Println()
+// 	for _, ch := range str {
+// 		fmt.Printf("%v(%c) ", ch, ch)
+// 	}
+// 	fmt.Println()
+// 	ch := '张'
+// 	fmt.Println(unsafe.Sizeof(ch))
+// 	runeStr := []rune(str)
+// 	runeStr[0] = '叮'
+// 	runeStr[1] = '咚'
+// 	runeStr[2] = '鸡'
+// 	fmt.Println(string(runeStr))
 // }
 
 package main
@@ -417,35 +602,9 @@ package main
 import "fmt"
 
 func main() {
-	// for i := 1; i <= 10; i++ {
-	// 	if i == 2 {
-	// 		break
-	// 	}
-	// 	fmt.Println(i)
-	// }
-	// fmt.Println("继续执行")
-	// for i := range 2 {
-	// 	for j := range 10 {
-	// 		if j == 3 {
-	// 			break
-	// 		}
-	// 		fmt.Printf("i = %v, j = %v\n", i, j)
-	// 	}
-	// }
-	// 一次跳出多层循环
-	// label1:
-	// 	for i := range 2 {
-	// 		for j := range 10 {
-	// 			if j == 3 {
-	// 				break label1
-	// 			}
-	// 			fmt.Printf("i = %v, j = %v\n", i, j)
-	// 		}
-	// 	}
-	for i := range 10 {
-		if i%2 == 0 {
-			continue
-		}
-		fmt.Println(i)
-	}
+	var a int8 = 20
+	var b int16 = 40
+	var c = int16(a) + b
+	fmt.Println(c)
+
 }
