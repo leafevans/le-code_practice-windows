@@ -597,14 +597,373 @@
 // 	fmt.Println(string(runeStr))
 // }
 
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// var a int8 = 20
+// 	// var b int16 = 40
+// 	// var c = int16(a) + b
+// 	// fmt.Println(c)
+// 	// a, b := 3, 4
+// 	// c := int(math.Sqrt(float64(a*a + b*b)))
+// 	// fmt.Println(c)
+// 	// i := 20
+// 	// f := 3.1415926
+// 	// t := true
+// 	// b = 'a'
+
+// 	// str := fmt.Sprintf("%d", i)
+// 	// fmt.Printf("%v %T\n", str, str)
+
+// 	// str = fmt.Sprintf("%f", f)
+// 	// fmt.Printf("%v %T\n", str, str)
+
+// 	// str = fmt.Sprintf("%t", t)
+// 	// fmt.Printf("%v %T\n", str, str)
+
+// 	// str = fmt.Sprintf("%c", b)
+// 	// fmt.Printf("%v %T\n", str, str)
+// 	// num := 20
+// 	// str := strconv.Itoa(num)
+// 	// fmt.Println(str)
+// 	// num := 20
+// 	// str := strconv.FormatInt(int64(num), 10)
+// 	// fmt.Println(str)
+// 	// num2 := 1.14514
+// 	// str2 := strconv.FormatFloat(num2, 'g', 4, 64)
+// 	// fmt.Println(str2)
+// 	// str3 := strconv.FormatBool(true)
+// 	// fmt.Println(str3)
+// 	// str := "1234"
+// 	// i64, _ := strconv.ParseInt(str, 10, 64)
+// 	// fmt.Printf("%v, %T\n", i64, i64)
+// 	// str := "1.23e4"
+// 	// f, _ := strconv.ParseFloat(str, 64)
+// 	// fmt.Println(f)
+// 	// a := 0b101
+// 	// b := 0b010
+
+// 	// fmt.Println("a & b =", a&b)
+// 	// fmt.Println("a | b =", a|b)
+// 	// fmt.Println("a ^ b =", a^b)
+// 	// fmt.Println("a << b =", a<<b)
+// 	// fmt.Println("a >> b =", a>>b)
+// 	if score := 56; score >= 90 {
+// 		fmt.Println("A")
+// 	} else if score > 75 {
+// 		fmt.Println("B")
+// 	} else {
+// 		fmt.Println("C")
+// 	}
+
+// 	for i := 1; i <= 10; i++ {
+// 		fmt.Printf("%v ", i)
+// 	}
+// 	fmt.Println()
+
+// 	hachi := 1
+// 	for ; hachi <= 10; hachi++ {
+// 		fmt.Printf("%v ", hachi)
+// 	}
+// 	fmt.Println()
+
+// 	mambo := 1
+// 	for mambo <= 10 {
+// 		fmt.Printf("%v ", mambo)
+// 		mambo++
+// 	}
+// 	fmt.Println()
+
+// 	ccb := 1
+// 	for {
+// 		if ccb <= 10 {
+// 			fmt.Println("曼波~~~", ccb)
+// 		} else {
+// 			break
+// 		}
+// 		ccb++
+// 	}
+// 	fmt.Println()
+
+// 	for i := range 50 {
+// 		if i%2 == 0 {
+// 			fmt.Printf("%v ", i)
+// 		}
+// 	}
+// 	fmt.Println()
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// count := 0
+// 	// sum := 0
+// 	// for i := range 100 {
+// 	// 	if i%9 == 0 {
+// 	// 		sum += i
+// 	// 		count++
+// 	// 	}
+// 	// }
+// 	// fmt.Println(sum, count)
+// 	// sum := 0
+// 	// for i := 1; i <= 100; i++ {
+// 	// 	sum += i
+// 	// }
+// 	// fmt.Println(sum)
+// 	// for range 4 {
+// 	// 	for range 4 {
+// 	// 		fmt.Print("*")
+// 	// 	}
+// 	// 	fmt.Println()
+// 	// }
+// 	// for range 4 {
+// 	// 	for range 4 {
+// 	// 		fmt.Print("*")
+// 	// 	}
+// 	// 	fmt.Println()
+// 	// }
+// 	for i := 1; i <= 5; i++ {
+// 		for j := 1; j <= 5; j++ {
+// 			fmt.Print("*")
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	n := 5
+// 	for i := 1; i <= n; i++ {
+// 		for j := 0; j < n-i; j++ {
+// 			fmt.Print(" ")
+// 		}
+// 		for j := 0; j < 2*i-1; j++ {
+// 			fmt.Print("*")
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	str := "Mambo 哈基米"
+// 	for i, v := range str {
+// 		fmt.Printf("i = %d, v = %c\n", i, v)
+// 	}
+// 	for _, v := range str {
+// 		fmt.Printf("v = %c\n", v)
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	str := "Mambo 哈基米"
+// 	for _, v := range str {
+// 		fmt.Printf("v = %c\n", v)
+// 	}
+// 	fmt.Println()
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	extname := ".html"
+// 	switch extname {
+// 	case ".html":
+// 		fmt.Println("text/html")
+// 	case ".css":
+// 		fmt.Println("text/css")
+// 	case ".js":
+// 		fmt.Println("text/javascript")
+// 	default:
+// 		fmt.Println("格式错误")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	n := 2
+// 	switch n {
+// 	case 1, 3, 5, 7, 9:
+// 		fmt.Println("奇数")
+// 	case 2, 4, 6, 8:
+// 		fmt.Println("偶数")
+// 	default:
+// 		fmt.Println(n)
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// switch n := 7; n {
+// 	// case 1, 3, 5, 7, 9:
+// 	// 	fmt.Println("奇数")
+// 	// case 2, 4, 6, 8:
+// 	// 	fmt.Println("偶数")
+// 	// default:
+// 	// 	fmt.Println(n)
+// 	// }
+// 	age := 56
+// 	switch {
+// 	case age < 25:
+// 		fmt.Println("好好学习！")
+// 	case age <= 60:
+// 		fmt.Println("好好工作！")
+// 	case age > 60:
+// 		fmt.Println("好好享受！")
+// 	default:
+// 		fmt.Println("好好活着！")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	str := "a"
+// 	switch str {
+// 	case "a":
+// 		fmt.Println("a")
+// 		fallthrough
+// 	case "b":
+// 		fmt.Println("b")
+// 		fallthrough
+// 	case "c":
+// 		fmt.Println("c")
+// 		fallthrough
+// 	default:
+// 		fmt.Println("...")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	for i := range 2 {
+// 		for j := range 10 {
+// 			if j == 3 {
+// 				break
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	k := 1
+// 	for {
+// 		if k <= 10 {
+// 			fmt.Println("ok~~~", k)
+// 		} else {
+// 			break
+// 		}
+// 		k++
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+// 	for i := range 2 {
+// 		for j := range 10 {
+// 			if j == 3 {
+// 				break label
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+// 	for i := range 2 {
+// 		for j := range 10 {
+// 			if j == 3 {
+// 				break label
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// }
+
+// package main
+
+// func main() {
+// 	// label:
+// 	// 	for {
+// 	// 		fmt.Println(100)
+// 	// 		for i := range 10 {
+// 	// 			fmt.Printf("%v ", i)
+// 	// 			if i == 5 {
+// 	// 				break label
+// 	// 			}
+// 	// 		}
+// 	// 	}
+// 	// 	fmt.Println()
+// 	// 	for range 3 {
+// 	// 		for j := range 5 {
+// 	// 			if j == 3 {
+// 	// 				goto label
+// 	// 			}
+// 	// 			fmt.Printf("%v ", j)
+// 	// 		}
+// 	// 		fmt.Println()
+// 	// 	}
+// 	// label:
+// 	// 	fmt.Println("哈基米")
+// 	// n := 5
+// 	// switch {
+// 	// case n >= 5, n <= 4:
+// 	// 	fmt.Println("哈基米")
+// 	// 	fallthrough
+// 	// default:
+// 	// 	fmt.Println("曼波")
+// 	// }
+// 	// str1 := "哈基米"
+// 	// str2 := "曼波"
+// 	// str := fmt.Sprintf("%v %v", str1, str2)
+// 	// fmt.Println(str)
+// }
+
 package main
 
 import "fmt"
 
 func main() {
-	var a int8 = 20
-	var b int16 = 40
-	var c = int16(a) + b
-	fmt.Println(c)
-
+	fmt.Println("Hello World!")
 }
