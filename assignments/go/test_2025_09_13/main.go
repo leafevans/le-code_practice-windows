@@ -552,3 +552,89 @@
 // 	fmt.Println(floatSlice)
 // 	fmt.Println(stringSlice)
 // }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// userinfo := make(map[string]string)
+
+// 	// userinfo["username"] = "张三"
+// 	// userinfo["age"] = "20"
+// 	// userinfo["sex"] = "男"
+
+// 	// fmt.Println(userinfo["username"])
+
+// 	// var userinfo = map[string]string{
+// 	// 	"username": "张三",
+// 	// 	"age":      "20",
+// 	// 	"sex":      "男",
+// 	// }
+
+// 	// fmt.Println(userinfo)
+
+// 	// for k, v := range userinfo {
+// 	// 	fmt.Printf("key: %v, value: %v\n", k, v)
+// 	// }
+
+// 	// userinfo := make(map[string]string)
+// 	// userinfo["username"] = "张三"
+// 	// userinfo["age"] = "20"
+// 	// fmt.Println(userinfo)
+
+// 	userinfo := map[string]string{
+// 		"username": "张三",
+// 		"age":      "20",
+// 	}
+
+// 	// userinfo["username"] = "李四"
+// 	// fmt.Println(userinfo)
+
+// 	// v, b := userinfo["sex"]
+// 	// fmt.Println(v, b)
+
+// 	delete(userinfo, "username")
+// 	fmt.Println(userinfo)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	scoreMap := make(map[string]int, 8)
+// 	scoreMap["哈基米"] = 90
+// 	scoreMap["曼波"] = 100
+// 	fmt.Println(scoreMap)
+// 	fmt.Println(scoreMap["曼波"])
+// 	fmt.Printf("Type of scoreMap: %T\n", scoreMap)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	userinfo := map[string]string{
+// 		"username": "叮咚鸡",
+// 		"password": "大狗叫",
+// 	}
+// 	fmt.Println(userinfo)
+// }
+
+package main
+
+import "fmt"
+
+func main() {
+	scoreMap := make(map[string]int, 8)
+	scoreMap["哈基米"] = 90
+	scoreMap["曼波"] = 100
+	value, ok := scoreMap["哈基米"]
+	if ok {
+		fmt.Println(value)
+	} else {
+		fmt.Println("查无此人")
+	}
+}
