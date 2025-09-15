@@ -1,0 +1,24 @@
+# Visual Studio 文件
+.vs/
+*.user
+*.suo
+
+# 编译输出
+bin/
+obj/
+
+# 依赖包
+packages/
+*.nupkg
+
+# 临时文件
+*.tmp
+*.log
+
+# 操作系统文件
+Thumbs.db
+.DS_Store
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
