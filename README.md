@@ -18,13 +18,13 @@
 1. 📥 克隆仓库：
 
    ```bash
-   git clone https://github.com/LeafEvans/LE-Code_Practice-Windows.git
+   git clone https://github.com/LeafEvans/le-code_practice-windows.git
    ```
 
 2. 📂 进入指定目录：
 
    ```bash
-   cd LE-Code_Practice-Windows
+   cd le-code_practice-windows
    ```
 
 3. ▶️ 按照每个文件夹或文件中提供的说明运行或执行代码。
