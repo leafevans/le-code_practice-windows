@@ -722,14 +722,563 @@
 // 	fmt.Println(c)
 // }
 
+// package main
+
+// func main() {
+// 	// num := 20
+// 	// str := strconv.Itoa(num)
+// 	// fmt.Printf("value = %v, type = %T\n", str, str)
+
+// 	// str2 := strconv.FormatInt(int64(num), 12)
+// 	// fmt.Printf("value = %v, type = %T\n", str2, str2)
+
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"strconv"
+// )
+
+// func main() {
+// 	num := 3.1415926
+// 	str := strconv.FormatFloat(num, 'G', 2, 64)
+// 	fmt.Printf("%v %T\n", str, str)
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"strconv"
+// )
+
+// func main() {
+// 	str := "1234"
+// 	num, _ := strconv.ParseInt(str, 10, 32)
+// 	fmt.Printf("%v %T\n", num, num)
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"strconv"
+// )
+
+// func main() {
+// 	str := "3.1415926"
+// 	num, _ := strconv.ParseFloat(str, 32)
+// 	fmt.Println(num)
+// 	num2, _ := strconv.ParseFloat(str, 64)
+// 	fmt.Println(num2)
+// }
+
+// package main
+
+// import "fmt"
+
+// func test() bool {
+// 	fmt.Println("test...")
+// 	return true
+// }
+
+// func main() {
+// 	var i int = 10
+// 	// 前条件错，后面不检查
+// 	if i < 9 && test() {
+// 		fmt.Println("ok...")
+// 	}
+// 	// 前条件对，后面不检查
+// 	if i > 9 || test() {
+// 		fmt.Println("hello...")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	a := 5 // 101
+// 	b := 2 // 010
+
+// 	fmt.Println("a & b =", a&b)   // 000
+// 	fmt.Println("a | b =", a|b)   // 111
+// 	fmt.Println("a ^ b =", a^b)   // 111
+// 	fmt.Println("5 >> 2 =", a>>b) // 1
+// 	fmt.Println("5 << 2 =", a<<b) // 10100
+// 	fmt.Println("5 << 1 =", 5<<1) // 1010
+// 	fmt.Println("5 >> 1 =", 5>>1) // 10
+// 	fmt.Println("7 >> 2 =", 7>>2) // 1
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	if score := 56; score >= 90 {
+// 		fmt.Println("A")
+// 	} else if score > 75 {
+// 		fmt.Println("B")
+// 	} else {
+// 		fmt.Println("C")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	k := 0
+// 	for {
+// 		if k < 10 {
+// 			fmt.Println("OK~~~", k)
+// 		} else {
+// 			break
+// 		}
+// 		k++
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	count := 0
+// 	sum := 0
+// 	for i := range 100 {
+// 		if i%9 == 0 {
+// 			count++
+// 			sum += i
+// 		}
+// 	}
+// 	fmt.Println(sum, count)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	n := 1
+// 	for i := 1; i <= 5; i++ {
+// 		n *= 1
+// 	}
+// 	fmt.Println(n)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	for range 10 {
+// 		for range 5 {
+// 			fmt.Print("*")
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	n := 6
+// 	for i := 1; i <= n; i++ {
+// 		for j := 0; j < n-i; j++ {
+// 			fmt.Print(" ")
+// 		}
+// 		for j := 0; j < 2*i-1; j++ {
+// 			fmt.Print("*")
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	for i := 1; i <= 9; i++ {
+// 		for j := i; j <= 9; j++ {
+// 			fmt.Printf("%v x %v = %v\t", i, j, i*j)
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	switch extname := ".html"; extname {
+// 	case ".html":
+// 		fmt.Println("text/html")
+// 		fallthrough
+// 	case ".css":
+// 		fmt.Println("text/css")
+// 		fallthrough
+// 	case ".js":
+// 		fmt.Println("text/javascript")
+// 		fallthrough
+// 	default:
+// 		fmt.Println("格式错误")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// switch n := 2; n {
+// 	// case 1, 3, 5, 7, 9:
+// 	// 	fmt.Println("奇数")
+// 	// case 2, 4, 6, 8:
+// 	// 	fmt.Println("偶数")
+// 	// default:
+// 	// 	fmt.Println(n)
+// 	// }
+// 	age := 56
+// 	switch {
+// 	case age < 25:
+// 		fmt.Println("好好学习！")
+// 	case age <= 60:
+// 		fmt.Println("好好工作！")
+// 	case age > 60:
+// 		fmt.Println("好好享受！")
+// 	default:
+// 		fmt.Println("好好活着！")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+
+// 	for i := range 2 {
+// 		for j := range 10 {
+// 			if j == 3 {
+// 				goto label
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+// 	}
+// label:
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// arr := [...]int{0: 1, 11: 100}
+// 	// fmt.Println(arr, unsafe.Sizeof(arr))
+// 	arr := [...][2]string{
+// 		{"北京", "上海"},
+// 		{"广州", "深圳"},
+// 		{"成都", "重庆"},
+// 	}
+
+// 	for _, v1 := range arr {
+// 		for _, v2 := range v1 {
+// 			fmt.Printf("%s\n", v2)
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	arr := []int{1, 3, 5, 7, 8}
+// 	for i := range arr {
+// 		for j := i + 1; j < len(arr); j++ {
+// 			if arr[i]+arr[j] == 8 {
+// 				fmt.Printf("(%v, %v)\n", i, j)
+// 			}
+// 		}
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	arr := [...]string{"北京", "上海", "广州", "深圳", "成都", "重庆"}
+// 	fmt.Printf("arr: %v type: %T len: %v cap: %v\n", arr, arr, len(arr), cap(arr))
+// 	arr2 := arr[1:3]
+// 	fmt.Printf("arr2: %v type: %T len: %v cap: %v\n", arr2, arr2, len(arr2), cap(arr2))
+// 	arr3 := arr2[1:5]
+// 	fmt.Printf("arr3: %v type: %T len: %v cap: %v\n", arr3, arr3, len(arr3), cap(arr3))
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	arr := []int{2, 3, 5, 7, 11, 13}
+// 	fmt.Println(arr)
+// 	fmt.Printf("len = %v, cap = %v\n", len(arr), len(arr))
+
+// 	arr2 := arr[:2]
+// 	fmt.Println(arr2)
+// 	fmt.Printf("len = %v, cap = %v\n", len(arr2), cap(arr2))
+
+// 	arr3 := arr[1:3]
+// 	fmt.Println(arr3)
+// 	fmt.Printf("len = %v, cap = %v\n", len(arr3), cap(arr3))
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	numSlice := []int{30, 31, 32, 33, 34, 35, 36, 37}
+// 	numSlice = append(numSlice[:2], numSlice[3:]...)
+// 	fmt.Println(numSlice)
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+// func bubbleSort(arr []int) {
+// 	n := len(arr)
+// 	for i := range n - 1 {
+// 		for j := range n - 1 - i {
+// 			if arr[j+1] < arr[j] {
+// 				arr[j], arr[j+1] = arr[j+1], arr[j]
+// 			}
+// 		}
+// 	}
+// }
+
+// func selectionSort(arr []int) {
+// 	n := len(arr)
+// 	for i := range n {
+// 		minIndex := i
+// 		for j := i + 1; j < n; j++ {
+// 			if arr[j] < arr[minIndex] {
+// 				minIndex = j
+// 			}
+// 		}
+// 		if minIndex != i {
+// 			arr[i], arr[minIndex] = arr[minIndex], arr[i]
+// 		}
+// 	}
+// }
+
+// func insertionSort(arr []int) {
+// 	n := len(arr)
+// 	for i := 1; i < n; i++ {
+// 		key := arr[i]
+// 		j := i - 1
+// 		for j >= 0 && arr[j] > key {
+// 			arr[j+1] = arr[j]
+// 			j--
+// 		}
+// 		arr[j+1] = key
+// 	}
+// }
+
+// func shellSort(arr []int) {
+// 	n := len(arr)
+// 	for gap := n / 2; gap > 0; gap /= 2 {
+// 		for i := gap; i < n; i++ {
+// 			temp := arr[i]
+// 			j := i
+// 			for j >= gap && arr[j-gap] > temp {
+// 				arr[j] = arr[j-gap]
+// 				j -= gap
+// 			}
+// 			arr[j] = temp
+// 		}
+// 	}
+// }
+
+// func quickSort(arr []int) {
+// 	if len(arr) <= 1 {
+// 		return
+// 	}
+
+// 	pivot := arr[len(arr)/2]
+// 	left, right := 0, len(arr)-1
+
+// 	for left <= right {
+// 		for arr[left] < pivot {
+// 			left++
+// 		}
+// 		for arr[right] > pivot {
+// 			right--
+// 		}
+
+// 		if left <= right {
+// 			arr[left], arr[right] = arr[right], arr[left]
+// 			left++
+// 			right--
+// 		}
+// 	}
+
+// 	quickSort(arr[left:])
+// 	quickSort(arr[:right+1])
+// }
+
+// func merge(left, right []int) []int {
+// 	result := make([]int, 0, len(left)+len(right))
+// 	i, j := 0, 0
+
+// 	for i < len(left) && j < len(right) {
+// 		if left[i] < right[j] {
+// 			result = append(result, left[i])
+// 			i++
+// 		} else {
+// 			result = append(result, right[j])
+// 			j++
+// 		}
+// 	}
+
+// 	result = append(result, left[i:]...)
+// 	result = append(result, right[j:]...)
+
+// 	return result
+// }
+
+// func mergeSort(arr []int) []int {
+// 	if len(arr) <= 1 {
+// 		return arr
+// 	}
+
+// 	mid := len(arr) / 2
+
+// 	left := mergeSort(arr[:mid])
+// 	right := mergeSort(arr[mid:])
+
+// 	return merge(left, right)
+// }
+
+// func heapify(arr []int, n, i int) {
+// 	largest, left, right := i, 2*i+1, 2*i+2
+
+// 	if left < n && arr[largest] < arr[left] {
+// 		largest = left
+// 	}
+// 	if right < n && arr[largest] < arr[right] {
+// 		largest = right
+// 	}
+// 	if largest != i {
+// 		arr[i], arr[largest] = arr[largest], arr[i]
+// 		heapify(arr, n, largest)
+// 	}
+// }
+
+// func heapSort(arr []int) {
+// 	n := len(arr)
+
+// 	for i := n/2 - 1; i >= 0; i-- {
+// 		heapify(arr, n, i)
+// 	}
+
+// 	for i := n - 1; i > 0; i-- {
+// 		arr[0], arr[i] = arr[i], arr[0]
+// 		heapify(arr, i, 0)
+// 	}
+// }
+
+// func main() {
+// 	arr := []int{3, 7, 8, 9, 1}
+// 	fmt.Println(arr)
+// 	sort.Ints(arr)
+// 	fmt.Println(arr)
+// 	sort.Sort(sort.Reverse(sort.IntSlice(arr)))
+// 	fmt.Println(arr)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	scoreMap := make(map[string]int, 8)
+// 	fmt.Println(scoreMap == nil)
+// 	scoreMap["哈基米"] = 90
+// 	scoreMap["曼波"] = 100
+// 	fmt.Println(scoreMap)
+// 	fmt.Println(scoreMap["曼波"])
+// 	fmt.Printf("Type of scoreMap: %T\n", scoreMap)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	scoreMap := make(map[string]int, 8)
+// 	scoreMap["哈基米"] = 90
+// 	scoreMap["曼波"] = 100
+// 	value, ok := scoreMap["哈基米"]
+// 	if ok {
+// 		fmt.Println(value)
+// 	} else {
+// 		fmt.Println("查无此人")
+// 	}
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	scoreMap := make(map[string]int)
+// 	scoreMap["孙连城"] = 90
+// 	scoreMap["李达康"] = 100
+// 	scoreMap["沙瑞金"] = 60
+// 	delete(scoreMap, "沙瑞金")
+// 	for key := range scoreMap {
+// 		fmt.Println(key)
+// 	}
+// }
+
 package main
 
+import (
+	"fmt"
+	"math/rand/v2"
+	"sort"
+)
+
 func main() {
-	// num := 20
-	// str := strconv.Itoa(num)
-	// fmt.Printf("value = %v, type = %T\n", str, str)
+	scoreMap := make(map[string]int, 100)
 
-	// str2 := strconv.FormatInt(int64(num), 12)
-	// fmt.Printf("value = %v, type = %T\n", str2, str2)
+	for i := range 100 {
+		scoreMap[fmt.Sprintf("stu%02d", i)] = rand.IntN(100)
+	}
 
+	keys := make([]string, 100)
+	for key := range scoreMap {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+	for _, key := range keys {
+		fmt.Println(key, scoreMap[key])
+	}
 }
