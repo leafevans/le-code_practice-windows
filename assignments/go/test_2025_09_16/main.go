@@ -344,5 +344,166 @@
 // 	fmt.Println(kmpSearch(text, pattern))
 // }
 
-package main 
+// package main
 
+// import "fmt"
+
+// // func add[T int | float32 | float64](x, y T) T {
+// // 	return x + y
+// // }
+
+// // func sub[T int | float32 | float64](x, y T) T {
+// // 	return x - y
+// // }
+
+// func add[T int | float32 | float64](nums ...T) T {
+// 	var sum T
+// 	for _, num := range nums {
+// 		sum += num
+// 	}
+// 	return sum
+// }
+
+// func main() {
+// 	// x := 2
+// 	// y := 3
+// 	// fmt.Println(add(x, y))
+// 	// m := 2.4
+// 	// n := 6.8
+// 	// fmt.Println(add(m, n))
+
+// 	// fmt.Println(sub(x, y))
+// 	// fmt.Println(sub(m, n))
+// 	fmt.Println(add(10, 20, 30, 40))
+// }
+
+// package main
+
+// import "fmt"
+
+// func add(x int, y ...int) int {
+// 	sum := x
+// 	for _, v := range y {
+// 		sum += v
+// 	}
+// 	return sum
+// }
+
+// func main() {
+// 	fmt.Println(add(10, 20, 30, 40))
+// }
+
+// package main
+
+// import "fmt"
+
+// func calc[T int | float32 | float64](x, y T) (sum, diff T) {
+// 	sum = x + y
+// 	diff = x - y
+// 	return
+// }
+
+// func main() {
+// 	sum, diff := calc(12, 34)
+// 	fmt.Println(sum)
+// 	fmt.Println(diff)
+// }
+
+// package main
+
+// import "fmt"
+
+// func sayHello() {
+// 	fmt.Println("Hello World!")
+// }
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func main() {
+// 	sayHello()
+// 	fmt.Println(add(10, 20))
+// }
+
+// package main
+
+// import "fmt"
+
+// func add(x int, y ...int) int {
+// 	sum := x
+// 	for _, v := range y {
+// 		sum += v
+// 	}
+// 	return sum
+// }
+
+// func main() {
+// 	fmt.Println(add(10))
+// 	fmt.Println(add(10, 20))
+// 	fmt.Println(add(10, 20, 30))
+// 	fmt.Println(add(10, 20, 30, 40))
+// }
+
+// package main
+
+// func quickSort(slice []int) {
+// 	if len(slice) <= 1 {
+// 		return
+// 	}
+
+// 	pivot := slice[len(slice)/2]
+// 	left, right := 0, len(slice)-1
+
+// 	for left <= right {
+// 		for slice[left] < pivot {
+// 			left++
+// 		}
+// 		for slice[right] > pivot {
+// 			right--
+// 		}
+// 		if left <= right {
+// 			slice[left], slice[right] = slice[right], slice[left]
+// 			left++
+// 			right--
+// 		}
+// 	}
+// }
+
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func mapSort(userinfo map[string]string) string {
+	keys := make([]string, 0, len(userinfo))
+
+	for key := range userinfo {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+
+	str := ""
+
+	for _, key := range keys {
+		str += fmt.Sprintf("%v=>%v ", key, userinfo[key])
+	}
+
+	return str
+}
+
+func main() {
+	userinfo := map[string]string{
+		"username": "王婷婷",
+		"age":      "20",
+		"sex":      "女",
+		"height":   "165",
+	}
+
+	str := mapSort(userinfo)
+
+	fmt.Println(str)
+}
