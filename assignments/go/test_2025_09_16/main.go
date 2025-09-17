@@ -289,53 +289,60 @@
 // 	return -1
 // }
 
-package main
+// package main
 
-import "fmt"
+// import "fmt"
 
-func buildNext(pattern string) []int {
-	next := make([]int, len(pattern))
-	j := 0
+// func buildNext(pattern string) []int {
+// 	next := make([]int, len(pattern))
+// 	j := 0
 
-	for i := 1; i < len(pattern); i++ {
-		for j > 0 && pattern[i] != pattern[j] {
-			j = next[j-1]
-		}
-		if pattern[i] == pattern[j] {
-			j++
-		}
-		next[i] = j
-	}
+// 	for i := 1; i < len(pattern); i++ {
+// 		for j > 0 && pattern[i] != pattern[j] {
+// 			j = next[j-1]
+// 		}
 
-	return next
-}
+// 		if pattern[i] == pattern[j] {
+// 			j++
+// 		}
 
-func kmpSearch(text, pattern string) int {
-	if len(pattern) == 0 {
-		return 0
-	}
+// 		next[i] = j
+// 	}
 
-	next := buildNext(pattern)
-	j := 0
+// 	return next
+// }
 
-	for i := range len(text) {
-		for j > 0 && text[i] != pattern[j] {
-			j = next[j-1]
-		}
-		if text[i] == pattern[j] {
-			j++
-		}
-		if j == len(pattern) {
-			return i - j + 1
-		}
-	}
+// func kmpSearch(text, pattern string) int {
+// 	if len(pattern) == 0 {
+// 		return 0
+// 	}
 
-	return -1
-}
+// 	next := buildNext(pattern)
+// 	j := 0
 
-func main() {
-	text := "ABABCABCACBAB"
-	pattern := "ABCAC"
+// 	for i := range len(text) {
+// 		for j > 0 && text[i] != pattern[j] {
+// 			j = next[j-1]
+// 		}
 
-	fmt.Println(kmpSearch(text, pattern))
-}
+// 		if text[i] == pattern[j] {
+// 			j++
+// 		}
+
+// 		if j == len(pattern) {
+// 			return i - j + 1
+// 		}
+// 	}
+
+// 	return -1
+// }
+
+// func main() {
+// 	text := "ABABCABCACBAB"
+// 	pattern := "ABCAC"
+
+// 	fmt.Println(kmpSearch(text, pattern))
+// }
+
+package main 
+
