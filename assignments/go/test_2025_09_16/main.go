@@ -470,40 +470,504 @@
 // 	}
 // }
 
-package main
+// package main
 
-import (
-	"fmt"
-	"sort"
-)
+// import (
+// 	"fmt"
+// 	"sort"
+// )
 
-func mapSort(userinfo map[string]string) string {
-	keys := make([]string, 0, len(userinfo))
+// func mapSort(userinfo map[string]string) string {
+// 	keys := make([]string, 0, len(userinfo))
 
-	for key := range userinfo {
-		keys = append(keys, key)
-	}
+// 	for key := range userinfo {
+// 		keys = append(keys, key)
+// 	}
 
-	sort.Strings(keys)
+// 	sort.Strings(keys)
 
-	str := ""
+// 	str := ""
 
-	for _, key := range keys {
-		str += fmt.Sprintf("%v=>%v ", key, userinfo[key])
-	}
+// 	for _, key := range keys {
+// 		str += fmt.Sprintf("%v=>%v ", key, userinfo[key])
+// 	}
 
-	return str
-}
+// 	return str
+// }
 
-func main() {
-	userinfo := map[string]string{
-		"username": "王婷婷",
-		"age":      "20",
-		"sex":      "女",
-		"height":   "165",
-	}
+// func main() {
+// 	userinfo := map[string]string{
+// 		"username": "王婷婷",
+// 		"age":      "20",
+// 		"sex":      "女",
+// 		"height":   "165",
+// 	}
 
-	str := mapSort(userinfo)
+// 	str := mapSort(userinfo)
 
-	fmt.Println(str)
-}
+// 	fmt.Println(str)
+// }
+
+// package main
+
+// import "fmt"
+
+// var a = "全局变量"
+
+// func run() {
+// 	a = "阿迪"
+// 	fmt.Println(a)
+// 	fmt.Println("run")
+// }
+
+// func main() {
+// 	fmt.Println(a)
+// 	run()
+// 	fmt.Println(a)
+// }
+
+// package main
+
+// import "fmt"
+
+// // 定义全局变量 num。
+// var num = 10
+
+// func testGlobal() {
+// 	// 在函数中访问全局变量 num。
+// 	fmt.Printf("num = %v\n", num)
+// }
+
+// func main() {
+// 	// num = 10
+// 	testGlobal()
+// }
+
+// package main
+
+// import "fmt"
+
+// // 定义全局变量 num。
+// var num = 10
+
+// func testNum() {
+// 	num := 100
+// 	// 函数中优先使用局部变量 num。
+// 	fmt.Printf("num = %d\n", num)
+// }
+
+// func main() {
+// 	testNum()                     // num = 100
+// 	fmt.Printf("num = %d\n", num) // num = 10
+// }
+
+// package main
+
+// import "fmt"
+
+// type cala func(int, int) int
+
+// type integer int
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func sub(x, y int) int {
+// 	return x - y
+// }
+
+// func test() {
+// 	fmt.Println("test...")
+// }
+
+// func main() {
+// 	var c cala = add
+// 	fmt.Printf("c 的类型：%T\n", c)
+// 	c = sub
+// 	fmt.Printf("c 的类型：%T\n", c)
+// 	fmt.Printf("test 的类型：%T\n", test)
+// 	fmt.Println(c(10, 5))
+// 	f := sub
+// 	fmt.Printf("f 的类型：%T\n", f)
+// 	fmt.Println(f(15, 5))
+// 	var a int = 10
+// 	var b integer = 20
+// 	fmt.Printf("a 的类型：%T\n", a)
+// 	fmt.Printf("b 的类型：%T\n", b)
+// 	fmt.Println(a + int(b))
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// )
+
+// func buildNext(pattern string) []int {
+// 	next := make([]int, len(pattern))
+// 	j := 0
+
+// 	for i := 1; i < len(pattern); i++ {
+// 		for j > 0 && pattern[i] != pattern[j] {
+// 			j = next[j-1]
+// 		}
+
+// 		if pattern[i] == pattern[j] {
+// 			j++
+// 		}
+
+// 		next[i] = j
+// 	}
+
+// 	return next
+// }
+
+// func kmpSearch(text, pattern string) int {
+// 	if len(pattern) == 0 {
+// 		return 0
+// 	}
+
+// 	next := buildNext(pattern)
+// 	j := 0
+
+// 	for i := range len(text) {
+// 		for j > 0 && pattern[i] != pattern[j] {
+// 			j = next[j-1]
+// 		}
+
+// 		if pattern[i] == pattern[j] {
+// 			j++
+// 		}
+
+// 		if j == len(pattern) {
+// 			return i - j + 1
+// 		}
+// 	}
+
+// 	return -1
+// }
+
+// func merge(left, right []int) []int {
+// 	result := make([]int, 0, len(left)+len(right))
+// 	i, j := 0, 0
+
+// 	for i < len(left) && j < len(right) {
+// 		if left[i] < right[j] {
+// 			result = append(result, left[i])
+// 		} else {
+// 			result = append(result, right[j])
+// 		}
+// 	}
+
+// 	result = append(result, left[i:]...)
+// 	result = append(result, right[j:]...)
+
+// 	return result
+// }
+
+// func mergeSort(arr []int) []int {
+// 	if len(arr) <= 1 {
+// 		return arr
+// 	}
+
+// 	mid := len(arr) / 2
+// 	left := mergeSort(arr[:mid])
+// 	right := mergeSort(arr[mid:])
+
+// 	return merge(left, right)
+// }
+
+// func heapify(arr []int, n, i int) {
+// 	largest := i
+// 	left, right := 2*i+1, 2*i+2
+
+// 	for left < n && arr[largest] < arr[left] {
+// 		largest = left
+// 	}
+
+// 	for right < n && arr[largest] < arr[right] {
+// 		largest = right
+// 	}
+
+// 	if largest != i {
+// 		arr[i], arr[largest] = arr[largest], arr[i]
+// 		heapify(arr, n, largest)
+// 	}
+// }
+
+// func heapSort(arr []int) {
+// 	n := len(arr)
+
+// 	for i := n/2 - 1; i >= 0; i-- {
+// 		heapify(arr, n, i)
+// 	}
+
+// 	for i := n - 1; i > 0; i-- {
+// 		arr[0], arr[i] = arr[i], arr[0]
+// 		heapify(arr, i, 0)
+// 	}
+
+// }
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func sub(x, y int) int {
+// 	return x - y
+// }
+
+// func calc(x, y int, fn func(int, int) int) int {
+// 	return fn(x, y)
+// }
+
+// func do(option string) func(x, y int) int {
+// 	switch option {
+// 	case "+":
+// 		return add
+// 	case "-":
+// 		return sub
+// 	case "*":
+// 		return func(x, y int) int {
+// 			return x * y
+// 		}
+// 	default:
+// 		return nil
+// 	}
+// }
+
+// func main() {
+// 	// fmt.Println(calc(10, 20, add))
+// 	// fmt.Println(calc(10, 20, sub))
+// 	// fmt.Println(calc(10, 20, func(x, y int) int {
+// 	// 	return x * y
+// 	// }))
+// 	fmt.Println(do("+")(10, 20))
+// 	fmt.Println(do("-")(10, 20))
+// 	fmt.Println(do("*")(10, 20))
+
+// 	func() {
+// 		fmt.Println("test...")
+// 	}()
+// }
+
+// package main
+
+// import "fmt"
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// type calc func(int, int) int
+
+// func main() {
+// 	// 声明一个 calc 类型的变量 c，
+// 	// 并将 add 变量赋值给它。
+// 	var c calc = add
+// 	fmt.Printf("Type of c: %T\n", c)
+// 	// 像调用 add 一样调用 c。
+// 	fmt.Println(c(1, 2))
+
+// 	f := add // 将函数 add 赋值给变量 f。
+// 	fmt.Printf("Type of f: %T\n", f)
+// 	// 像调用 add 一样调用 f。
+// 	fmt.Println(f(10, 20))
+
+// 	num := 0o12
+// 	fmt.Println(num)
+// }
+
+// package main
+
+// import "fmt"
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func sub(x, y int) int {
+// 	return x - y
+// }
+
+// func calc(option string) func(int, int) int {
+// 	switch option {
+// 	case "+":
+// 		return add
+// 	case "-":
+// 		return sub
+// 	case "*":
+// 		return func(x, y int) int {
+// 			return x * y
+// 		}
+// 	default:
+// 		return nil
+// 	}
+// }
+
+// func main() {
+// 	fmt.Println(calc("+")(10, 20))
+// 	fmt.Println(calc("-")(10, 20))
+// 	fmt.Println(calc("*")(10, 20))
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	add := func(x, y int) {
+// 		fmt.Println(x + y)
+// 	}
+// 	add(10, 20) // 通过变量调用匿名函数。
+
+// 	// 自执行函数指匿名函数定义完加 () 直接执行。
+// 	func(x, y int) {
+// 		fmt.Println(x + y)
+// 	}(10, 20)
+// }
+
+// package main
+
+// import "fmt"
+
+// func fn1() {
+// 	fmt.Println("方法 1")
+// }
+
+// func fn2() {
+// 	fn1()
+// 	fmt.Println("方法 2")
+// }
+
+// func main() {
+// 	fn2()
+// }
+
+// package main
+
+// import "fmt"
+
+// // 函数中嵌套一个函数，最后返回其中的函数。
+// func adder() func() int {
+// 	var i = 10
+
+// 	return func() int {
+// 		return i + 1
+// 	}
+// }
+
+// func adder2() func(y int) int {
+// 	// 常驻内存，不污染全局。
+// 	var i = 10
+// 	return func(y int) int {
+// 		i += y
+// 		return i
+// 	}
+// }
+
+// func main() {
+// 	var fn = adder()
+// 	fmt.Println(fn())
+// 	fmt.Println(fn())
+// 	fmt.Println(fn())
+
+// 	var fn2 = adder2()
+// 	fmt.Println(fn2(10))
+// 	fmt.Println(fn2(10))
+// 	fmt.Println(fn2(10))
+// }
+
+// package main
+
+// import "fmt"
+
+// func adder() func(int) int {
+// 	var x int
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+// func main() {
+// 	var fn = adder()
+// 	fmt.Println(fn(10)) // 10
+// 	fmt.Println(fn(20)) // 20
+// 	fmt.Println(fn(30)) // 60
+
+// 	fn2 := adder()
+// 	fmt.Println(fn2(40)) // 40
+// 	fmt.Println(fn2(50)) // 90
+// }
+
+// package main
+
+// import "fmt"
+
+// func adder(x int) func(int) int {
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+// func main() {
+// 	fn := adder(10)
+// 	fmt.Println(fn(10)) // 20
+// 	fmt.Println(fn(20)) // 40
+// 	fmt.Println(fn(30)) // 70
+
+// 	fn2 := adder(20)
+// 	fmt.Println(fn2(40)) // 60
+// 	fmt.Println(fn2(50)) // 110
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func makeSuffix(suffix string) func(string) string {
+// 	return func(name string) string {
+// 		if !strings.HasSuffix(name, suffix) {
+// 			return name + suffix
+// 		}
+// 		return name
+// 	}
+// }
+
+// func main() {
+// 	jpgFn := makeSuffix(".jpg")
+// 	txtFn := makeSuffix(".txt")
+// 	fmt.Println(jpgFn("test")) // test.jpg
+// 	fmt.Println(txtFn("test")) // test.txt
+// }
+
+// package main
+
+// import "fmt"
+
+// func calc(base int) (func(int) int, func(int) int) {
+// 	add := func(i int) int {
+// 		base += i
+// 		return base
+// 	}
+
+// 	sub := func(i int) int {
+// 		base -= i
+// 		return base
+// 	}
+
+// 	return add, sub
+// }
+
+// func main() {
+// 	fn, fn2 := calc(10)
+// 	fmt.Println(fn(1), fn2(2))
+// 	fmt.Println(fn(3), fn2(4))
+// 	fmt.Println(fn(5), fn2(6))
+// }
