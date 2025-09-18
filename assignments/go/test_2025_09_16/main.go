@@ -971,3 +971,96 @@
 // 	fmt.Println(fn(3), fn2(4))
 // 	fmt.Println(fn(5), fn2(6))
 // }
+
+// package main
+
+// import "fmt"
+
+// func adder() func(int) int {
+// 	x := 0
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+// func main() {
+// 	fn := adder()
+// 	fmt.Println(fn(10))
+// 	fmt.Println(fn(20))
+// 	fmt.Println(fn(30))
+
+// 	fn2 := adder()
+// 	fmt.Println(fn2(40))
+// 	fmt.Println(fn2(50))
+// }
+
+// package main
+
+// import "fmt"
+
+// func adder(x int) func(int) int {
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+// func main() {
+// 	fn := adder(10)
+// 	fmt.Println(fn(10))
+// 	fmt.Println(fn(20))
+// 	fmt.Println(fn(30))
+
+// 	fn2 := adder(20)
+// 	fmt.Println(fn2(40))
+// 	fmt.Println(fn2(50))
+// }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func makeSuffix(suffix string) func(string) string {
+// 	return func(name string) string {
+// 		if !strings.HasSuffix(name, suffix) {
+// 			return name + suffix
+// 		}
+// 		return name
+// 	}
+// }
+
+// func main() {
+// 	jpgFn := makeSuffix(".jpg")
+// 	txtFn := makeSuffix(".txt")
+// 	fmt.Println(jpgFn("test"))
+// 	fmt.Println(txtFn("test"))
+// }
+
+package main
+
+import "fmt"
+
+func calc(base int) (func(int) int, func(int) int) {
+	add := func(i int) int {
+		base += i
+		return base
+	}
+
+	sub := func(i int) int {
+		base -= i
+		return base
+	}
+
+	return add, sub
+}
+
+func main() {
+	fn1, fn2 := calc(10)
+	fmt.Println(fn1(1), fn2(2))
+	fmt.Println(fn1(1), fn2(2))
+	fmt.Println(fn1(1), fn2(2))
+}
