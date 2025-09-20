@@ -1222,16 +1222,107 @@
 // 		b, b, &b)
 // }
 
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	a := 10
+// 	// 去变量 a 的地址，将地址保存到指针 b 中。
+// 	b := &a
+// 	fmt.Printf("Type of b: %T\n", b)
+// 	c := *b // 指针取值
+// 	fmt.Printf("Type of c: %T\n", c)
+// 	fmt.Printf("Value of c: %v\n", c)
+// }
+
+// package main
+
+// import "fmt"
+
+// func modify1(x int) {
+// 	x = 100
+// }
+
+// func modify2(x *int) {
+// 	*x = 100
+// }
+
+// func main() {
+// 	a := 10
+// 	modify1(a)
+// 	fmt.Println(a)
+// 	modify2(&a)
+// 	fmt.Println(a)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var userinfo map[string]string
+// 	userinfo["username"] = "张三"
+// 	fmt.Println(userinfo)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var a *int
+// 	*a = 100
+// 	fmt.Println(*a)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	a := new(int)
+// 	b := new(bool)
+
+// 	fmt.Printf("%T\n", a)
+// 	fmt.Printf("%T\n", b)
+
+// 	fmt.Println(*a)
+// 	fmt.Println(*b)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var a *int = new(int)
+// 	*a = 10
+// 	fmt.Println(*a)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var userinfo map[string]string
+// 	userinfo = make(map[string]string)
+// 	userinfo["username"] = "哈基米"
+// 	fmt.Println(userinfo)
+// }
+
 package main
 
 import "fmt"
 
 func main() {
-	a := 10
-	// 去变量 a 的地址，将地址保存到指针 b 中。
-	b := &a
-	fmt.Printf("Type of b: %T\n", b)
-	c := *b // 指针取值
-	fmt.Printf("Type of c: %T\n", c)
-	fmt.Printf("Value of c: %v\n", c)
+	a := new(int)
+	b := new(bool)
+
+	fmt.Printf("%T\n", a)
+	fmt.Printf("%T\n", b)
+
+	fmt.Println(*a)
+	fmt.Println(*b)
 }
