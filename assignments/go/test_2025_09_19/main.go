@@ -1138,3 +1138,100 @@
 // 	fmt.Printf("p 的值为 %v，p 的类型为 %T\n",
 // 		p, p)
 // }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	a := 10
+// 	b := &a
+
+// 	fmt.Printf("b 的值为 %v，b 的类型为 %T，b 的地址为 %p\n", b, b, &b)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	a := 10
+// 	p := &a
+
+// 	fmt.Println(*p)
+
+// 	*p = 20
+
+// 	fmt.Println(a)
+// }
+
+// package main
+
+// import "fmt"
+
+// func fn1(x int) {
+// 	x = 10
+// }
+
+// func fn2(x *int) {
+// 	*x = 40
+// }
+
+// func main() {
+// 	var a = 5
+// 	fn1(a)
+// 	fmt.Println(a)
+// 	fn2(&a)
+// 	fmt.Println(a)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// var userinfo = make(map[string]string)
+// 	// userinfo["username"] = "张三"
+// 	// fmt.Println(userinfo)
+// 	// var arr = make([]int, 4, 5)
+// 	// arr[0] = 1
+// 	// fmt.Println(arr)
+// 	// var ptr *int = new(int)
+// 	// fmt.Println(*ptr)
+
+// 	// fmt.Printf("value = %v, type = %T, *value = %v\n",
+// 	// 	ptr, ptr, *ptr)
+
+// 	var ptr *int
+// 	ptr = new(int)
+// 	*ptr = 100
+// 	fmt.Println(*ptr)
+// }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	a := 10
+// 	b := &a
+
+// 	fmt.Printf("a: %v, ptr(a): %p\n",
+// 		a, &a)
+// 	fmt.Printf("b: %v, type: %T, ptr(b): %p\n",
+// 		b, b, &b)
+// }
+
+package main
+
+import "fmt"
+
+func main() {
+	a := 10
+	// 去变量 a 的地址，将地址保存到指针 b 中。
+	b := &a
+	fmt.Printf("Type of b: %T\n", b)
+	c := *b // 指针取值
+	fmt.Printf("Type of c: %T\n", c)
+	fmt.Printf("Value of c: %v\n", c)
+}
