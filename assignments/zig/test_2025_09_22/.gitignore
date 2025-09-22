@@ -1,0 +1,55 @@
+# Zig build artifacts
+zig-out/
+zig-cache/
+.zig-cache/
+
+# Build directories
+build/
+dist/
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.o
+*.obj
+
+# Debug files
+*.pdb
+*.dSYM/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS generated files
+*.log
+.env
+.env.local
+.env.*.local
+
+# Test artifacts
+test-results/
+coverage/
+
+# Package manager files (if using any)
+node_modules/
+.npm/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Documentation build artifacts
+docs/build/
+site/
