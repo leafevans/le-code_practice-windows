@@ -585,42 +585,126 @@
 // 	fmt.Printf("%#v\n", p2)
 // }
 
+// package main
+
+// import "fmt"
+
+// type Person struct {
+// 	Name, Sex   string
+// 	Age, Height int
+// }
+
+// func (p Person) PrintInfo() {
+// 	fmt.Printf("Name: %v\tAge: %v\n", p.Name, p.Age)
+// }
+
+// func (p *Person) SetInfo(name string, age int) {
+// 	p.Name = name
+// 	p.Age = age
+// }
+
+// func main() {
+// 	p1 := Person{
+// 		"哈基米",
+// 		"男",
+// 		20,
+// 		180,
+// 	}
+// 	p1.PrintInfo()
+// 	p1.SetInfo("波奇", 10)
+// 	p1.PrintInfo()
+
+// 	p2 := Person{
+// 		"曼波",
+// 		"女",
+// 		18,
+// 		170,
+// 	}
+// 	p2.PrintInfo()
+// 	p2.SetInfo("喜多", 15)
+// 	p2.PrintInfo()
+// }
+
+// package main
+
+// import "fmt"
+
+// type myInt int
+
+// func (m myInt) PrintInt() {
+// 	fmt.Println("此为自定义类型中的自定义方法。")
+// }
+
+// func main() {
+// 	var a myInt = 20
+// 	a.PrintInt()
+// }
+
+// package main
+
+// import "fmt"
+
+// type Person struct {
+// 	name string
+// 	age  int
+// }
+
+// func (p Person) PrintInfo() {
+// 	fmt.Printf("Name: %v, Age: %v\n", p.name, p.age)
+// }
+
+// func main() {
+// 	p1 := Person{
+// 		"曼波",
+// 		25,
+// 	}
+// 	p1.PrintInfo()
+// }
+
+// package main
+
+// import "fmt"
+
+// type Person struct {
+// 	name string
+// 	age  int
+// }
+
+// // 值类型接收者
+// func (p Person) printInfo() {
+// 	fmt.Printf("Name: %v\tAge: %v\n", p.name, p.age)
+// }
+
+// // 指针类型接收者
+// func (p *Person) setInfo(name string, age int) {
+// 	p.name = name
+// 	p.age = age
+// }
+
+// func main() {
+// 	p1 := &Person{
+// 		name: "哈牛魔",
+// 		age:  29,
+// 	}
+
+// 	p1.printInfo()
+// 	p1.setInfo("ccb", 39)
+// 	p1.printInfo()
+// }
+
 package main
 
 import "fmt"
 
-type Person struct {
-	Name, Sex   string
-	Age, Height int
-}
+type myInt int
 
-func (p Person) PrintInfo() {
-	fmt.Printf("Name: %v\tAge: %v\n", p.Name, p.Age)
-}
-
-func (p *Person) SetInfo(name string, age int) {
-	p.Name = name
-	p.Age = age
+func (m myInt) SayHello() {
+	fmt.Println("Hello Int!")
 }
 
 func main() {
-	p1 := Person{
-		"哈基米",
-		"男",
-		20,
-		180,
-	}
-	p1.PrintInfo()
-	p1.SetInfo("波奇", 10)
-	p1.PrintInfo()
-
-	p2 := Person{
-		"曼波",
-		"女",
-		18,
-		170,
-	}
-	p2.PrintInfo()
-	p2.SetInfo("喜多", 15)
-	p2.PrintInfo()
+	var m1 myInt
+	m1.SayHello()
+	m1 = 100
+	fmt.Printf("%#v\t%T\n", m1, m1)
 }
