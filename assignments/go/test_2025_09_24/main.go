@@ -715,5 +715,21 @@
 // 	fmt.Println(txtFn("test"))
 // }
 
-package main  
+package main
 
+import (
+	"fmt"
+	"test_2025_09_24/calc"
+	"test_2025_09_24/tools"
+)
+
+func init() {
+	fmt.Println("Hello World!")
+}
+
+func main() {
+	x := 10.2
+	y := 20.3
+	fmt.Println(calc.Add(x, y))
+	fmt.Println(tools.Mul(x, y))
+}
