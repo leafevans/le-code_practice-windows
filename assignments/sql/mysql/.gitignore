@@ -1,0 +1,68 @@
+# MySQL 数据库文件
+*.sql~
+*.sql.bak
+*.sql.backup
+
+# MySQL 会话文件
+*.session.sql
+Local MySQL.session.sql
+
+# 数据库连接配置文件（包含敏感信息）
+config.ini
+database.ini
+db_config.py
+connection.conf
+.env
+.env.local
+.env.production
+
+# MySQL 数据目录
+data/
+mysql-data/
+db-data/
+
+# 日志文件
+*.log
+logs/
+mysql.log
+error.log
+slow-query.log
+
+# 临时文件
+*.tmp
+*.temp
+*~
+.DS_Store
+Thumbs.db
+
+# IDE 和编辑器文件
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+
+# 备份文件夹
+backup/
+backups/
+dump/
+dumps/
+
+# 编译和缓存文件
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 包含密码的 SQL 文件
+*_password*.sql
+*_credentials*.sql
