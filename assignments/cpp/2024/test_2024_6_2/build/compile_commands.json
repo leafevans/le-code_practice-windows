@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Code/Code Practice/Homework/C++/2024/test_2024_6_2/build",
-  "command": "C:\\msys64\\clang64\\bin\\clang++.exe   -g -o CMakeFiles\\test_2024_6_2.dir\\main.cpp.obj -c \"C:\\Code\\Code Practice\\Homework\\C++\\2024\\test_2024_6_2\\main.cpp\"",
-  "file": "C:/Code/Code Practice/Homework/C++/2024/test_2024_6_2/main.cpp",
-  "output": "CMakeFiles/test_2024_6_2.dir/main.cpp.obj"
-}
-]
