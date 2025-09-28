@@ -443,55 +443,137 @@
 //		fmt.Printf("在 120000 内共找到 %d 个素数。\n", total)
 //		fmt.Println("耗时:", time.Since(start))
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func countPrimes(start, end int, wg *sync.WaitGroup, result *int) {
+// 	defer wg.Done()
+// 	count := 0
+// 	for num := start; num < end; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			count++
+// 		}
+// 	}
+// 	*result = count
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	parts := 10
+// 	interval := 1.2e5 / parts
+// 	result := make([]int, parts)
+
+// 	for i := range parts {
+// 		wg.Add(1)
+// 		s := i * interval
+// 		e := (i + 1) * interval
+// 		if s < 2 {
+// 			s = 2
+// 		}
+// 		go countPrimes(s, e, &wg, &result[i])
+// 	}
+
+// 	wg.Wait()
+// 	total := 0
+// 	for _, v := range result {
+// 		total += v
+// 	}
+
+//		fmt.Printf("在 120000 内共找到 %d 个素数。\n", total)
+//		fmt.Println("耗时:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func countPrimes(start, end int, wg *sync.WaitGroup, result *int) {
+// 	defer wg.Done()
+// 	count := 0
+// 	for num := start; num < end; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 			}
+// 		}
+// 		if isPrime {
+// 			count++
+// 		}
+// 	}
+// 	*result = count
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	parts := 5
+// 	interval := 1.2e5 / parts
+// 	results := make([]int, parts)
+
+// 	for i := range parts {
+// 		wg.Add(1)
+// 		s := i * interval
+// 		e := (i + 1) * interval
+// 		go countPrimes(s, e, &wg, &results[i])
+// 	}
+
+// 	wg.Wait()
+
+// 	total := 0
+// 	for _, v := range results {
+// 		total += v
+// 	}
+
+//		fmt.Printf("在 120000 内共找到 %v 个素数。", total)
+//		fmt.Printf("花费 %v。", time.Since(start))
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	ch := make(chan int, 10)
+// 	for i := range 10 {
+// 		ch <- i
+// 	}
+// 	for range 10 {
+// 		fmt.Print(<-ch, " ")
+// 	}
+// 	fmt.Println(len(ch), cap(ch))
+
+// 	ch1 := make(chan int, 4)
+
+// 	ch1 <- 34
+// 	ch1 <- 54
+// 	ch1 <- 64
+
+// 	ch2 := ch1
+// 	ch2 <- 74
+
+// 	<-ch1
+// 	<-ch1
+// 	<-ch1
+
+//		ch3 := make(chan int, 1)
+//		ch3 <- 34
+//		<-ch3
+//		ch3 <- 44
+//	}
 package main
-
-import (
-	"fmt"
-	"sync"
-	"time"
-)
-
-func countPrimes(start, end int, wg *sync.WaitGroup, result *int) {
-	defer wg.Done()
-	count := 0
-	for num := start; num < end; num++ {
-		isPrime := true
-		for i := 2; i*i <= num; i++ {
-			if num%i == 0 {
-				isPrime = false
-				break
-			}
-		}
-		if isPrime {
-			count++
-		}
-	}
-	*result = count
-}
-
-func main() {
-	start := time.Now()
-	var wg sync.WaitGroup
-	parts := 10
-	interval := 1.2e5 / parts
-	result := make([]int, parts)
-
-	for i := range parts {
-		wg.Add(1)
-		s := i * interval
-		e := (i + 1) * interval
-		if s < 2 {
-			s = 2
-		}
-		go countPrimes(s, e, &wg, &result[i])
-	}
-
-	wg.Wait()
-	total := 0
-	for _, v := range result {
-		total += v
-	}
-
-	fmt.Printf("共找到 %d 个素数。\n", total)
-	fmt.Println("耗时:", time.Since(start))
-}
