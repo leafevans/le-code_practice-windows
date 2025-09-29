@@ -1209,6 +1209,324 @@
 
 // 	wg.Wait()
 
-// 	fmt.Println()
+//		fmt.Println()
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	intChan := make(chan int, 10)
+// 	for i := range 10 {
+// 		intChan <- i
+// 	}
+
+// 	stringChan := make(chan string, 5)
+// 	for i := range 5 {
+// 		stringChan <- "Hello" + fmt.Sprintf("%d", i)
+// 	}
+
+//		// 使用多路复用不需要关闭 channel。
+//		for {
+//			select {
+//			case v := <-intChan:
+//				fmt.Println(v)
+//			case v := <-stringChan:
+//				fmt.Println(v)
+//			default:
+//				fmt.Println("数据获取完毕……")
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	// 定义一个 channel 存储 10 个 int 数据。
+// 	intChan := make(chan int, 10)
+// 	for i := range 10 {
+// 		intChan <- i
+// 	}
+
+// 	// 定义一个 channel 存储 5 个 string 数据。
+// 	stringChan := make(chan string, 5)
+// 	for i := range 5 {
+// 		stringChan <- "Hello, " + fmt.Sprintf("%d", i)
+// 	}
+
+//		for {
+//			select {
+//			case v := <-intChan:
+//				fmt.Printf("从 intChan 读取的数据：%d\n", v)
+//			case v := <-stringChan:
+//				fmt.Printf("从 stringChan 读取的数据：%s\n", v)
+//			default:
+//				fmt.Printf("取完所有数据")
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// // 函数
+// func sayHello() {
+// 	for range 10 {
+// 		time.Sleep(time.Millisecond * 100)
+// 		fmt.Println("Hello World!")
+// 	}
+// }
+
+// func test() {
+// 	// 使用 recover()
+// 	defer func() {
+// 		// 捕获 test() 抛出的 panic。
+// 		if err := recover(); err != nil {
+// 			fmt.Printf("发生错误：%v\n", err)
+// 		}
+// 	}()
+// 	// 定义一个 map 类型的变量。
+// 	var myMap map[int]string
+// 	myMap[0] = "Golang" // 错误
+// }
+
+// func main() {
+// 	go sayHello()
+// 	go test()
+
+//		for i := range 10 {
+//			fmt.Println("main() ok =", i)
+//			time.Sleep(time.Millisecond * 100)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func increment(count *int, wg *sync.WaitGroup, mutex *sync.Mutex) {
+// 	defer wg.Done()
+// 	mutex.Lock()
+// 	*count++
+// 	fmt.Println("The count is", *count)
+// 	mutex.Unlock()
+// 	time.Sleep(100 * time.Millisecond)
+// }
+
+// func main() {
+// 	count := 0
+// 	var mutex sync.Mutex
+// 	var wg sync.WaitGroup
+
+//		for range 20 {
+//			wg.Add(1)
+//			go increment(&count, &wg, &mutex)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// // 写方法
+// func write(mutex *sync.RWMutex, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	mutex.Lock()
+// 	fmt.Println("***执行写操作")
+// 	time.Sleep(time.Second * 2)
+// 	mutex.Unlock()
+// }
+
+// // 读方法
+// func read(mutex *sync.RWMutex, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	mutex.RLock()
+// 	fmt.Println("---执行读操作")
+// 	time.Sleep(time.Second * 2)
+// 	mutex.RUnlock()
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		var mutex sync.RWMutex
+//		for range 10 {
+//			wg.Add(1)
+//			go write(&mutex, &wg)
+//		}
+//		for range 10 {
+//			wg.Add(1)
+//			go read(&mutex, &wg)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap map[int]int,
+// 	wg *sync.WaitGroup, mutex *sync.Mutex) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	mutex.Lock()
+// 	numMap[num] = res
+// 	mutex.Unlock()
+// }
+
+// func main() {
+// 	numMap := make(map[int]int)
+// 	var wg sync.WaitGroup
+// 	var mutex sync.Mutex
+
+// 	for i := 1; i <= 10; i++ {
+// 		wg.Add(1)
+// 		go factorial(i, numMap, &wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		for i, v := range numMap {
+//			fmt.Printf("map[%d] = %d\n", i, v)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap map[int]int,
+// 	wg *sync.WaitGroup, mutex *sync.Mutex) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+
+// 	mutex.Lock()
+// 	numMap[num] = res
+// 	mutex.Unlock()
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	var mutex sync.Mutex
+// 	numMap := make(map[int]int)
+
+// 	for i := 1; i <= 10; i++ {
+// 		wg.Add(1)
+// 		factorial(i, numMap, &wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		for i, v := range numMap {
+//			fmt.Printf("(%v, %v)\n", i, v)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func write(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.Lock()
+// 	fmt.Println("---执行写操作")
+// 	time.Sleep(time.Millisecond * 100)
+// 	mutex.Unlock()
+// }
+
+// func read(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.RLock()
+// 	fmt.Println("***执行读操作")
+// 	time.Sleep(time.Millisecond * 100)
+// 	mutex.RUnlock()
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	var mutex sync.RWMutex
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go write(&wg, &mutex)
+// 	}
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go read(&wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func write(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.Lock()
+// 	fmt.Println("---写操作")
+// 	time.Sleep(100 * time.Millisecond)
+// 	mutex.Unlock()
+// }
+
+// func read(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.RLock()
+// 	fmt.Println("***读操作")
+// 	time.Sleep(100 * time.Millisecond)
+// 	mutex.RUnlock()
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	var mutex sync.RWMutex
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go write(&wg, &mutex)
+// 	}
+
+// 	for range 100 {
+// 		wg.Add(1)
+// 		go read(&wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
 // 	fmt.Println(time.Since(start))
 // }
