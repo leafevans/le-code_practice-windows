@@ -1528,5 +1528,12 @@
 
 // 	wg.Wait()
 
-// 	fmt.Println(time.Since(start))
-// }
+//		fmt.Println(time.Since(start))
+//	}
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello World!")
+}
