@@ -903,74 +903,146 @@
 //		wg.Wait()
 //		fmt.Println("耗时:", time.Since(start))
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func generateNumbers(numChan chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := 2; num < 120; num++ {
+// 		numChan <- num
+// 	}
+// 	close(numChan)
+// }
+
+// func filterPrimes(numChan chan int, primeChan chan int, exitChan chan bool, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := range numChan {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			primeChan <- num
+// 		}
+// 	}
+// 	exitChan <- true
+// }
+
+// func printPrimes(primeChan chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for prime := range primeChan {
+// 		fmt.Print(prime, " ")
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	workerCount := 5
+// 	numChan := make(chan int, 10)
+// 	primeChan := make(chan int, 10)
+// 	exitChan := make(chan bool, workerCount)
+
+// 	wg.Add(1)
+// 	go generateNumbers(numChan, &wg)
+
+// 	for range workerCount {
+// 		wg.Add(1)
+// 		go filterPrimes(numChan, primeChan, exitChan, &wg)
+// 	}
+
+// 	wg.Add(1)
+// 	go printPrimes(primeChan, &wg)
+
+// 	wg.Go(func() {
+// 		for range workerCount {
+// 			<-exitChan
+// 		}
+// 		close(primeChan)
+// 	})
+
+// 	wg.Wait()
+
+//		fmt.Println()
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func generateNumbers(numChan chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := 2; num < 1.2e5; num++ {
+// 		numChan <- num
+// 	}
+// 	close(numChan)
+// }
+
+// func filterPrimes(numChan chan int, primeChan chan int,
+// 	exitChan chan bool, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := range numChan {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			primeChan <- num
+// 		}
+// 	}
+// 	exitChan <- true
+// }
+
+// func printPrimes(primeChan chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for prime := range primeChan {
+// 		fmt.Println(prime)
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	workerCount := 4
+// 	numChan := make(chan int, 10)
+// 	primeChan := make(chan int, 10)
+// 	exitChan := make(chan bool, workerCount)
+
+// 	wg.Add(1)
+// 	go generateNumbers(numChan, &wg)
+
+// 	for range workerCount {
+// 		wg.Add(1)
+// 		go filterPrimes(numChan, primeChan, exitChan, &wg)
+// 	}
+
+// 	wg.Add(1)
+// 	go printPrimes(primeChan, &wg)
+
+// 	wg.Go(func() {
+// 		for range workerCount {
+// 			<-exitChan
+// 		}
+// 		close(primeChan)
+// 	})
+
+// 	wg.Wait()
+
+//		fmt.Println(time.Since(start))
+//	}
 package main
-
-import (
-	"fmt"
-	"sync"
-	"time"
-)
-
-func generateNumbers(numChan chan int, wg *sync.WaitGroup) {
-	defer wg.Done()
-	for num := 2; num < 120; num++ {
-		numChan <- num
-	}
-	close(numChan)
-}
-
-func filterPrimes(numChan chan int, primeChan chan int, exitChan chan bool, wg *sync.WaitGroup) {
-	defer wg.Done()
-	for num := range numChan {
-		isPrime := true
-		for i := 2; i*i <= num; i++ {
-			if num%i == 0 {
-				isPrime = false
-				break
-			}
-		}
-		if isPrime {
-			primeChan <- num
-		}
-	}
-	exitChan <- true
-}
-
-func printPrimes(primeChan chan int, wg *sync.WaitGroup) {
-	defer wg.Done()
-	for prime := range primeChan {
-		fmt.Print(prime, " ")
-	}
-}
-
-func main() {
-	start := time.Now()
-	var wg sync.WaitGroup
-	workerCount := 5
-	numChan := make(chan int, 10)
-	primeChan := make(chan int, 10)
-	exitChan := make(chan bool, workerCount)
-
-	wg.Add(1)
-	go generateNumbers(numChan, &wg)
-
-	for range workerCount {
-		wg.Add(1)
-		go filterPrimes(numChan, primeChan, exitChan, &wg)
-	}
-
-	wg.Add(1)
-	go printPrimes(primeChan, &wg)
-
-	wg.Go(func() {
-		for range workerCount {
-			<-exitChan
-		}
-		close(primeChan)
-	})
-
-	wg.Wait()
-
-	fmt.Println()
-	fmt.Println(time.Since(start))
-}
