@@ -633,8 +633,248 @@
 // 	"reflect"
 // )
 
+//	func main() {
+//		var intArray = [3]int{1, 2, 3}
+//		var intSlice = []int{11, 22, 33}
+//		fmt.Printf("%v, %v", reflect.TypeOf(intArray), reflect.TypeOf(intSlice))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	fmt.Println(x)
+// 	v := reflect.ValueOf(x)
+// 	var i int = 32
+// 	num := int(v.Int()) + i
+// 	fmt.Println(num)
+// }
+
+//	func main() {
+//		var a = 13
+//		reflectValue(a)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	kind := v.Kind()
+
+// 	switch kind {
+// 	case reflect.Int64:
+// 		fmt.Printf("int 类型：%v\n", v.Int()+10)
+// 	case reflect.Float64:
+// 		fmt.Printf("float64 类型：%v\n", v.Float()+10.1)
+// 	case reflect.Float32:
+// 		fmt.Printf("float32 类型：%v\n", v.Float()+10.1)
+// 	case reflect.String:
+// 		fmt.Printf("string 类型：%v\n", v.String())
+// 	default:
+// 		fmt.Println("无法判断类型")
+// 	}
+// }
+
+//	func main() {
+//		var a float32 = 3.14
+//		var b int64 = 100
+//		var c string = "你好 Golang"
+//		reflectValue(a)
+//		reflectValue(b)
+//		reflectValue(c)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+
+// 	json "github.com/json-iterator/go"
+// )
+
+// type Student struct {
+// 	ID     int    `json:"id"`
+// 	Gender string `json:"gender"`
+// 	Name   string `json:"name"`
+// 	Sno    string `json:"sno"`
+// }
+
+//	func main() {
+//		s1 := Student{
+//			ID:     1,
+//			Gender: "男",
+//			Name:   "李四",
+//			Sno:    "s0001",
+//		}
+//		data, _ := json.Marshal(s1)
+//		jsonStr := string(data)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("Type: %v\n", t)
+// }
+
+//	func main() {
+//		var f float32 = 12.5
+//		reflectType(f)
+//		var i int64 = 100
+//		reflectType(i)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("TypeOf: %v\tName: %v\tKind: %v\n",
+// 		t, t.Name(), t.Kind())
+// }
+
+// type MyInt int64
+
+// type Person struct {
+// 	Name string
+// 	Age  int
+// }
+
+// type Animal struct {
+// 	Name string
+// }
+
 // func main() {
-// 	var intArray = [3]int{1, 2, 3}
-// 	var intSlice = []int{11, 22, 33}
-// 	fmt.Printf("%v, %v", reflect.TypeOf(intArray), reflect.TypeOf(intSlice))
+// 	var ptr *float32
+// 	var mi MyInt
+// 	var c rune
+// 	var p = Person{
+// 		Name: "平泽唯",
+// 		Age:  17,
+// 	}
+// 	var a = Animal{"后藤一里"}
+// 	var slice = []int{1, 2, 3, 4, 5}
+
+//		reflectType(ptr)
+//		reflectType(mi)
+//		reflectType(c)
+//		reflectType(p)
+//		reflectType(a)
+//		reflectType(slice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	c := v.Int() + 6
+// 	fmt.Println(c)
+// }
+
+//	func main() {
+//		var num int32 = 100
+//		reflectValue(num)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	k := v.Kind()
+// 	switch k {
+// 	case reflect.Int64:
+// 		fmt.Printf("Type: int64\tValue: %d\n", v.Int())
+// 	case reflect.Float32:
+// 		fmt.Printf("Type: float32\tValue: %f\n", v.Float())
+// 	case reflect.Float64:
+// 		fmt.Printf("Type: float64\tValue: %f\n", v.Float())
+// 	default:
+// 		fmt.Println("Type: unknown")
+// 	}
+// }
+
+// func main() {
+// 	var a float32 = 3.14
+// 	var b int64 = 100
+// 	reflectValue(a)
+// 	reflectValue(b)
+
+//		// 将 int 类型的原始值转换为 reflect.Value 类型。
+//		c := reflect.ValueOf(10)
+//		fmt.Printf("Type(c): %T\n", c)
+//	}
+// package main
+
+// import "reflect"
+
+//	func main() {
+//		// x := 42
+//		// v := reflect.ValueOf(x)
+//		// v.SetInt(100)
+//		x := 42
+//		// .Elem() 获取指针指向的可寻址值
+//		v := reflect.ValueOf(&x).Elem()
+//		// 成功修改 x 的值
+//		v.SetInt(100)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectSetValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	if v.Kind() == reflect.Int64 {
+// 		// 修改的是副本，reflect 包会触发 panic。
+// 		v.SetInt(200)
+// 	}
+// }
+
+// func reflectSetVal(x any) {
+// 	v := reflect.ValueOf(x)
+// 	// 反射中使用 Elem() 方法获取指针对于的值。
+// 	if v.Elem().Kind() == reflect.Int64 {
+// 		v.Elem().SetInt(200)
+// 	}
+// }
+
+//	func main() {
+//		var a int64 = 100
+//		// reflectSetValue(a)
+//		reflectSetVal(&a)
+//		fmt.Println(a)
+//	}
+// package main
+
+// import "reflect"
+
+// func reflectSetValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	if v.Elem().Kind() == reflect.Int64 {
+	
+// 	}
 // }
