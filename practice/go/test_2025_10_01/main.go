@@ -875,6 +875,171 @@
 // func reflectSetValue(x any) {
 // 	v := reflect.ValueOf(x)
 // 	if v.Elem().Kind() == reflect.Int64 {
-	
+
+//		}
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	ID     int    `json:"id"`
+// 	Gender string `json:"gender"`
+// 	Name   string `json:"name"`
+// 	Sno    string `json:"sno"`
+// }
+
+//	func main() {
+//		s1 := Student{1, "女", "平泽唯", "s0001"}
+//		data, _ := json.Marshal(s1)
+//		jsonStr := string(data)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("Type: %v\n", t)
+// }
+
+//	func main() {
+//		var f float32 = 12.5
+//		reflectType(f)
+//		var i int64 = 100
+//		reflectType(i)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type MyInt int
+
+// type MyStruct struct{ Name string }
+
+// func main() {
+// 	var a MyInt
+// 	var b *MyStruct
+
+//		fmt.Println(reflect.TypeOf(a).Name(), reflect.TypeOf(a).Kind() )
+//		fmt.Println(reflect.TypeOf(b).Name(), reflect.TypeOf(b).Kind())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("TypeOf: %v\tName: %v\tKind: %v\n",
+// 		t, t.Name(), t.Kind())
+// }
+
+// type MyInt int64
+
+// type Person struct {
+// 	Name string
+// 	Age  int
+// }
+
+// type Animal struct {
+// 	Name string
+// }
+
+// func main() {
+// 	var ptr *float32
+// 	var mi MyInt
+// 	var c rune
+// 	var p = Person{
+// 		Name: "平泽唯",
+// 		Age:  17,
+// 	}
+// 	var a = Animal{"后藤一里"}
+// 	var slice = []int{1, 2, 3, 4, 5}
+
+//		reflectType(ptr)
+//		reflectType(mi)
+//		reflectType(c)
+//		reflectType(p)
+//		reflectType(a)
+//		reflectType(slice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	c := v.Int() + 6
+// 	fmt.Println(c)
+// }
+
+//	func main() {
+//		var num int32 = 100
+//		reflectValue(num)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	k := v.Kind()
+// 	switch k {
+// 	case reflect.Int64:
+// 		fmt.Printf("Type: int64\tValue: %d\n", v.Int())
+// 	case reflect.Float32:
+// 		fmt.Printf("Type: float32\tValue: %f\n", v.Float())
+// 	case reflect.Float64:
+// 		fmt.Printf("Type: float64\tValue: %f\n", v.Float())
+// 	default:
+// 		fmt.Println("Type: unknown")
 // 	}
 // }
+
+// func main() {
+// 	var a float32 = 3.14
+// 	var b int64 = 100
+// 	reflectValue(a)
+// 	reflectValue(b)
+
+//		c := reflect.ValueOf(10)
+//		fmt.Printf("Type(c): %T\n", c)
+//	}
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func reflectSetValue(x any) {
+	v := reflect.ValueOf(x)
+	if v.Elem().Kind() == reflect.Int64 {
+		v.Elem().SetInt(200)
+	}
+}
+
+func main() {
+	var a int64 = 100
+	reflectSetValue(&a)
+	fmt.Println(a)
+}
