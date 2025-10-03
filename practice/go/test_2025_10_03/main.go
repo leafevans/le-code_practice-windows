@@ -618,4 +618,70 @@
 //			fmt.Println(index)
 //		}
 //	}
+// package main
 
+// import "fmt"
+
+// type Stack[T any] struct {
+// 	data []T
+// }
+
+// func (s *Stack[T]) Push(x T) {
+// 	s.data = append(s.data, x)
+// }
+
+// func (s *Stack[T]) Pop() T {
+// 	n := len(s.data)
+// 	x := s.data[n-1]
+// 	s.data = s.data[:n-1]
+// 	return x
+// }
+
+// func main() {
+// 	var s Stack[int]
+// 	s.Push(10)
+// 	s.Push(20)
+// 	s.Push(30)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+// 	s.Push(40)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+
+//		var strStack Stack[string]
+//		strStack.Push("hello")
+//		strStack.Push("world")
+//		fmt.Println(strStack.Pop())
+//		fmt.Println(strStack.Pop())
+//	}
+package main
+
+import (
+	"cmp"
+	"fmt"
+	"slices"
+)
+
+func main() {
+	intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+	floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+	stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+
+	slices.Sort(intSlice)
+	slices.Sort(floatSlice)
+	slices.Sort(stringSlice)
+
+	fmt.Println(intSlice)
+	fmt.Println(floatSlice)
+	fmt.Println(stringSlice)
+	fmt.Println(slices.BinarySearch(intSlice, 5))
+
+	slices.SortFunc(intSlice, func(a, b int) int { return cmp.Compare(b, a) })
+	slices.SortFunc(floatSlice, func(a, b float64) int { return cmp.Compare(b, a) })
+	slices.SortFunc(stringSlice, func(a, b string) int { return cmp.Compare(b, a) })
+
+	fmt.Println(intSlice)
+	fmt.Println(floatSlice)
+	fmt.Println(stringSlice)
+	fmt.Println(slices.BinarySearchFunc(intSlice, 5, func(a, b int) int { return cmp.Compare(b, a) }))
+}
