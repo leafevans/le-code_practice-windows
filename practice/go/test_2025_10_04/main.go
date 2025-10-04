@@ -968,39 +968,153 @@
 //			fmt.Println(err)
 //		}
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func main() {
+// 	err := os.MkdirAll("./testdata", 0o755)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+
+// 	src, rerr := os.Open("./main.go")
+// 	if rerr != nil {
+// 		fmt.Println(rerr)
+// 		return
+// 	}
+// 	defer src.Close()
+
+// 	dst, werr := os.Create("./testdata/test.txt")
+// 	if werr != nil {
+// 		fmt.Println(werr)
+// 		return
+// 	}
+// 	defer dst.Close()
+
+//		n, err := io.Copy(dst, src)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("成功拷贝 %d 字节\n", n)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		dir, _ := os.ReadDir("./testdata")
+//		for _, entry := range dir {
+//			info, _ := entry.Info()
+//			fmt.Println(entry.Name(), info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	// 读取当前目录
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		fmt.Printf("读取目录失败：%v\n", err)
+// 		return
+// 	}
+
+// 	fmt.Println("目录内容：")
+// 	for _, entry := range entries {
+// 		// entry.Name() 获取文件名
+// 		// entry.IsDir() 判断是否为目录
+// 		if entry.IsDir() {
+// 			fmt.Printf("[DIR] %s\n", entry.Name())
+// 		} else {
+// 			fmt.Printf("[FILE] %s\n", entry.Name())
+// 		}
+
+//			// 若需详细信息，可以调用 Info()
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	for _, entry := range entries {
+// 		info, err := entry.Info()
+// 		if err != nil {
+// 			continue
+// 		}
+
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n",
+//				entry.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	for _, entry := range entries {
+// 		if entry.IsDir() {
+// 			fmt.Printf("Dir: %s\n", entry.Name())
+// 		} else {
+// 			fmt.Printf("File: %s\n", entry.Name())
+// 		}
+
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
 package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 )
 
 func main() {
-	err := os.MkdirAll("./testdata", 0o755)
+	entries, err := os.ReadDir(".")
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 
-	src, rerr := os.Open("./main.go")
-	if rerr != nil {
-		fmt.Println(rerr)
-		return
-	}
-	defer src.Close()
+	for _, entry := range entries {
+		info, err := entry.Info()
+		if err != nil {
+			continue
+		}
 
-	dst, werr := os.Create("./testdata/test.txt")
-	if werr != nil {
-		fmt.Println(werr)
-		return
+		fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n",
+			entry.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
 	}
-	defer dst.Close()
-
-	n, err := io.Copy(dst, src)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("成功拷贝 %d 字节\n", n)
 }
