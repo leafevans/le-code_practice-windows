@@ -383,5 +383,53 @@
 // 		stringSlice = append(stringSlice, byteSlice[:n]...)
 // 	}
 
-// 	fmt.Println(string(stringSlice))
-// }
+//		fmt.Println(string(stringSlice))
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func main() {
+// 	file, err := os.Open("./testdata/test.txt")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+// 	defer file.Close()
+
+// 	reader := bufio.NewReader(file)
+// 	var fileStr string
+// 	for {
+// 		str, err := reader.ReadString('\n')
+// 		fileStr += str
+
+//			if err == io.EOF {
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//		}
+//		fmt.Println(fileStr)
+//	}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	byteSlice, err := os.ReadFile("./testdata/test.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(byteSlice))
+}
