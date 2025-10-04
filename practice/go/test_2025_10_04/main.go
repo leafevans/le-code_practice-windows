@@ -1,0 +1,387 @@
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("TypeOf: %v\tName: %v\tKind: %v\n",
+// 		t, t.Name(), t.Kind())
+// }
+
+// type MyInt int64
+
+// type Person struct {
+// 	Name string
+// 	Age  int
+// }
+
+// type Animal struct {
+// 	Name string
+// }
+
+// func main() {
+// 	var ptr *float32
+// 	var mi MyInt
+// 	var c rune
+// 	var p = Person{
+// 		Name: "平泽唯",
+// 		Age:  17,
+// 	}
+// 	var a = Animal{"后藤一里"}
+// 	var slice = []int{1, 2, 3, 4, 5}
+
+//		reflectType(ptr)
+//		reflectType(mi)
+//		reflectType(c)
+//		reflectType(p)
+//		reflectType(a)
+//		reflectType(slice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	c := v.Int() + 6
+// 	fmt.Println(c)
+// }
+
+//	func main() {
+//		var num int32 = 100
+//		reflectValue(num)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	k := v.Kind()
+// 	switch k {
+// 	case reflect.Int64:
+// 		fmt.Printf("Type: int64\tValue: %d\n", v.Int())
+// 	case reflect.Float32:
+// 		fmt.Printf("Type: float32\tValue: %f\n", v.Float())
+// 	case reflect.Float64:
+// 		fmt.Printf("Type: float64\tValue: %f\n", v.Float())
+// 	default:
+// 		fmt.Println("Type: unknown")
+// 	}
+// }
+
+// func main() {
+// 	var a float32 = 3.14
+// 	var b int64 = 100
+// 	reflectValue(a)
+// 	reflectValue(b)
+
+//		t := reflect.TypeOf(10)
+//		fmt.Printf("Type(c): %v\n", t)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectSetValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	if v.Elem().Kind() == reflect.Int64 {
+// 		v.Elem().SetInt(200)
+// 	}
+// }
+
+//	func main() {
+//		var a int64 = 100
+//		reflectSetValue(&a)
+//		fmt.Println(a)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf(
+// 		"Name: %v\tAge: %v\tScore: %v",
+// 		s.Name, s.Age, s.Score,
+// 	)
+// }
+
+// func (s *Student) SetInfo(name string, age, score int) {
+// 	s.Name = name
+// 	s.Age = age
+// 	s.Score = score
+// }
+
+// func (s *Student) Print() {
+// 	fmt.Println("打印方法")
+// }
+
+// func PrintStructField(s any) {
+// 	fmt.Println("----结构体字段----")
+// 	t := reflect.TypeOf(s)
+
+// 	if (t.Kind() != reflect.Struct) &&
+// 		(t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 		return
+// 	}
+
+// 	field0 := t.Field(0)
+// 	fmt.Println(field0.Name)
+// 	fmt.Println(field0.Type)
+// 	fmt.Println(field0.Tag.Get("json"))
+// 	fmt.Println("----")
+
+// 	field1, ok := t.FieldByName("Age")
+// 	if ok {
+// 		fmt.Println(field1.Name)
+// 		fmt.Println(field1.Type)
+// 		fmt.Println(field1.Tag.Get("json"))
+// 		fmt.Println("----")
+// 	}
+
+// 	fmt.Println("字段数量：", t.NumField())
+// }
+
+// func PrintStructMethod(s any) {
+// 	fmt.Println("----结构体方法----")
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if (t.Kind() != reflect.Struct) &&
+// 		(t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 		return
+// 	}
+
+// 	method0 := t.Method(0)
+// 	fmt.Println(method0.Name)
+// 	fmt.Println(method0.Type)
+// 	fmt.Println("----")
+
+// 	fmt.Println(t.NumMethod())
+// 	fmt.Println("----")
+
+// 	v.MethodByName("Print").Call(nil)
+// 	fmt.Println("----")
+
+// 	v.MethodByName("SetInfo").Call([]reflect.Value{
+// 		reflect.ValueOf("后藤独"),
+// 		reflect.ValueOf(16),
+// 		reflect.ValueOf(60),
+// 	})
+// 	fmt.Println(v.MethodByName("GetInfo").Call(nil))
+// }
+
+//	func main() {
+//		stu := Student{"平泽唯", 17, 100}
+//		PrintStructField(stu)
+//		PrintStructMethod(&stu)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf(
+// 		"Name: %v\tAge: %v\tScore: %v",
+// 		s.Name, s.Age, s.Score,
+// 	)
+// }
+
+// func reflectChangeStruct(s any) {
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if t.Elem().Kind() != reflect.Struct {
+// 		fmt.Println("传入的不是结构体指针变量")
+// 		return
+// 	}
+
+// 	name := v.Elem().FieldByName("Name")
+// 	name.SetString("后藤独")
+
+// 	age := v.Elem().FieldByName("Age")
+// 	age.SetInt(18)
+// }
+
+//	func main() {
+//		stu := Student{"平泽唯", 17, 100}
+//		fmt.Println(stu.GetInfo())
+//		reflectChangeStruct(&stu)
+//		fmt.Println(stu.GetInfo())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap *sync.Map, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	numMap.Store(num, res)
+// }
+
+// func main() {
+// 	var numMap sync.Map
+// 	var wg sync.WaitGroup
+
+// 	wg.Add(10)
+// 	for i := 1; i <= 10; i++ {
+// 		go factorial(i, &numMap, &wg)
+// 	}
+// 	wg.Wait()
+
+//		numMap.Range(func(k, v any) bool {
+//			fmt.Printf("map[%d] = %d\n", k.(int), v.(int))
+//			return true
+//		})
+//	}
+// package main
+
+// import "fmt"
+
+// func toSlice[T any](args ...T) []T {
+// 	return args
+// }
+
+//	func main() {
+//		strings := toSlice("hello", "world")
+//		nums := toSlice(1, 2, 3)
+//		fmt.Println(strings)
+//		fmt.Println(nums)
+//	}
+// package main
+
+// import "fmt"
+
+// type Stack[T any] struct {
+// 	data []T
+// }
+
+// func (s *Stack[T]) Push(x T) {
+// 	s.data = append(s.data, x)
+// }
+
+// func (s *Stack[T]) Pop() T {
+// 	n := len(s.data)
+// 	x := s.data[n-1]
+// 	s.data = s.data[:n-1]
+// 	return x
+// }
+
+// func main() {
+// 	var s Stack[int]
+// 	s.Push(10)
+// 	s.Push(20)
+// 	s.Push(30)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+// 	s.Push(40)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+
+//		var strStack Stack[string]
+//		strStack.Push("hello")
+//		strStack.Push("world")
+//		fmt.Println(strStack.Pop())
+//		fmt.Println(strStack.Pop())
+//	}
+// package main
+
+// import (
+// 	"cmp"
+// 	"fmt"
+// 	"slices"
+// )
+
+// func main() {
+// 	intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+// 	floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+// 	stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+
+// 	slices.Sort(intSlice)
+// 	slices.Sort(stringSlice)
+// 	slices.Sort(floatSlice)
+
+// 	fmt.Println(intSlice)
+// 	fmt.Println(floatSlice)
+// 	fmt.Println(stringSlice)
+// 	fmt.Println(slices.BinarySearch(intSlice, 5))
+
+// 	slices.SortFunc(intSlice, func(a, b int) int { return cmp.Compare(b, a) })
+// 	slices.SortFunc(floatSlice, func(a, b float64) int { return cmp.Compare(b, a) })
+// 	slices.SortFunc(stringSlice, func(a, b string) int { return cmp.Compare(b, a) })
+// 	fmt.Println(slices.BinarySearchFunc(intSlice, 5, func(a, b int) int { return cmp.Compare(b, a) }))
+
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func main() {
+// 	file, err := os.Open("./testdata/test.txt")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+// 	defer file.Close()
+// 	fmt.Println()
+// 	stringSlice := make([]byte, 0)
+// 	byteSlice := make([]byte, 128)
+// 	for {
+// 		n, err := file.Read(byteSlice)
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		stringSlice = append(stringSlice, byteSlice[:n]...)
+// 	}
+
+// 	fmt.Println(string(stringSlice))
+// }
