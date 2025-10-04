@@ -767,26 +767,204 @@
 // 	"os"
 // )
 
-// func main() {
-// 	file, err := os.Open("./testdata/test.txt")
+//	func main() {
+//		file, err := os.Open("./testdata/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		var content []byte
+//		var byteSlice = make([]byte, 128)
+//		for {
+//			n, err := file.Read(byteSlice)
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			content = append(content, byteSlice[:n]...)
+//		}
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		byteSlice, err := os.ReadFile("./main.go")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		err = os.WriteFile("./testdata/test.txt", byteSlice, 0o0644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("复制文件成功")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func CopyFile(src, dst string) error {
+// 	file, err := os.ReadFile(src)
 // 	if err != nil {
-// 		fmt.Println(err)
-// 		return
+// 		return err
 // 	}
-// 	defer file.Close()
-// 	var content []byte
-// 	var byteSlice = make([]byte, 128)
+// 	err = os.WriteFile(dst, file, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		err := CopyFile("./main.go", "./testdata/test.txt")
+//		if err != nil {
+//			fmt.Printf("拷贝失败：%v\n", err)
+//		} else {
+//			fmt.Printf("拷贝成功")
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func CopyFile(src, dst string) error {
+// 	srcFile, err := os.Open(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer srcFile.Close()
+// 	dstFile, err := os.OpenFile(dst,
+// 		os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer dstFile.Close()
+
+// 	buf := make([]byte, 32*1024)
 // 	for {
-// 		n, err := file.Read(byteSlice)
+// 		n, err := srcFile.Read(buf)
+// 		if n > 0 {
+// 			if _, werr := dstFile.Write(buf[:n]); werr != nil {
+// 				return werr
+// 			}
+// 		}
 // 		if err == io.EOF {
-// 			fmt.Println("文件读取完毕")
 // 			break
 // 		}
 // 		if err != nil {
-// 			fmt.Println(err)
-// 			return
+// 			return err
 // 		}
-// 		content = append(content, byteSlice[:n]...)
 // 	}
-// 	fmt.Println(string(content))
+// 	return nil
 // }
+
+//	func main() {
+//		if err := CopyFile("./main.go", "./testdata/test.txt"); err != nil {
+//			fmt.Printf("拷贝错误：%v\n", err)
+//		} else {
+//			fmt.Printf("拷贝完成\n")
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func CopyFile(src, dst string) error {
+// 	srcFile, err := os.Open(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer srcFile.Close()
+// 	dstFile, err := os.OpenFile(dst,
+// 		os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer dstFile.Close()
+
+// 	buf := make([]byte, 32*1024)
+// 	for {
+// 		n, err := srcFile.Read(buf)
+// 		if n > 0 {
+// 			if _, werr := dstFile.Write(buf[:n]); werr != nil {
+// 				return werr
+// 			}
+// 		}
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		if err := CopyFile("./main.go", "./testdata/test.txt"); err != nil {
+//			fmt.Printf("拷贝错误：%v\n", err)
+//		} else {
+//			fmt.Printf("拷贝完成\n")
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.Mkdir("./abc", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.MkdirAll("dir1/dir2/dir3", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	err := os.RemoveAll("./testdata")
+	if err != nil {
+		fmt.Println(err)
+	}
+}
