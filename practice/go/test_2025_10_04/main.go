@@ -1095,6 +1095,275 @@
 //			fmt.Printf("大小：%d 字节\n", info.Size())
 //		}
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	for _, entry := range entries {
+// 		info, err := entry.Info()
+// 		if err != nil {
+// 			continue
+// 		}
+
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n",
+//				entry.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	for _, entry := range entries {
+// 		info, err := entry.Info()
+// 		if err != nil {
+// 			continue
+// 		}
+
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n",
+//				entry.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:03:04"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func main() {
+// 	file, err := os.Open("./testdata/test.txt")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+// 	defer file.Close()
+// 	byteSlice := make([]byte, 1024)
+// 	content := make([]byte, 0)
+// 	for {
+// 		n, err := file.Read(byteSlice)
+// 		if err == io.EOF {
+// 			fmt.Println("文件读取完毕")
+// 			break
+// 		}
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		content = append(content, byteSlice[:n]...)
+// 	}
+
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./testdata/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		reader := bufio.NewReader(file)
+//		content := ""
+//		for {
+//			line, err := reader.ReadString('\n')
+//			content += line
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//		}
+//		fmt.Println(content)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		content, err := os.ReadFile("./testdata/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./testdata/test.txt", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		str := "小 Go，你好！"
+//		file.Write([]byte(str))
+//		file.WriteString("写入数据")
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./testdata/test.txt",
+//			os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		writer := bufio.NewWriter(file)
+//		for range 10 {
+//			writer.WriteString("萧1 \n")
+//		}
+//		writer.Flush()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		str := "Hello World!"
+//		err := os.WriteFile("./testdata/test.txt",
+//			[]byte(str), 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func CopyFile(dst, src string) error {
+// 	file, err := os.ReadFile(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	err = os.WriteFile(dst, file, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		err := CopyFile("./testdata/test.txt", "./main.go")
+//		if err != nil {
+//			fmt.Printf("拷贝失败：%v\n", err)
+//		} else {
+//			fmt.Println("拷贝成功")
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func main() {
+// 	err := os.MkdirAll("./testdata", 0o755)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+
+// 	src, rerr := os.Open("./main.go")
+// 	if rerr != nil {
+// 		fmt.Println(rerr)
+// 		return
+// 	}
+// 	defer src.Close()
+
+// 	dst, werr := os.Create("./testdata/test.txt")
+// 	if werr != nil {
+// 		fmt.Println(werr)
+// 		return
+// 	}
+// 	defer dst.Close()
+
+//		n, err := io.Copy(dst, src)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("成功拷贝 %d 字节\n", n)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.Mkdir("./abc", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//		err = os.MkdirAll("./dir1/dir2/dir3", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//		err = os.Remove("./abc")
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//		err = os.RemoveAll("./dir1/dir2/dir3")
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
 package main
 
 import (
@@ -1107,13 +1376,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	for _, entry := range entries {
-		info, err := entry.Info()
-		if err != nil {
-			continue
+		if entry.IsDir() {
+			fmt.Printf("Dir: %v\n", entry.Name())
+		} else {
+			fmt.Printf("File: %v\n", entry.Name())
 		}
 
+		info, _ := entry.Info()
+		fmt.Println(info.Size())
 		fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n",
 			entry.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
 	}
