@@ -144,3 +144,87 @@ SELECT name AS '姓名',
         ELSE '不及格'
     END AS '语文'
 FROM score;
+
+SELECT CONCAT('Hello ', 'World!');
+
+SELECT LOWER('Hello World!');
+
+SELECT UPPER('Hello World!');
+
+SELECT LPAD('Hello World!', 15, '-*-');
+
+SELECT RPAD('Hello World!', 15, '-*-');
+
+SELECT TRIM('   Hello World!   ');
+
+SELECT SUBSTRING('Hello World!', 1, 5);
+
+SELECT CEILING(3.14);
+
+SELECT FLOOR(3.14);
+
+SELECT MOD(10, 3);
+
+SELECT RAND();
+
+SELECT ROUND(3.1415926);
+
+UPDATE emp
+SET workno = LPAD(workno, 6, '0');
+
+SELECT LPAD(FLOOR(RAND() * 1000000), 6, '0');
+
+SELECT CURDATE();
+
+SELECT CURTIME();
+
+SELECT CURRENT_TIMESTAMP();
+
+SELECT YEAR(NOW());
+
+SELECT MONTH(NOW());
+
+SELECT DAY(NOW());
+
+SELECT DATE_ADD(NOW(), INTERVAL 70 DAY);
+
+SELECT DATE_SUB(NOW(), INTERVAL 100 YEAR);
+
+SELECT DATEDIFF("2025-11-1", "2025-11-12");
+
+SELECT name AS '姓名',
+    DATEDIFF(NOW(), entrydate) AS '入职时间'
+FROM emp
+ORDER BY DATEDIFF(NOW(), entrydate) DESC;
+
+SELECT IF(TRUE, 'OK', 'ERROR');
+
+SELECT IFNULL('OK', 'DEFAULT');
+
+SELECT IFNULL(NULL, 'DEFAULT');
+
+SELECT name,
+    CASE
+        WHEN workaddress = '西国情报局' THEN '一线城市'
+        WHEN workaddress = '伯林特市政府' THEN '一线城市'
+        ELSE '二线城市'
+    END
+FROM emp;
+
+SELECT name AS '姓名',
+    CASE
+        WHEN math >= 85 THEN '优秀'
+        WHEN math >= 60 THEN '及格'
+        ELSE '不及格'
+    END AS '数学',
+    CASE
+        WHEN english >= 85 THEN '优秀'
+        WHEN english >= 60 THEN '及格'
+        ELSE '不及格'
+    END AS '英语',
+    CASE
+        WHEN chinese >= 85 THEN '优秀'
+        WHEN chinese >= 60 THEN '及格'
+        ELSE '不及格'
+    END AS '中文'
+FROM score;
