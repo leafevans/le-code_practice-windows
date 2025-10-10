@@ -8,10 +8,11 @@ CREATE TABLE emp (
     age tinyint UNSIGNED COMMENT '年龄',
     idcard char(18) COMMENT '身份证号',
     workaddress varchar(50) COMMENT '工作地址',
-    entrydate date COMMENT '入职时间'
+    entrydate DATE COMMENT '入职时间'
 ) COMMENT '员工表';
 
-INSERT INTO emp (
+INSERT INTO
+    emp (
         id,
         workno,
         name,
@@ -182,180 +183,100 @@ VALUES (
         '2016-04-07'
     );
 
-SELECT idcard,
-    name,
-    age
-FROM emp;
+SELECT idcard, name, age FROM emp;
 
-SELECT *
-FROM emp;
+SELECT * FROM emp;
 
-SELECT DISTINCT age
-FROM emp;
+SELECT DISTINCT age FROM emp;
 
-SELECT id,
-    name
+SELECT id, name FROM emp WHERE age = 16;
+
+SELECT id, name FROM emp WHERE age > 25;
+
+SELECT id, name FROM emp WHERE age >= 25;
+
+SELECT id, name FROM emp WHERE idcard IS NOT NULL;
+
+SELECT id, name FROM emp WHERE age != 16;
+
+SELECT id, name FROM emp WHERE age <> 16;
+
+SELECT id, name FROM emp WHERE age <= 20 AND age >= 15;
+
+SELECT id, name FROM emp WHERE age BETWEEN 15 AND 20;
+
+SELECT id, name FROM emp WHERE gender = '男' AND age <= 25;
+
+SELECT id, name
 FROM emp
-WHERE age = 16;
-
-SELECT id,
-    name
-FROM emp
-WHERE age > 25;
-
-SELECT id,
-    name
-FROM emp
-WHERE age >= 25;
-
-SELECT id,
-    name
-FROM emp
-WHERE idcard IS NOT NULL;
-
-SELECT id,
-    name
-FROM emp
-WHERE age != 16;
-
-SELECT id,
-    name
-FROM emp
-WHERE age <> 16;
-
-SELECT id,
-    name
-FROM emp
-WHERE age <= 20
-    AND age >= 15;
-
-SELECT id,
-    name
-FROM emp
-WHERE age BETWEEN 15 AND 20;
-
-SELECT id,
-    name
-FROM emp
-WHERE gender = '男'
-    AND age <= 25;
-
-SELECT id,
-    name
-FROM emp
-WHERE age = 18
+WHERE
+    age = 18
     OR age = 25
     OR age = 30;
 
-SELECT id,
-    name
+SELECT id, name FROM emp WHERE age IN (18, 20, 40);
+
+SELECT id, name FROM emp WHERE name LIKE '___';
+
+SELECT id, name FROM emp WHERE idcard LIKE '%1';
+
+SELECT COUNT(id) FROM emp;
+
+SELECT AVG(age) FROM emp;
+
+SELECT MAX(age) FROM emp;
+
+SELECT MIN(age) FROM emp;
+
+SELECT SUM(age) FROM emp WHERE workaddress = '樱丘高中';
+
+SELECT gender, COUNT(id) FROM emp GROUP BY gender;
+
+SELECT gender, AVG(age) FROM emp GROUP BY gender;
+
+SELECT workaddress, COUNT(id) AS '员工数量'
 FROM emp
-WHERE age IN(18, 20, 40);
+WHERE
+    age <= 25
+GROUP BY
+    workaddress
+HAVING
+    COUNT(id) >= 3;
 
-SELECT id,
-    name
+SELECT id, name, age FROM emp ORDER BY age ASC;
+
+SELECT id, name, entrydate FROM emp ORDER BY entrydate DESC;
+
+SELECT id, name, age, entrydate
 FROM emp
-WHERE name LIKE '___';
+ORDER BY age ASC, entrydate DESC;
 
-SELECT id,
-    name
+SELECT id, name FROM emp LIMIT 9, 10;
+
+SELECT id, name, age, gender
 FROM emp
-WHERE idcard LIKE '%1';
-
-SELECT COUNT(id)
-FROM emp;
-
-SELECT AVG(age)
-FROM emp;
-
-SELECT MAX(age)
-FROM emp;
-
-SELECT MIN(age)
-FROM emp;
-
-SELECT SUM(age)
-FROM emp
-WHERE workaddress = '樱丘高中';
-
-SELECT gender,
-    COUNT(id)
-FROM emp
-GROUP BY gender;
-
-SELECT gender,
-    AVG(age)
-FROM emp
-GROUP BY gender;
-
-SELECT workaddress,
-    COUNT(id) AS '员工数量'
-FROM emp
-WHERE age <= 25
-GROUP BY workaddress
-HAVING COUNT(id) >= 3;
-
-SELECT id,
-    name,
-    age
-FROM emp
-ORDER BY age ASC;
-
-SELECT id,
-    name,
-    entrydate
-FROM emp
-ORDER BY entrydate DESC;
-
-SELECT id,
-    name,
-    age,
-    entrydate
-FROM emp
-ORDER BY age ASC,
-    entrydate DESC;
-
-SELECT id,
-    name
-FROM emp
-LIMIT 9, 10;
-
-SELECT id,
-    name,
-    age,
-    gender
-FROM emp
-WHERE age IN (15, 16, 17)
+WHERE
+    age IN (15, 16, 17)
     AND gender = '女';
 
-SELECT id,
-    name,
-    age,
-    gender
+SELECT id, name, age, gender
 FROM emp
-WHERE gender = '男'
+WHERE
+    gender = '男'
     AND age BETWEEN 20 AND 40
     AND name LIKE '___';
 
-SELECT gender,
-    COUNT(id)
-FROM emp
-WHERE age < 30
-GROUP BY gender;
+SELECT gender, COUNT(id) FROM emp WHERE age < 30 GROUP BY gender;
 
-SELECT name,
-    age
+SELECT name, age
 FROM emp
-WHERE age < 30
-ORDER BY age ASC,
-    entrydate DESC;
+WHERE
+    age < 30
+ORDER BY age ASC, entrydate DESC;
 
-SELECT id,
-    name,
-    age,
-    entrydate
+SELECT id, name, age, entrydate
 FROM emp
-WHERE age BETWEEN 20 AND 40
-ORDER BY age,
-    entrydate
+WHERE
+    age BETWEEN 20 AND 40
+ORDER BY age, entrydate
 LIMIT 5

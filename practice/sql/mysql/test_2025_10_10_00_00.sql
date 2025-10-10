@@ -1,6 +1,6 @@
 SHOW DATABASES;
 
-SELECT DATABASE ();
+SELECT DATABASE();
 
 CREATE DATABASE IF NOT EXISTS test;
 
@@ -35,15 +35,12 @@ CREATE TABLE emp (
     entrydate DATE COMMENT '入职时间'
 ) COMMENT = '员工表';
 
-ALTER TABLE emp
-ADD nickname VARCHAR(20) COMMENT '昵称';
+ALTER TABLE emp ADD nickname VARCHAR(20) COMMENT '昵称';
 
-ALTER TABLE emp
-MODIFY nickname VARCHAR(30);
+ALTER TABLE emp MODIFY nickname VARCHAR(30);
 
 ALTER TABLE emp CHANGE nickname username VARCHAR(30) COMMENT '用户名';
 
 ALTER TABLE emp DROP username;
 
-ALTER TABLE emp
-    RENAME TO emplyee;
+ALTER TABLE emp RENAME TO emplyee;

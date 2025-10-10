@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS student (
     no VARCHAR(10) COMMENT '学号'
 ) COMMENT = '学生表';
 
-INSERT INTO student
+INSERT INTO
+    student
 VALUES (NULL, '黛绮丝', '2000100101'),
     (NULL, '谢逊', '2000100102'),
     (NULL, '殷天正', '2000100103'),
@@ -15,7 +16,8 @@ CREATE TABLE IF NOT EXISTS course (
     name VARCHAR(10) COMMENT '课程名称'
 ) COMMENT = '课程表';
 
-INSERT INTO course
+INSERT INTO
+    course
 VALUES (NULL, 'Java'),
     (NULL, 'PHP'),
     (NULL, 'MySQL'),
@@ -29,7 +31,8 @@ CREATE TABLE IF NOT EXISTS student_course (
     CONSTRAINT fk_studentid FOREIGN KEY (studentid) REFERENCES student (id)
 ) COMMENT = '学生课程中间表';
 
-INSERT INTO student_course
+INSERT INTO
+    student_course
 VALUES (NULL, 1, 1),
     (NULL, 1, 2),
     (NULL, 1, 3),

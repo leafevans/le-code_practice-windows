@@ -6,7 +6,7 @@ CREATE TABLE tb_user (
     phone CHAR(11) COMMENT '手机号'
 ) COMMENT = '用户基本信息表';
 
-CREATE TABLE IF NOT EXISTS tb_user_edu (
+CREATE TABLE tb_user_edu (
     id INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键ID',
     degree VARCHAR(20) COMMENT '学历',
     major VARCHAR(50) COMMENT '专业',
