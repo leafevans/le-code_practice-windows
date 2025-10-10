@@ -23,6 +23,9 @@ CREATE TABLE IF NOT EXISTS emp (
     dept_id INT COMMENT '部门ID'
 ) COMMENT = '员工表';
 
+ALTER TABLE emp
+ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY (dept_id) REFERENCES dept (id);
+
 INSERT INTO
     emp (
         id,
@@ -301,7 +304,6 @@ WHERE
             )
     );
 
--- 查询与“碇真嗣”、“神楽”的职位和薪资相同的员工信息。
 SELECT *
 FROM emp
 WHERE (job, salary) IN (
@@ -311,3 +313,12 @@ WHERE (job, salary) IN (
             name = '碇真嗣'
             OR name = '神楽'
     );
+
+SELECT *
+FROM (
+        SELECT *
+        FROM emp
+        WHERE
+            entrydate > '2006-01-01'
+    ) e
+    LEFT JOIN dept d ON e.dept_id = d.id;
