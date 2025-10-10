@@ -31,7 +31,11 @@ VALUES ('Carry', -1, '1', '男');
 INSERT INTO users (name, age, gender)
 VALUES ('Kobe', 18, '男');
 
-CREATE TABLE IF EXISTS dept (
+DROP TABLE IF EXISTS emp;
+
+DROP TABLE IF EXISTS dept;
+
+CREATE TABLE IF NOT EXISTS dept (
     id INT AUTO_INCREMENT COMMENT 'ID' PRIMARY KEY,
     name VARCHAR(50) NOT NULL COMMENT '部门名称'
 ) COMMENT = '部门表';
@@ -43,7 +47,7 @@ VALUES (1, '研发部'),
     (4, '销售部'),
     (5, '总经办');
 
-CREATE TABLE IF EXISTS emp (
+CREATE TABLE IF NOT EXISTS emp (
     id INT AUTO_INCREMENT COMMENT 'ID' PRIMARY KEY,
     name VARCHAR(50) NOT NULL COMMENT '姓名',
     age INT COMMENT '年龄',
@@ -85,3 +89,11 @@ WHERE id = 1;
 
 DELETE FROM dept
 WHERE id = 6;
+
+ALTER TABLE emp
+ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY (dept_id) REFERENCES dept(id) ON DELETE
+SET NULL ON UPDATE
+SET NULL;
+
+DELETE FROM dept
+WHERE id = 1;
