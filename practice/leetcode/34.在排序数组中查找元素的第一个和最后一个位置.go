@@ -19,7 +19,7 @@ func searchRange(nums []int, target int) []int {
 			right = mid
 		}
 	}
-	if left >= len(nums) || nums[left] != target {
+	if left == len(nums) || nums[left] != target {
 		return []int{-1, -1}
 	}
 	start := left
