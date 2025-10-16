@@ -95,6 +95,12 @@ func main() {
 			"title": "我是后台数据",
 		})
 	})
+	r.GET("/goods", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "goods.html", gin.H{
+			"title": "我是后台数据",
+			"price": 20,
+		})
+	})
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "值：%v", "首页")
 	})
@@ -129,10 +135,5 @@ func main() {
 		c.XML(http.StatusOK, a)
 	})
 
-	r.GET("/news", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "news.html", gin.H{
-			"title": "我是后台数据",
-		})
-	})
 	r.Run()
 }
