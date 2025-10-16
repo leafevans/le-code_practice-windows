@@ -6,7 +6,7 @@
 
 // @lc code=start
 func backspaceCompare(s string, t string) bool {
-
+	
 }
 
 // @lc code=end
