@@ -1,3 +1,4 @@
+{{define "admin/index.html"}}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,6 +7,12 @@
     <title>Document</title>
   </head>
   <body>
-    <h2>后台首页</h2>
+    {{template "public/page_header.html" .}}
+    <br />
+    {{with .user}}
+    <h1>后台模板</h1>
+    <h3>{{.title}}</h3>
+    {{end}}
   </body>
 </html>
+{{end}}
