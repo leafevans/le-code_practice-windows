@@ -5,11 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="/xxxx/css/base.css" />
   </head>
   <body>
-    {{len .user.Name}}
-    <br />
-    {{index .hobby 2}}
+    {{template "public/page_header.html" .}}
+    <h2>哇这个好可爱</h2>
+    <img src="/xxxx/img/pooh.jpg" />
   </body>
 </html>
 {{end}}

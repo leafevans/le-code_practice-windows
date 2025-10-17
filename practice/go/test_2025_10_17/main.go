@@ -165,25 +165,95 @@
 //		})
 //		r.Run()
 //	}
+// package main
+
+// import (
+// 	"net/http"
+// 	"text/template"
+// 	"time"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+// func UnixToTime(timestamp int64) string {
+// 	return time.Unix(timestamp, 0).Format("2006-01-02 15:03:04")
+// }
+
+// func main() {
+// 	r := gin.Default()
+
+// 	r.SetFuncMap(template.FuncMap{
+// 		"UnixToTime": UnixToTime,
+// 	})
+
+// 	r.LoadHTMLGlob("templates/**/*")
+
+// 	r.GET("/", func(c *gin.Context) {
+// 		c.HTML(http.StatusOK, "default/index.html", gin.H{
+// 			"title": "前台首页",
+// 			"now":   time.Now().Unix(),
+// 		})
+// 	})
+
+//		r.Run()
+//	}
+// package main
+
+// import (
+// 	"net/http"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+// func main() {
+// 	r := gin.Default()
+
+// 	r.Static("/xxxx", "./static")
+
+// 	r.LoadHTMLGlob("templates/**/*")
+
+// 	r.GET("/", func(c *gin.Context) {
+// 		c.HTML(http.StatusOK, "default/index.html", gin.H{
+// 			"title": "前台首页",
+// 		})
+// 	})
+
+//		r.Run()
+//	}
 package main
 
 import (
-	"text/template"
-	"time"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func UnixToTime(timestamp int64) string {
-	return time.Unix(timestamp, 0).Format("2006-01-02 15:03:04")
-}
-
 func main() {
 	r := gin.Default()
 
-	r.SetFuncMap(template.FuncMap{
-		"UnixToTime": UnixToTime,
+	r.LoadHTMLGlob("templates/**/*")
+
+	r.GET("/article", func(c *gin.Context) {
+		id := c.DefaultQuery("id", "1")
+
+		c.JSON(http.StatusOK, gin.H{
+			"msg": "新闻详情",
+			"id":  id,
+		})
 	})
 
-	r.LoadHTMLGlob("template/**/*")
+	r.GET("/user", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "default/user.html", gin.H{})
+	})
+
+	r.POST("/doAddUser", func(c *gin.Context) {
+		username := c.PostForm("username")
+		password := c.PostForm("password")
+		c.JSON(http.StatusOK, gin.H{
+			"username": username,
+			"password": password,
+		})
+	})
+
+	r.Run()
 }
