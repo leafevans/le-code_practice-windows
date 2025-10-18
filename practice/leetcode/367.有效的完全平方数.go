@@ -9,8 +9,7 @@ func isPerfectSquare(num int) bool {
 	if num == 1 {
 		return true
 	}
-
-	left, right := 1, num
+	left, right := 0, num
 	for left < right {
 		mid := left + (right-left)>>1
 		if mid <= num/mid {
@@ -19,8 +18,7 @@ func isPerfectSquare(num int) bool {
 			right = mid
 		}
 	}
-
-	return (left-1)*(left-1) == num
+	return num == (left-1)*(left-1)
 }
 
 // @lc code=end

@@ -10,7 +10,6 @@ func search(nums []int, target int) int {
 
 	for left < right {
 		mid := left + (right-left)>>1
-
 		if nums[mid] < target {
 			left = mid + 1
 		} else {
@@ -18,11 +17,10 @@ func search(nums []int, target int) int {
 		}
 	}
 
-	if left == len(nums) || nums[left] != target {
-		return -1
+	if left < len(nums) && nums[left] == target {
+		return left
 	}
-
-	return left
+	return -1
 }
 
 // @lc code=end

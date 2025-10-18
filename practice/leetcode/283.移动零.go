@@ -7,11 +7,9 @@
 // @lc code=start
 func moveZeroes(nums []int) {
 	k, n := 0, len(nums)
-	for i := range n {
+	for i := 0; i < n; i++ {
 		if nums[i] != 0 {
-			if i != k {
-				nums[i], nums[k] = nums[k], nums[i]
-			}
+			nums[k], nums[i] = nums[i], nums[k]
 			k++
 		}
 	}
