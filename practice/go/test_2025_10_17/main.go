@@ -223,10 +223,22 @@
 package main
 
 import (
+	"encoding/xml"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+type UserInfo struct {
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"password"`
+}
+
+type Article struct {
+	Title   string `json:"title" xml:"title"`
+	Content string `json:"content" xml:"content"`
+}
 
 func main() {
 	r := gin.Default()
@@ -246,13 +258,52 @@ func main() {
 		c.HTML(http.StatusOK, "default/user.html", gin.H{})
 	})
 
-	r.POST("/doAddUser", func(c *gin.Context) {
+	r.POST("/doAddUser1", func(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
+		age := c.DefaultPostForm("age", "18")
 		c.JSON(http.StatusOK, gin.H{
 			"username": username,
 			"password": password,
+			"age":      age,
 		})
+	})
+
+	r.GET("/getUser", func(c *gin.Context) {
+		user := &UserInfo{}
+		if err := c.ShouldBind(user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+		} else {
+			fmt.Printf("%#v", user)
+			c.JSON(http.StatusOK, user)
+		}
+	})
+
+	r.POST("/doAddUser2", func(c *gin.Context) {
+		user := &UserInfo{}
+		if err := c.ShouldBind(user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+		} else {
+			c.JSON(http.StatusOK, user)
+		}
+	})
+
+	r.POST("/xml", func(c *gin.Context) {
+		xmlSliceDate, _ := c.GetRawData()
+
+		article := &Article{}
+
+		if err := xml.Unmarshal(xmlSliceDate, article); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+		} else {
+			c.JSON(http.StatusOK, article)
+		}
 	})
 
 	r.Run()
