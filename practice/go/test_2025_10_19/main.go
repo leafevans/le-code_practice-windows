@@ -110,7 +110,69 @@
 //		}
 //	}
 //
-// ...existing code...
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"math"
+// 	"os"
+// 	"strconv"
+// 	"strings"
+// )
+
+// func main() {
+// 	scanner := bufio.NewScanner(os.Stdin)
+// 	var n, m int
+// 	scanner.Scan()
+// 	fmt.Sscanf(scanner.Text(), "%d %d", &n, &m)
+
+// 	matrix := make([][]int, n)
+// 	for i := 0; i < n; i++ {
+// 		matrix[i] = make([]int, m)
+// 		scanner.Scan()
+// 		line := scanner.Text()
+// 		fields := strings.Fields(line)
+// 		for j := 0; j < m; j++ {
+// 			x, _ := strconv.Atoi(fields[j])
+// 			matrix[i][j] = x
+// 		}
+// 	}
+
+// 	prefix := make([][]int, n+1)
+// 	for i := 0; i < n+1; i++ {
+// 		prefix[i] = make([]int, m+1)
+// 	}
+
+// 	for i := 0; i < n; i++ {
+// 		for j := 0; j < m; j++ {
+// 			prefix[i+1][j+1] = matrix[i][j] + prefix[i][j+1] + prefix[i+1][j] - prefix[i][j]
+// 		}
+// 	}
+
+// 	total := prefix[n][m]
+// 	minDiff := total
+
+// 	for i := 1; i < n; i++ {
+// 		top := prefix[i][m]
+// 		bottom := total - top
+// 		diff := int(math.Abs(float64(top - bottom)))
+// 		if diff < minDiff {
+// 			minDiff = diff
+// 		}
+// 	}
+
+// 	for j := 1; j < m; j++ {
+// 		left := prefix[n][j]
+// 		right := total - left
+// 		diff := int(math.Abs(float64(left - right)))
+// 		if diff < minDiff {
+// 			minDiff = diff
+// 		}
+// 	}
+
+//		fmt.Println(minDiff)
+//	}
 package main
 
 import (
@@ -128,52 +190,38 @@ func main() {
 	scanner.Scan()
 	fmt.Sscanf(scanner.Text(), "%d %d", &n, &m)
 
-	if n <= 1 || m <= 1 {
-		fmt.Println(0)
-		return
-	}
-
 	matrix := make([][]int, n)
+	total := 0
 	for i := 0; i < n; i++ {
-		scanner.Scan()
-		line := scanner.Text()
-		fields := strings.Fields(line)
 		matrix[i] = make([]int, m)
+		scanner.Scan()
+		fields := strings.Fields(scanner.Text())
 		for j := 0; j < m; j++ {
 			x, _ := strconv.Atoi(fields[j])
 			matrix[i][j] = x
+			total += x
 		}
 	}
 
-	preMatrix := make([][]int, n+1)
-	for i := 0; i <= n; i++ {
-		preMatrix[i] = make([]int, m+1)
-	}
-
-	for i := 0; i < n; i++ {
-		for j := 0; j < m; j++ {
-			preMatrix[i+1][j+1] = matrix[i][j] + preMatrix[i][j+1] + preMatrix[i+1][j] - preMatrix[i][j]
-		}
-	}
-
-	total := preMatrix[n][m]
 	minDiff := total
 
-	for i := 1; i < n; i++ {
-		topSum := preMatrix[i][m]
-		bottomSum := total - topSum
-
-		diff := int(math.Abs(float64(topSum - bottomSum)))
+	partialSum := 0
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
+			partialSum += matrix[i][j]
+		}
+		diff := int(math.Abs(float64(total - 2*partialSum)))
 		if diff < minDiff {
 			minDiff = diff
 		}
 	}
 
-	for j := 1; j < m; j++ {
-		leftSum := preMatrix[n][j]
-		rightSum := total - leftSum
-
-		diff := int(math.Abs(float64(leftSum - rightSum)))
+	partialSum = 0
+	for j := 0; j < m; j++ {
+		for i := 0; i < n; i++ {
+			partialSum += matrix[i][j]
+		}
+		diff := int(math.Abs(float64(total - 2*partialSum)))
 		if diff < minDiff {
 			minDiff = diff
 		}
