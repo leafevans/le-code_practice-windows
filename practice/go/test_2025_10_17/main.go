@@ -324,12 +324,9 @@ func UnixToTime(timestamp int64) string {
 }
 
 func initMiddleware(c *gin.Context) {
-	start := time.Now().UnixNano()
 	fmt.Println("1-我是中间件")
 	c.Next()
-	fmt.Println("2-我是中间件")
-	end := time.Now().UnixNano()
-	fmt.Println(end - start)
+	fmt.Println("2-我是中间件w")
 }
 
 func main() {
@@ -341,16 +338,18 @@ func main() {
 
 	r.LoadHTMLGlob("templates/**/*")
 
+	r.Use(initMiddleware)
+
 	r.Static("/static", "./static")
 
-	r.GET("/", initMiddleware, func(c *gin.Context) {
+	r.GET("/", func(c *gin.Context) {
 		fmt.Println("我是首页")
 		c.String(http.StatusOK, "首页")
 	})
-	r.GET("/news", initMiddleware, func(c *gin.Context) {
+	r.GET("/news", func(c *gin.Context) {
 		c.String(http.StatusOK, "新闻页面")
 	})
-	r.GET("/login", initMiddleware, func(c *gin.Context) {
+	r.GET("/login", func(c *gin.Context) {
 		c.String(http.StatusOK, "登录页面")
 	})
 
