@@ -323,6 +323,15 @@ func UnixToTime(timestamp int64) string {
 	return time.Unix(timestamp, 0).Format("2006-01-02 15:03:04")
 }
 
+func initMiddleware(c *gin.Context) {
+	start := time.Now().UnixNano()
+	fmt.Println("1-我是中间件")
+	c.Next()
+	fmt.Println("2-我是中间件")
+	end := time.Now().UnixNano()
+	fmt.Println(end - start)
+}
+
 func main() {
 	r := gin.Default()
 
@@ -334,14 +343,15 @@ func main() {
 
 	r.Static("/static", "./static")
 
-	r.GET("/", func(c *gin.Context) {
-		fmt.Println("aaa")
-	}, func(c *gin.Context) {
+	r.GET("/", initMiddleware, func(c *gin.Context) {
+		fmt.Println("我是首页")
 		c.String(http.StatusOK, "首页")
 	})
-
-	r.GET("/news", func(c *gin.Context) {
+	r.GET("/news", initMiddleware, func(c *gin.Context) {
 		c.String(http.StatusOK, "新闻页面")
+	})
+	r.GET("/login", initMiddleware, func(c *gin.Context) {
+		c.String(http.StatusOK, "登录页面")
 	})
 
 	r.Run()
