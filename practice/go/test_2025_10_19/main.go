@@ -191,7 +191,6 @@ func main() {
 	fmt.Sscanf(scanner.Text(), "%d %d", &n, &m)
 
 	matrix := make([][]int, n)
-	total := 0
 	for i := 0; i < n; i++ {
 		matrix[i] = make([]int, m)
 		scanner.Scan()
@@ -199,29 +198,36 @@ func main() {
 		for j := 0; j < m; j++ {
 			x, _ := strconv.Atoi(fields[j])
 			matrix[i][j] = x
-			total += x
 		}
 	}
 
-	minDiff := total
+	prefix := make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		prefix[i] = make([]int, m+1)
+	}
 
-	partialSum := 0
 	for i := 0; i < n; i++ {
 		for j := 0; j < m; j++ {
-			partialSum += matrix[i][j]
+			prefix[i+1][j+1] = matrix[i+1][j+1] + prefix[i][j+1] + prefix[i+1][j] - prefix[i][j]
 		}
-		diff := int(math.Abs(float64(total - 2*partialSum)))
+	}
+
+	total := prefix[n][m]
+	minDiff := total
+
+	for i := 1; i < n; i++ {
+		top := prefix[i][m]
+		bottom := total - top
+		diff := int(math.Abs(float64(top - bottom)))
 		if diff < minDiff {
 			minDiff = diff
 		}
 	}
 
-	partialSum = 0
-	for j := 0; j < m; j++ {
-		for i := 0; i < n; i++ {
-			partialSum += matrix[i][j]
-		}
-		diff := int(math.Abs(float64(total - 2*partialSum)))
+	for j := 1; j < m; j++ {
+		left := prefix[n][j]
+		right := total - left
+		diff := int(math.Abs(float64(left - right)))
 		if diff < minDiff {
 			minDiff = diff
 		}
