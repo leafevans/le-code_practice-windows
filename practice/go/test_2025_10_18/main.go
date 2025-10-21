@@ -147,13 +147,25 @@
 package main
 
 import (
+	"html/template"
 	"test_2025_10_18/routers"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
+func UnixToTime(timestamp int64) string {
+	return time.Unix(timestamp, 0).Format("2006-01-02 15:03:04")
+}
+
 func main() {
 	r := gin.Default()
+
+	r.SetFuncMap(template.FuncMap{
+		"UnixToTime": UnixToTime,
+	})
+
+	r.Static("/static", "./static")
 
 	routers.WebRoutersInit(r)
 	routers.APIRoutersInit(r)
