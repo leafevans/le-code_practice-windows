@@ -144,32 +144,54 @@
 // 	r.Run()
 // }
 
+// package main
+
+// import (
+// 	"test_2025_10_18/routers"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+// func main() {
+// 	r := gin.Default()
+
+// 	r.Static("/static", "./static")
+
+// 	routers.WebRoutersInit(r)
+// 	routers.APIRoutersInit(r)
+// 	routers.AdminRoutersInit(r)
+
+// 	r.Run()
+// }
+
 package main
 
 import (
-	"html/template"
-	"test_2025_10_18/routers"
-	"time"
+	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func UnixToTime(timestamp int64) string {
-	return time.Unix(timestamp, 0).Format("2006-01-02 15:03:04")
+func initMiddlewareOne(c *gin.Context) {
+	fmt.Println("1-执行中，中间件-One")
+	c.Next()
+	fmt.Println("3-执行中，中间件-One")
+}
+
+func initMiddlewareTwo(c *gin.Context) {
+	fmt.Println("1-执行中，中间件-Two")
+	c.Next()
+	fmt.Println("3-执行中，中间件-Two")
 }
 
 func main() {
 	r := gin.Default()
 
-	r.SetFuncMap(template.FuncMap{
-		"UnixToTime": UnixToTime,
+	r.GET("/", initMiddlewareOne, initMiddlewareTwo, func(c *gin.Context) {
+		fmt.Println("2-执行路由中的程序")
+		c.String(http.StatusOK, "首页——中间件演示")
 	})
-
-	r.Static("/static", "./static")
-
-	routers.WebRoutersInit(r)
-	routers.APIRoutersInit(r)
-	routers.AdminRoutersInit(r)
 
 	r.Run()
 }
