@@ -164,34 +164,52 @@
 // 	r.Run()
 // }
 
+// package main
+
+// import (
+// 	"fmt"
+// 	"net/http"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+// func initMiddlewareOne(c *gin.Context) {
+// 	fmt.Println("1-执行中，中间件-One")
+// 	// 调用该请求剩余处理程序
+// 	c.Next()
+// 	fmt.Println("3-执行中，中间件-One")
+// }
+
+// func initMiddlewareTwo(c *gin.Context) {
+// 	fmt.Println("1-执行中，中间件-Two")
+// 	// 终止该请求剩余处理程序
+// 	c.Abort()
+// 	fmt.Println("3-执行中，中间件-Two")
+// }
+
+// func main() {
+// 	r := gin.Default()
+
+// 	r.GET("/", initMiddlewareOne, initMiddlewareTwo, func(c *gin.Context) {
+// 		fmt.Println("2-执行路由中的程序")
+// 		c.String(http.StatusOK, "首页——中间件演示")
+// 	})
+
+// 	r.Run()
+// }
+
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"test_2025_10_18/routers"
 
 	"github.com/gin-gonic/gin"
 )
 
-func initMiddlewareOne(c *gin.Context) {
-	fmt.Println("1-执行中，中间件-One")
-	c.Next()
-	fmt.Println("3-执行中，中间件-One")
-}
-
-func initMiddlewareTwo(c *gin.Context) {
-	fmt.Println("1-执行中，中间件-Two")
-	c.Next()
-	fmt.Println("3-执行中，中间件-Two")
-}
-
 func main() {
 	r := gin.Default()
 
-	r.GET("/", initMiddlewareOne, initMiddlewareTwo, func(c *gin.Context) {
-		fmt.Println("2-执行路由中的程序")
-		c.String(http.StatusOK, "首页——中间件演示")
-	})
+	routers.AdminRoutersInit(r)
 
 	r.Run()
 }
