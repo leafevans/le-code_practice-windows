@@ -16,9 +16,8 @@ func minWindow(s string, t string) string {
 		need[t[i]]++
 	}
 
-	window := make(map[byte]int)
 	start, left, valid, minLen := 0, 0, 0, lenS+1
-
+	window := make(map[byte]int)
 	for right := range lenS {
 		c := s[right]
 		if need[c] > 0 {
@@ -31,9 +30,10 @@ func minWindow(s string, t string) string {
 		for valid == len(need) {
 			subLen := right - left + 1
 			if subLen < minLen {
-				start = left
 				minLen = subLen
+				start = left
 			}
+
 			d := s[left]
 			if need[d] > 0 {
 				if window[d] == need[d] {

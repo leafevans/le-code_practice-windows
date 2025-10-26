@@ -12,16 +12,16 @@ func minSubArrayLen(target int, nums []int) int {
 	}
 
 	start := 0
+	currSum := 0
 	minLen := n + 1
-	currentSum := 0
 	for end := range n {
-		currentSum += nums[end]
-		for currentSum >= target {
+		currSum += nums[end]
+		for currSum >= target {
 			subLen := end - start + 1
 			if subLen < minLen {
 				minLen = subLen
 			}
-			currentSum -= nums[start]
+			currSum -= nums[start]
 			start++
 		}
 	}
