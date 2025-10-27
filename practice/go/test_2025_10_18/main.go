@@ -201,15 +201,29 @@
 package main
 
 import (
+	"test_2025_10_18/models"
 	"test_2025_10_18/routers"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func main() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+	zap.ReplaceGlobals(logger)
+
 	r := gin.Default()
 
+	r.SetFuncMap(template.FuncMap{
+		"UnixToTime": models.UnixToTime,
+	})
+
+	r.LoadHTMLGlob("templates/**/*")
+
 	routers.AdminRoutersInit(r)
+	routers.WebRoutersInit(r)
 
 	r.Run()
 }
