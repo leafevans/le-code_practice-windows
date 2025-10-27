@@ -2,6 +2,7 @@ package admin
 
 import (
 	"net/http"
+	"path"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,9 +16,22 @@ func (uc UserController) Index(c *gin.Context) {
 }
 
 func (uc UserController) Add(c *gin.Context) {
-	c.String(http.StatusOK, "用户列表-add")
+	c.HTML(http.StatusOK, "admin/user_add.html", gin.H{})
 }
 
-func (uc UserController) Edit(c *gin.Context) {
-	c.String(http.StatusOK, "用户列表-edit")
+func (uc UserController) DoUpload(c *gin.Context) {
+	username := c.PostForm("username")
+
+	form, _ := c.MultipartForm()
+	files := form.File["face[]"]
+
+	for _, file := range files {
+		dst := path.Join("./static/upload", file.Filename)
+		c.SaveUploadedFile(file, dst)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success":  true,
+		"username": username,
+	})
 }

@@ -1,0 +1,25 @@
+{{define "admin/user_add.html"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>相同名字的多个文件上传</h2>
+    <form
+      action="/admin/user/doUpload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      用户名：<input type="text" name="username" /> <br /><br />
+      头像 1：<input type="file" name="face[]" /> <br /><br />
+      头像 2：<input type="file" name="face[]" /> <br /><br />
+      头像 3：<input type="file" name="face[]" /> <br /><br />
+      <input type="submit" value="提交" />
+    </form>
+  </body>
+</html>
+</html>
+{{end}}
