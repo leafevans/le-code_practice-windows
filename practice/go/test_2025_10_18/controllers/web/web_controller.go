@@ -11,8 +11,8 @@ type WebController struct{}
 
 func (wc WebController) Index(c *gin.Context) {
 	c.HTML(http.StatusOK, "default/index.html", gin.H{
-		"message": "我是一个 message",
-		"time":    time.Now().Unix(),
+		"msg":  "我是一个 msg",
+		"time": time.Now().Unix(),
 	})
 }
 

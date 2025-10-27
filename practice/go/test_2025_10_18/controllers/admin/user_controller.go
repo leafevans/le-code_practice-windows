@@ -11,7 +11,6 @@ type UserController struct {
 }
 
 func (uc UserController) Index(c *gin.Context) {
-
 	c.String(http.StatusOK, "用户列表")
 }
 
