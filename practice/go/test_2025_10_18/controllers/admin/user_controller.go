@@ -16,14 +16,13 @@ func (uc UserController) Index(c *gin.Context) {
 }
 
 func (uc UserController) Add(c *gin.Context) {
-	c.HTML(http.StatusOK, "admin/user_add.html", gin.H{})
+	c.HTML(http.StatusOK, "admin/user/add.html", gin.H{})
 }
 
-func (uc UserController) DoUpload(c *gin.Context) {
+func (uc UserController) DoAdd(c *gin.Context) {
 	username := c.PostForm("username")
-
 	form, _ := c.MultipartForm()
-	files := form.File["face[]"]
+	files := form.File["avatar[]"]
 
 	for _, file := range files {
 		dst := path.Join("./static/upload", file.Filename)
@@ -31,7 +30,7 @@ func (uc UserController) DoUpload(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"success":  true,
+		"message":  "文件上传成功",
 		"username": username,
 	})
 }

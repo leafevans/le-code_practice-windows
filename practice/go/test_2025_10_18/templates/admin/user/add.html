@@ -1,0 +1,27 @@
+{{define "admin/user/add.html"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form
+      action="/admin/user/doAdd"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      用户名：<input
+        type="text"
+        name="username"
+        placeholder="用户名"
+      /><br /><br />
+      头 像1：<input type="file" name="avatar[]" /><br /><br />
+      头 像2：<input type="file" name="avatar[]" /><br /><br />
+      头 像3：<input type="file" name="avatar[]" /><br /><br />
+      <input type="submit" value="提交" />
+    </form>
+  </body>
+</html>
+{{end}}

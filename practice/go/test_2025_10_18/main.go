@@ -220,7 +220,13 @@ func main() {
 		"UnixToTime": models.UnixToTime,
 	})
 
-	r.LoadHTMLGlob("templates/**/*")
+	r.LoadHTMLFiles(
+		"templates/admin/user/add.html",
+		"templates/admin/index.html",
+		"templates/default/index.html",
+		"templates/default/user.html",
+		"templates/public/page_footer.html",
+		"templates/public/page_header.html")
 
 	routers.AdminRoutersInit(r)
 	routers.WebRoutersInit(r)
