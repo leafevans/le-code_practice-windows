@@ -223,8 +223,8 @@ func main() {
 	r.LoadHTMLFiles(
 		"templates/admin/user/add.html",
 		"templates/admin/index.html",
-		"templates/default/index.html",
-		"templates/default/user.html",
+		"templates/web/index.html",
+		"templates/web/user.html",
 		"templates/public/page_footer.html",
 		"templates/public/page_header.html")
 
