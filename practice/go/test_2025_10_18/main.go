@@ -205,6 +205,8 @@ import (
 	"test_2025_10_18/routers"
 	"text/template"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -219,6 +221,12 @@ func main() {
 	r.SetFuncMap(template.FuncMap{
 		"UnixToTime": models.UnixToTime,
 	})
+
+	store, err := redis.NewStore(10, "tcp", "localhost:6379", "", "", []byte("secret"))
+	if err != nil {
+		panic(err)
+	}
+	r.Use(sessions.Sessions("mysession", store))
 
 	r.LoadHTMLFiles(
 		"templates/admin/user/add.html",
