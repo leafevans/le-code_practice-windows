@@ -9,7 +9,7 @@ import (
 
 type IndexController struct{}
 
-func (ic IndexController) Index(c *gin.Context) {
+func (IndexController) Index(c *gin.Context) {
 	c.String(http.StatusOK, "后台首页")
 	username, _ := c.Get("username")
 	fmt.Println(username)

@@ -8,14 +8,14 @@ import (
 
 type APIController struct{}
 
-func (ac APIController) Index(c *gin.Context) {
+func (APIController) Index(c *gin.Context) {
 	c.String(http.StatusOK, "我是一个 API 接口")
 }
 
-func (ac APIController) UserList(c *gin.Context) {
+func (APIController) UserList(c *gin.Context) {
 	c.String(http.StatusOK, "我是一个 API-userlist 接口")
 }
 
-func (ac APIController) PList(c *gin.Context) {
+func (APIController) PList(c *gin.Context) {
 	c.String(http.StatusOK, "我是一个 API-plist 接口")
 }

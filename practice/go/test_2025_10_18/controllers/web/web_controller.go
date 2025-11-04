@@ -10,7 +10,7 @@ import (
 
 type WebController struct{}
 
-func (wc WebController) Index(c *gin.Context) {
+func (WebController) Index(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("username", "曼波")
 	session.Options(sessions.Options{MaxAge: 3600 * 6})
@@ -21,7 +21,7 @@ func (wc WebController) Index(c *gin.Context) {
 	})
 }
 
-func (wc WebController) News(c *gin.Context) {
+func (WebController) News(c *gin.Context) {
 	session := sessions.Default(c)
 	username := session.Get("username")
 	c.String(http.StatusOK, "Username = %v", username)
