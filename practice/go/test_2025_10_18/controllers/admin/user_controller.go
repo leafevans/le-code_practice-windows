@@ -2,6 +2,7 @@ package admin
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"test_2025_10_18/models"
 
@@ -14,8 +15,11 @@ type UserController struct {
 }
 
 func (UserController) Index(c *gin.Context) {
-	var users []models.User
-	models.DB.Where("age < ?", 20).Find(&users)
+	ctx := context.Background()
+	users, err := gorm.G[models.User](models.DB).Find(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	}
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
@@ -33,12 +37,18 @@ func (UserController) Add(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "增加用户", "user": user})
+	fmt.Println(user)
+	c.String(http.StatusOK, "增加用户")
 }
 
 func (UserController) Edit(c *gin.Context) {
-	user := models.User{}
-	models.DB.Model(&user).Where("id = ?", 2).Update("username", "Gilmour")
+	ctx := context.Background()
+	res, err := gorm.G[models.User](models.DB).Where("id = ?", 1).Update(ctx, "age", 100)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	fmt.Println(res)
 	c.String(http.StatusOK, "编辑用户")
 }
 
