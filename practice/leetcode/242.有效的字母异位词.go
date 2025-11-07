@@ -6,7 +6,7 @@
 
 // @lc code=start
 func isAnagram(s string, t string) bool {
-	if len(s) != len(t) {
+	if len(t) != len(s) {
 		return false
 	}
 	count := [26]int{}
