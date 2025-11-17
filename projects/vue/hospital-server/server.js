@@ -1,24 +1,60 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { initDatabase, insertInitialData, getDoctorsByDepartment } = require('./database');
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
+app.use(express.json());
 
-const allDoctors = {
-    internal: [
-        { id: 1, doctorName: '张三丰', title: '主任医师', availableSlots: 10 },
-        { id: 2, doctorName: '李时珍', title: '副主任医师', availableSlots: 5 },
-    ],
-    surgical: [
-        { id: 3, doctorName: '华佗', title: '主任医师', availableSlots: 8 },
-    ],
-    pediatrics: [
-        { id: 4, doctorName: '扁鹊', title: '主治医师', availableSlots: 12 },
-    ],
-};
+initDatabase(() => {
+    insertInitialData();
+});
+
+app.get('/api/patients', (req, res) => {
+    const { name, id_card } = req.query;
+    let sql = 'SELECT * FROM patients WHERE 1=1';
+    const params = [];
+
+    if (name) {
+        sql += ' AND name LIKE ?';
+        params.push(`%${name}%`);
+    }
+    if (id_card) {
+        sql += ' AND id_card LIKE ?';
+        params.push(`%${id_card}%`);
+    }
+
+    const { db } = require('./database');
+    db.all(sql, params, (err, rows) => {
+        if (err) {
+            console.error('查询患者失败:', err);
+            return res.status(500).json({ error: '服务器错误' });
+        }
+        res.json(rows);
+    });
+});
+
+app.post('/api/patients', (req, res) => {
+    const { name, gender, id_card, phone, birth_date } = req.body;
+
+    if (!name || !id_card || !phone) {
+        return res.status(400).json({ error: '缺少必填字段' });
+    }
+
+    const sql = 'INSERT INTO patients (name, gender, id_card, phone, birth_date) VALUES (?, ?, ?, ?, ?)';
+    const { db } = require('./database');
+
+    db.run(sql, [name, gender, id_card, phone, birth_date], function (err) {
+        if (err) {
+            console.error('创建患者失败:', err);
+            return res.status(500).json({ error: '患者档案创建失败' });
+        }
+        res.json({ id: this.lastID, message: '患者档案创建成功' });
+    });
+});
 
 app.get('/api/doctors', (req, res) => {
     const department = req.query.department;
@@ -27,11 +63,15 @@ app.get('/api/doctors', (req, res) => {
         return res.status(400).json({ error: '缺少科室参数 (department)' });
     }
 
-    const doctors = allDoctors[department] || [];
-    res.json(doctors);
+    getDoctorsByDepartment(department, (err, doctors) => {
+        if (err) {
+            console.error('数据库查询错误:', err);
+            return res.status(500).json({ error: '服务器错误' });
+        }
+        res.json(doctors);
+    });
 });
 
-// 托管静态文件
 app.use(express.static(path.join(__dirname, '../hospital-client/dist')));
 
 app.use((req, res) => {

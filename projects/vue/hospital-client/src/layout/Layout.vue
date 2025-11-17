@@ -16,6 +16,10 @@
           <el-icon><DocumentAdd /></el-icon>
           <span>挂号管理</span>
         </el-menu-item>
+        <el-menu-item index="/medical-record">
+          <el-icon><Folder /></el-icon>
+          <span>病历管理</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
