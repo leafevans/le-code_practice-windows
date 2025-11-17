@@ -3,6 +3,7 @@
     <el-aside width="200px">
       <div class="logo">医院管理系统</div>
       <el-menu
+        :default-active="currentRoute"
         active-text-color="#ffd04b"
         background-color="#545c64"
         text-color="#fff"
@@ -20,6 +21,14 @@
           <el-icon><Folder /></el-icon>
           <span>病历管理</span>
         </el-menu-item>
+        <el-menu-item index="/medicine">
+          <el-icon><Goods /></el-icon>
+          <span>药品管理</span>
+        </el-menu-item>
+        <el-menu-item index="/statistics">
+          <el-icon><DataAnalysis /></el-icon>
+          <span>统计分析</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
@@ -32,6 +41,15 @@
     </el-container>
   </el-container>
 </template>
+
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+const currentRoute = computed(() => route.path);
+</script>
 
 <style scoped>
 .layout-container {

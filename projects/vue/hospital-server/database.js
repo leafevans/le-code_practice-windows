@@ -1,7 +1,14 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.join(__dirname, 'hospital.db');
+const isPkg = typeof process.pkg !== 'undefined';
+
+const dbPath = isPkg
+    ? path.join(path.dirname(process.execPath), 'hospital.db')
+    : path.join(__dirname, 'hospital.db');
+
+console.log('数据库文件路径:', dbPath);
+
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('数据库连接失败:', err.message);
@@ -57,6 +64,36 @@ function initDatabase(callback) {
                 FOREIGN KEY (doctor_id) REFERENCES doctors(id),
                 FOREIGN KEY (department_code) REFERENCES departments(code)
             )
+        `);
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS medicines (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                specification TEXT,
+                unit TEXT DEFAULT '盒',
+                price REAL NOT NULL,
+                stock INTEGER DEFAULT 0,
+                category TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS prescriptions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                registration_id INTEGER NOT NULL,
+                patient_id INTEGER NOT NULL,
+                doctor_id INTEGER NOT NULL,
+                medicine_id INTEGER NOT NULL,
+                quantity INTEGER NOT NULL,
+                dosage TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (registration_id) REFERENCES registrations(id),
+                FOREIGN KEY (patient_id) REFERENCES patients(id),
+                FOREIGN KEY (doctor_id) REFERENCES doctors(id),
+                FOREIGN KEY (medicine_id) REFERENCES medicines(id)
+            )
         `, (err) => {
             if (err) {
                 console.error('数据库表创建失败:', err);
@@ -93,7 +130,23 @@ function insertInitialData() {
         insertDoc.run(doc.name, doc.title, doc.department_code, doc.available_slots);
     });
     insertDoc.finalize(() => {
-        console.log('初始数据插入完成');
+        console.log('医生数据插入完成');
+
+        const medicines = [
+            { name: '阿莫西林胶囊', specification: '0.25g*24粒', unit: '盒', price: 15.50, stock: 200, category: '抗生素' },
+            { name: '布洛芬片', specification: '0.1g*20片', unit: '盒', price: 8.00, stock: 300, category: '解热镇痛' },
+            { name: '感冒灵颗粒', specification: '10g*12袋', unit: '盒', price: 12.00, stock: 150, category: '感冒药' },
+            { name: '维生素C片', specification: '0.1g*100片', unit: '瓶', price: 6.50, stock: 500, category: '维生素' },
+            { name: '板蓝根颗粒', specification: '10g*20袋', unit: '盒', price: 18.00, stock: 180, category: '中成药' }
+        ];
+
+        const insertMed = db.prepare('INSERT OR IGNORE INTO medicines (name, specification, unit, price, stock, category) VALUES (?, ?, ?, ?, ?, ?)');
+        medicines.forEach(med => {
+            insertMed.run(med.name, med.specification, med.unit, med.price, med.stock, med.category);
+        });
+        insertMed.finalize(() => {
+            console.log('药品数据插入完成');
+        });
     });
 }
 

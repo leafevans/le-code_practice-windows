@@ -99,27 +99,43 @@ const queryDoctors = async () => {
 };
 
 const handleRegister = (doctor) => {
-  ElMessageBox.confirm(
-    `确定要挂【${doctor.doctorName}】医生的号吗？挂号费为 10 元。`,
-    "挂号确认",
-    {
-      confirmButtonText: "确认支付",
-      cancelButtonText: "取消",
-      type: "warning",
-    }
-  )
-    .then(() => {
-      doctor.availableSlots--;
-      ElMessage({
-        type: "success",
-        message: "挂号成功！",
-      });
+  ElMessageBox.prompt("请输入患者ID（在病历管理中创建）", "挂号确认", {
+    confirmButtonText: "确认挂号",
+    cancelButtonText: "取消",
+    inputPattern: /^\d+$/,
+    inputErrorMessage: "请输入有效的患者ID",
+  })
+    .then(async ({ value }) => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/registrations",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              patient_id: parseInt(value),
+              doctor_id: doctor.id,
+              department_code: formState.department,
+              registration_date: formState.date,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          // 更新本地显示的号源数量
+          doctor.availableSlots--;
+          ElMessage.success("挂号成功！");
+        } else {
+          const error = await response.json();
+          ElMessage.error(error.error || "挂号失败");
+        }
+      } catch (error) {
+        console.error("挂号失败:", error);
+        ElMessage.error("挂号失败，请稍后重试");
+      }
     })
     .catch(() => {
-      ElMessage({
-        type: "info",
-        message: "已取消挂号",
-      });
+      ElMessage.info("已取消挂号");
     });
 };
 </script>

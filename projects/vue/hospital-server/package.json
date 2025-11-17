@@ -1,14 +1,25 @@
 {
   "name": "hospital-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "医院管理系统",
+  "main": "server.js",
+  "bin": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "pkg": {
+    "assets": [
+      "../hospital-client/dist/**/*",
+      "node_modules/sqlite3/**/*"
+    ],
+    "scripts": [
+      "server.js",
+      "database.js"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",

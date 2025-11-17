@@ -51,14 +51,7 @@
               type="primary"
               @click="viewRecords(scope.row)"
             >
-              查看病历
-            </el-button>
-            <el-button
-              size="small"
-              type="success"
-              @click="addRecord(scope.row)"
-            >
-              添加病历
+              查看挂号记录
             </el-button>
           </template>
         </el-table-column>
@@ -95,6 +88,47 @@
         <el-button type="primary" @click="savePatient">保存</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="recordDialogVisible" title="患者挂号记录" width="800px">
+      <el-descriptions :column="2" border v-if="currentPatient">
+        <el-descriptions-item label="患者姓名">{{
+          currentPatient.name
+        }}</el-descriptions-item>
+        <el-descriptions-item label="性别">{{
+          currentPatient.gender
+        }}</el-descriptions-item>
+        <el-descriptions-item label="身份证号">{{
+          currentPatient.id_card
+        }}</el-descriptions-item>
+        <el-descriptions-item label="联系电话">{{
+          currentPatient.phone
+        }}</el-descriptions-item>
+      </el-descriptions>
+
+      <el-divider />
+
+      <h4>挂号记录</h4>
+      <el-table :data="registrationRecords" border style="width: 100%">
+        <el-table-column
+          prop="registration_date"
+          label="就诊日期"
+          width="120"
+        />
+        <el-table-column prop="department_name" label="科室" width="100" />
+        <el-table-column prop="doctor_name" label="医生" width="120" />
+        <el-table-column prop="fee" label="挂号费(元)" width="100" />
+        <el-table-column prop="status" label="状态" width="100">
+          <template #default="scope">
+            <el-tag
+              :type="scope.row.status === 'completed' ? 'success' : 'warning'"
+            >
+              {{ scope.row.status === "completed" ? "已完成" : "待就诊" }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="created_at" label="挂号时间" />
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -103,7 +137,10 @@ import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 
 const dialogVisible = ref(false);
+const recordDialogVisible = ref(false);
 const patientList = ref([]);
+const registrationRecords = ref([]);
+const currentPatient = ref(null);
 
 const searchForm = reactive({
   name: "",
@@ -172,12 +209,19 @@ const savePatient = async () => {
   }
 };
 
-const viewRecords = (patient) => {
-  ElMessage.info(`查看患者 ${patient.name} 的病历（功能待实现）`);
-};
-
-const addRecord = (patient) => {
-  ElMessage.info(`为患者 ${patient.name} 添加病历（功能待实现）`);
+const viewRecords = async (patient) => {
+  currentPatient.value = patient;
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/registrations/patient/${patient.id}`
+    );
+    const data = await response.json();
+    registrationRecords.value = data;
+    recordDialogVisible.value = true;
+  } catch (error) {
+    console.error("查询挂号记录失败:", error);
+    ElMessage.error("查询挂号记录失败");
+  }
 };
 
 onMounted(() => {
