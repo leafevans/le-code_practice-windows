@@ -17,6 +17,34 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
+// Promise 封装
+function query(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.all(sql, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
+    });
+}
+
+function run(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, function (err) {
+            if (err) reject(err);
+            else resolve({ id: this.lastID, changes: this.changes });
+        });
+    });
+}
+
+function get(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.get(sql, params, (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        });
+    });
+}
+
 function initDatabase(callback) {
     db.serialize(() => {
         db.run(`
@@ -94,14 +122,18 @@ function initDatabase(callback) {
                 FOREIGN KEY (doctor_id) REFERENCES doctors(id),
                 FOREIGN KEY (medicine_id) REFERENCES medicines(id)
             )
-        `, (err) => {
-            if (err) {
-                console.error('数据库表创建失败:', err);
-            } else {
-                console.log('数据库表结构初始化完成');
-                if (callback) callback();
-            }
-        });
+        `);
+
+        // 创建索引
+        db.run(`CREATE INDEX IF NOT EXISTS idx_patients_id_card ON patients(id_card)`);
+        db.run(`CREATE INDEX IF NOT EXISTS idx_patients_name ON patients(name)`);
+        db.run(`CREATE INDEX IF NOT EXISTS idx_registrations_patient_id ON registrations(patient_id)`);
+        db.run(`CREATE INDEX IF NOT EXISTS idx_registrations_date ON registrations(registration_date)`);
+        db.run(`CREATE INDEX IF NOT EXISTS idx_medicines_name ON medicines(name)`);
+        db.run(`CREATE INDEX IF NOT EXISTS idx_medicines_category ON medicines(category)`);
+
+        console.log('数据库表结构及索引初始化完成');
+        if (callback) callback();
     });
 }
 
@@ -112,12 +144,6 @@ function insertInitialData() {
         { name: '儿科', code: 'pediatrics' }
     ];
 
-    const insertDept = db.prepare('INSERT OR IGNORE INTO departments (name, code) VALUES (?, ?)');
-    departments.forEach(dept => {
-        insertDept.run(dept.name, dept.code);
-    });
-    insertDept.finalize();
-
     const doctors = [
         { name: '张三丰', title: '主任医师', department_code: 'internal', available_slots: 10 },
         { name: '李时珍', title: '副主任医师', department_code: 'internal', available_slots: 5 },
@@ -125,48 +151,56 @@ function insertInitialData() {
         { name: '扁鹊', title: '主治医师', department_code: 'pediatrics', available_slots: 12 }
     ];
 
-    const insertDoc = db.prepare('INSERT OR IGNORE INTO doctors (name, title, department_code, available_slots) VALUES (?, ?, ?, ?)');
-    doctors.forEach(doc => {
-        insertDoc.run(doc.name, doc.title, doc.department_code, doc.available_slots);
-    });
-    insertDoc.finalize(() => {
-        console.log('医生数据插入完成');
+    const medicines = [
+        { name: '阿莫西林胶囊', specification: '0.25g*24粒', unit: '盒', price: 15.50, stock: 200, category: '抗生素' },
+        { name: '布洛芬片', specification: '0.1g*20片', unit: '盒', price: 8.00, stock: 300, category: '解热镇痛' },
+        { name: '感冒灵颗粒', specification: '10g*12袋', unit: '盒', price: 12.00, stock: 150, category: '感冒药' },
+        { name: '维生素C片', specification: '0.1g*100片', unit: '瓶', price: 6.50, stock: 500, category: '维生素' },
+        { name: '板蓝根颗粒', specification: '10g*20袋', unit: '盒', price: 18.00, stock: 180, category: '中成药' }
+    ];
 
-        const medicines = [
-            { name: '阿莫西林胶囊', specification: '0.25g*24粒', unit: '盒', price: 15.50, stock: 200, category: '抗生素' },
-            { name: '布洛芬片', specification: '0.1g*20片', unit: '盒', price: 8.00, stock: 300, category: '解热镇痛' },
-            { name: '感冒灵颗粒', specification: '10g*12袋', unit: '盒', price: 12.00, stock: 150, category: '感冒药' },
-            { name: '维生素C片', specification: '0.1g*100片', unit: '瓶', price: 6.50, stock: 500, category: '维生素' },
-            { name: '板蓝根颗粒', specification: '10g*20袋', unit: '盒', price: 18.00, stock: 180, category: '中成药' }
-        ];
+    db.serialize(() => {
+        db.run("BEGIN TRANSACTION");
+
+        const insertDept = db.prepare('INSERT OR IGNORE INTO departments (name, code) VALUES (?, ?)');
+        departments.forEach(dept => {
+            insertDept.run(dept.name, dept.code);
+        });
+        insertDept.finalize();
+
+        const insertDoc = db.prepare('INSERT OR IGNORE INTO doctors (name, title, department_code, available_slots) VALUES (?, ?, ?, ?)');
+        doctors.forEach(doc => {
+            insertDoc.run(doc.name, doc.title, doc.department_code, doc.available_slots);
+        });
+        insertDoc.finalize();
 
         const insertMed = db.prepare('INSERT OR IGNORE INTO medicines (name, specification, unit, price, stock, category) VALUES (?, ?, ?, ?, ?, ?)');
         medicines.forEach(med => {
             insertMed.run(med.name, med.specification, med.unit, med.price, med.stock, med.category);
         });
-        insertMed.finalize(() => {
-            console.log('药品数据插入完成');
+        insertMed.finalize();
+
+        db.run("COMMIT", (err) => {
+            if (err) console.error("初始化数据提交失败", err);
+            else console.log("初始化数据插入完成");
         });
     });
 }
 
-function getDoctorsByDepartment(departmentCode, callback) {
+async function getDoctorsByDepartment(departmentCode) {
     const sql = `
         SELECT id, name as doctorName, title, available_slots as availableSlots 
         FROM doctors 
         WHERE department_code = ?
     `;
-    db.all(sql, [departmentCode], (err, rows) => {
-        if (err) {
-            callback(err, null);
-        } else {
-            callback(null, rows);
-        }
-    });
+    return query(sql, [departmentCode]);
 }
 
 module.exports = {
     db,
+    query,
+    run,
+    get,
     initDatabase,
     insertInitialData,
     getDoctorsByDepartment

@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { initDatabase, insertInitialData, getDoctorsByDepartment } = require('./database');
+const { initDatabase, insertInitialData, getDoctorsByDepartment, query, run, db } = require('./database');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const isPkg = typeof process.pkg !== 'undefined';
 
@@ -14,6 +14,16 @@ const distPath = isPkg
 
 console.log('前端文件路径:', distPath);
 
+// 简单的请求日志中间件
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
+    });
+    next();
+});
+
 app.use(cors());
 app.use(express.json());
 
@@ -21,7 +31,7 @@ initDatabase(() => {
     insertInitialData();
 });
 
-app.get('/api/patients', (req, res) => {
+app.get('/api/patients', async (req, res) => {
     const { name, id_card } = req.query;
     let sql = 'SELECT * FROM patients WHERE 1=1';
     const params = [];
@@ -35,17 +45,16 @@ app.get('/api/patients', (req, res) => {
         params.push(`%${id_card}%`);
     }
 
-    const { db } = require('./database');
-    db.all(sql, params, (err, rows) => {
-        if (err) {
-            console.error('查询患者失败:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const rows = await query(sql, params);
         res.json(rows);
-    });
+    } catch (err) {
+        console.error('查询患者失败:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
-app.post('/api/patients', (req, res) => {
+app.post('/api/patients', async (req, res) => {
     const { name, gender, id_card, phone, birth_date } = req.body;
 
     if (!name || !id_card || !phone) {
@@ -53,49 +62,56 @@ app.post('/api/patients', (req, res) => {
     }
 
     const sql = 'INSERT INTO patients (name, gender, id_card, phone, birth_date) VALUES (?, ?, ?, ?, ?)';
-    const { db } = require('./database');
 
-    db.run(sql, [name, gender, id_card, phone, birth_date], function (err) {
-        if (err) {
-            console.error('创建患者失败:', err);
-            return res.status(500).json({ error: '患者档案创建失败' });
-        }
-        res.json({ id: this.lastID, message: '患者档案创建成功' });
-    });
+    try {
+        const result = await run(sql, [name, gender, id_card, phone, birth_date]);
+        res.json({ id: result.id, message: '患者档案创建成功' });
+    } catch (err) {
+        console.error('创建患者失败:', err);
+        res.status(500).json({ error: '患者档案创建失败' });
+    }
 });
 
-app.get('/api/doctors', (req, res) => {
+app.get('/api/doctors', async (req, res) => {
     const department = req.query.department;
 
     if (!department) {
         return res.status(400).json({ error: '缺少科室参数 (department)' });
     }
 
-    getDoctorsByDepartment(department, (err, doctors) => {
-        if (err) {
-            console.error('数据库查询错误:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const doctors = await getDoctorsByDepartment(department);
         res.json(doctors);
-    });
+    } catch (err) {
+        console.error('数据库查询错误:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
-app.post('/api/registrations', (req, res) => {
+app.post('/api/registrations', async (req, res) => {
     const { patient_id, doctor_id, department_code, registration_date } = req.body;
 
     if (!patient_id || !doctor_id || !department_code || !registration_date) {
         return res.status(400).json({ error: '缺少必填字段' });
     }
 
-    const { db } = require('./database');
-
+    // 使用事务处理挂号逻辑
     db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+
         db.run(
             'UPDATE doctors SET available_slots = available_slots - 1 WHERE id = ? AND available_slots > 0',
             [doctor_id],
             function (err) {
-                if (err || this.changes === 0) {
-                    return res.status(500).json({ error: '号源不足或更新失败' });
+                if (err) {
+                    db.run('ROLLBACK');
+                    console.error('更新医生号源失败:', err);
+                    return res.status(500).json({ error: '系统错误' });
+                }
+
+                if (this.changes === 0) {
+                    db.run('ROLLBACK');
+                    return res.status(400).json({ error: '号源不足' });
                 }
 
                 db.run(
@@ -103,9 +119,12 @@ app.post('/api/registrations', (req, res) => {
                     [patient_id, doctor_id, department_code, registration_date],
                     function (err) {
                         if (err) {
+                            db.run('ROLLBACK');
                             console.error('保存挂号记录失败:', err);
                             return res.status(500).json({ error: '挂号失败' });
                         }
+
+                        db.run('COMMIT');
                         res.json({ id: this.lastID, message: '挂号成功' });
                     }
                 );
@@ -114,7 +133,7 @@ app.post('/api/registrations', (req, res) => {
     });
 });
 
-app.get('/api/registrations/patient/:patientId', (req, res) => {
+app.get('/api/registrations/patient/:patientId', async (req, res) => {
     const { patientId } = req.params;
 
     const sql = `
@@ -129,17 +148,16 @@ app.get('/api/registrations/patient/:patientId', (req, res) => {
         ORDER BY r.created_at DESC
     `;
 
-    const { db } = require('./database');
-    db.all(sql, [patientId], (err, rows) => {
-        if (err) {
-            console.error('查询挂号记录失败:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const rows = await query(sql, [patientId]);
         res.json(rows);
-    });
+    } catch (err) {
+        console.error('查询挂号记录失败:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
-app.get('/api/medicines', (req, res) => {
+app.get('/api/medicines', async (req, res) => {
     const { name, category } = req.query;
     let sql = 'SELECT * FROM medicines WHERE 1=1';
     const params = [];
@@ -153,17 +171,16 @@ app.get('/api/medicines', (req, res) => {
         params.push(category);
     }
 
-    const { db } = require('./database');
-    db.all(sql, params, (err, rows) => {
-        if (err) {
-            console.error('查询药品失败:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const rows = await query(sql, params);
         res.json(rows);
-    });
+    } catch (err) {
+        console.error('查询药品失败:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
-app.post('/api/medicines', (req, res) => {
+app.post('/api/medicines', async (req, res) => {
     const { name, specification, unit, price, stock, category } = req.body;
 
     if (!name || !price) {
@@ -171,34 +188,32 @@ app.post('/api/medicines', (req, res) => {
     }
 
     const sql = 'INSERT INTO medicines (name, specification, unit, price, stock, category) VALUES (?, ?, ?, ?, ?, ?)';
-    const { db } = require('./database');
 
-    db.run(sql, [name, specification, unit, price, stock || 0, category], function (err) {
-        if (err) {
-            console.error('添加药品失败:', err);
-            return res.status(500).json({ error: '药品添加失败' });
-        }
-        res.json({ id: this.lastID, message: '药品添加成功' });
-    });
+    try {
+        const result = await run(sql, [name, specification, unit, price, stock || 0, category]);
+        res.json({ id: result.id, message: '药品添加成功' });
+    } catch (err) {
+        console.error('添加药品失败:', err);
+        res.status(500).json({ error: '药品添加失败' });
+    }
 });
 
-app.put('/api/medicines/:id', (req, res) => {
+app.put('/api/medicines/:id', async (req, res) => {
     const { id } = req.params;
     const { stock } = req.body;
 
     const sql = 'UPDATE medicines SET stock = ? WHERE id = ?';
-    const { db } = require('./database');
 
-    db.run(sql, [stock, id], function (err) {
-        if (err) {
-            console.error('更新库存失败:', err);
-            return res.status(500).json({ error: '库存更新失败' });
-        }
+    try {
+        await run(sql, [stock, id]);
         res.json({ message: '库存更新成功' });
-    });
+    } catch (err) {
+        console.error('更新库存失败:', err);
+        res.status(500).json({ error: '库存更新失败' });
+    }
 });
 
-app.get('/api/statistics/registrations', (req, res) => {
+app.get('/api/statistics/registrations', async (req, res) => {
     const sql = `
         SELECT 
             registration_date as date,
@@ -207,17 +222,16 @@ app.get('/api/statistics/registrations', (req, res) => {
         GROUP BY registration_date
         ORDER BY registration_date
     `;
-    const { db } = require('./database');
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            console.error('查询门诊量统计失败:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const rows = await query(sql);
         res.json(rows);
-    });
+    } catch (err) {
+        console.error('查询门诊量统计失败:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
-app.get('/api/statistics/medicines', (req, res) => {
+app.get('/api/statistics/medicines', async (req, res) => {
     const sql = `
         SELECT 
             category,
@@ -226,17 +240,16 @@ app.get('/api/statistics/medicines', (req, res) => {
         FROM medicines
         GROUP BY category
     `;
-    const { db } = require('./database');
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            console.error('查询药品统计失败:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const rows = await query(sql);
         res.json(rows);
-    });
+    } catch (err) {
+        console.error('查询药品统计失败:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
-app.get('/api/statistics/departments', (req, res) => {
+app.get('/api/statistics/departments', async (req, res) => {
     const sql = `
         SELECT 
             d.name as departmentName,
@@ -245,14 +258,13 @@ app.get('/api/statistics/departments', (req, res) => {
         LEFT JOIN registrations r ON d.code = r.department_code
         GROUP BY d.code, d.name
     `;
-    const { db } = require('./database');
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            console.error('查询科室统计失败:', err);
-            return res.status(500).json({ error: '服务器错误' });
-        }
+    try {
+        const rows = await query(sql);
         res.json(rows);
-    });
+    } catch (err) {
+        console.error('查询科室统计失败:', err);
+        res.status(500).json({ error: '服务器错误' });
+    }
 });
 
 app.use(express.static(distPath));
