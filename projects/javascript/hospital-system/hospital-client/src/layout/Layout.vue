@@ -4,8 +4,8 @@
       <div class="logo">医院管理系统</div>
       <el-menu
         :default-active="currentRoute"
-        active-text-color="#ffd04b"
-        background-color="#545c64"
+        active-text-color="#ff7e5f"
+        background-color="#303133"
         text-color="#fff"
         router
       >
@@ -103,7 +103,7 @@ const handleLogout = () => {
   height: 100%;
 }
 .el-aside {
-  background-color: #545c64;
+  background-color: #303133;
 }
 .logo {
   height: 60px;
@@ -112,6 +112,7 @@ const handleLogout = () => {
   color: #fff;
   font-size: 20px;
   font-weight: bold;
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
 }
 .el-header {
   background-color: #fff;

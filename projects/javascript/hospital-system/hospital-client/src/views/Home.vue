@@ -174,18 +174,25 @@ onMounted(() => {
 
 .welcome-card {
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
   color: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 126, 95, 0.4);
 }
 
 .welcome-card h1 {
   color: white;
   margin: 20px 0;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .welcome-card p {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   font-size: 16px;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .el-button div {
