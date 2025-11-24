@@ -65,6 +65,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import apiFetch from "../api";
 
 const formState = reactive({
   department: "",
@@ -80,14 +81,10 @@ const queryDoctors = async () => {
   }
 
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/doctors?department=${formState.department}`
+    const data = await apiFetch(
+      `/api/doctors?department=${formState.department}`
     );
-    if (!response.ok) {
-      throw new Error("网络请求失败");
-    }
-    const data = await response.json();
-    doctorSchedule.value = data;
+    doctorSchedule.value = Array.isArray(data) ? data : [];
 
     if (doctorSchedule.value.length === 0) {
       ElMessage.info("该科室当天暂无排班");
@@ -107,27 +104,21 @@ const handleRegister = (doctor) => {
   })
     .then(async ({ value }) => {
       try {
-        const response = await fetch(
-          "http://localhost:3000/api/registrations",
-          {
+        try {
+          await apiFetch("/api/registrations", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               patient_id: parseInt(value),
               doctor_id: doctor.id,
               department_code: formState.department,
               registration_date: formState.date,
             }),
-          }
-        );
-
-        if (response.ok) {
+          });
           // 更新本地显示的号源数量
           doctor.availableSlots--;
           ElMessage.success("挂号成功！");
-        } else {
-          const error = await response.json();
-          ElMessage.error(error.error || "挂号失败");
+        } catch (err) {
+          ElMessage.error(err.message || "挂号失败");
         }
       } catch (error) {
         console.error("挂号失败:", error);

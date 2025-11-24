@@ -3,16 +3,38 @@ import './style.css'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import router from './router'
 
 import ECharts from 'vue-echarts'
-import 'echarts'
+import { use } from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import { BarChart, LineChart, PieChart } from 'echarts/charts'
+import {
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+    LegendComponent
+} from 'echarts/components'
+
+use([
+    CanvasRenderer,
+    BarChart,
+    LineChart,
+    PieChart,
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+    LegendComponent
+])
 
 const app = createApp(App)
 
 app.use(router)
-app.use(ElementPlus)
+app.use(ElementPlus, {
+    locale: zhCn,
+})
 
 app.component('v-chart', ECharts)
 

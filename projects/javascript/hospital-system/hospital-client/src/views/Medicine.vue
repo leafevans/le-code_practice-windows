@@ -120,6 +120,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import apiFetch from "../api";
 
 const dialogVisible = ref(false);
 const medicineList = ref([]);
@@ -144,11 +145,8 @@ const searchMedicines = async () => {
     if (searchForm.name) params.append("name", searchForm.name);
     if (searchForm.category) params.append("category", searchForm.category);
 
-    const response = await fetch(
-      `http://localhost:3000/api/medicines?${params}`
-    );
-    const data = await response.json();
-    medicineList.value = data;
+    const data = await apiFetch(`/api/medicines?${params}`);
+    medicineList.value = Array.isArray(data) ? data : [];
   } catch (error) {
     console.error("查询药品失败:", error);
     ElMessage.error("查询药品信息失败");
@@ -168,28 +166,24 @@ const saveMedicine = async () => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/api/medicines", {
+    await apiFetch("/api/medicines", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(medicineForm),
     });
-
-    if (response.ok) {
-      ElMessage.success("药品添加成功！");
-      dialogVisible.value = false;
-      Object.assign(medicineForm, {
-        name: "",
-        specification: "",
-        unit: "盒",
-        price: 0,
-        stock: 0,
-        category: "",
-      });
-      searchMedicines();
-    }
+    ElMessage.success("药品添加成功！");
+    dialogVisible.value = false;
+    Object.assign(medicineForm, {
+      name: "",
+      specification: "",
+      unit: "盒",
+      price: 0,
+      stock: 0,
+      category: "",
+    });
+    searchMedicines();
   } catch (error) {
     console.error("保存药品失败:", error);
-    ElMessage.error("保存药品信息失败");
+    ElMessage.error(error.message || "保存药品信息失败");
   }
 };
 
@@ -207,22 +201,15 @@ const updateStock = (medicine) => {
   )
     .then(async ({ value }) => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/medicines/${medicine.id}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ stock: parseInt(value) }),
-          }
-        );
-
-        if (response.ok) {
-          ElMessage.success("库存更新成功！");
-          searchMedicines();
-        }
+        await apiFetch(`/api/medicines/${medicine.id}`, {
+          method: "PUT",
+          body: JSON.stringify({ stock: parseInt(value, 10) }),
+        });
+        ElMessage.success("库存更新成功！");
+        searchMedicines();
       } catch (error) {
         console.error("更新库存失败:", error);
-        ElMessage.error("更新库存失败");
+        ElMessage.error(error.message || "更新库存失败");
       }
     })
     .catch(() => {

@@ -60,6 +60,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
+import apiFetch from "../api";
 
 const totalRegistrations = ref(0);
 const totalMedicines = ref(0);
@@ -124,14 +125,16 @@ const medicineOption = ref({
 
 const loadRegistrationStats = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3000/api/statistics/registrations"
-    );
-    const data = await response.json();
-
-    registrationOption.value.xAxis.data = data.map((item) => item.date);
-    registrationOption.value.series[0].data = data.map((item) => item.count);
-    totalRegistrations.value = data.reduce((sum, item) => sum + item.count, 0);
+    const data = await apiFetch("/api/statistics/registrations");
+    registrationOption.value.xAxis.data = Array.isArray(data)
+      ? data.map((item) => item.date)
+      : [];
+    registrationOption.value.series[0].data = Array.isArray(data)
+      ? data.map((item) => item.count)
+      : [];
+    totalRegistrations.value = Array.isArray(data)
+      ? data.reduce((sum, item) => sum + (item.count || 0), 0)
+      : 0;
   } catch (error) {
     console.error("加载门诊量统计失败:", error);
     ElMessage.error("加载门诊量统计失败");
@@ -140,15 +143,10 @@ const loadRegistrationStats = async () => {
 
 const loadDepartmentStats = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3000/api/statistics/departments"
-    );
-    const data = await response.json();
-
-    departmentOption.value.series[0].data = data.map((item) => ({
-      name: item.departmentName,
-      value: item.count,
-    }));
+    const data = await apiFetch("/api/statistics/departments");
+    departmentOption.value.series[0].data = Array.isArray(data)
+      ? data.map((item) => ({ name: item.departmentName, value: item.count }))
+      : [];
   } catch (error) {
     console.error("加载科室统计失败:", error);
     ElMessage.error("加载科室统计失败");
@@ -157,14 +155,16 @@ const loadDepartmentStats = async () => {
 
 const loadMedicineStats = async () => {
   try {
-    const response = await fetch(
-      "http://localhost:3000/api/statistics/medicines"
-    );
-    const data = await response.json();
-
-    medicineOption.value.xAxis.data = data.map((item) => item.category);
-    medicineOption.value.series[0].data = data.map((item) => item.totalStock);
-    totalMedicines.value = data.reduce((sum, item) => sum + item.count, 0);
+    const data = await apiFetch("/api/statistics/medicines");
+    medicineOption.value.xAxis.data = Array.isArray(data)
+      ? data.map((item) => item.category)
+      : [];
+    medicineOption.value.series[0].data = Array.isArray(data)
+      ? data.map((item) => item.totalStock)
+      : [];
+    totalMedicines.value = Array.isArray(data)
+      ? data.reduce((sum, item) => sum + (item.count || 0), 0)
+      : 0;
   } catch (error) {
     console.error("加载药品统计失败:", error);
     ElMessage.error("加载药品统计失败");

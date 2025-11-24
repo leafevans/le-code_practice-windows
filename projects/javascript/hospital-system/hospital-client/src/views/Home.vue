@@ -112,6 +112,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import apiFetch from "../api";
 
 const router = useRouter();
 
@@ -126,20 +127,16 @@ const goTo = (path) => {
 
 const loadStats = async () => {
   try {
-    const patientsRes = await fetch("http://localhost:3000/api/patients");
-    const patients = await patientsRes.json();
-    totalPatients.value = patients.length;
+    const patients = await apiFetch("/api/patients");
+    totalPatients.value = Array.isArray(patients) ? patients.length : 0;
 
-    const medicinesRes = await fetch(
-      "http://localhost:3000/api/statistics/medicines"
-    );
-    const medicines = await medicinesRes.json();
-    totalMedicines.value = medicines.reduce((sum, item) => sum + item.count, 0);
+    const medicines = await apiFetch("/api/statistics/medicines");
+    totalMedicines.value = Array.isArray(medicines)
+      ? medicines.reduce((sum, item) => sum + (item.count || 0), 0)
+      : 0;
 
-    const doctorsRes = await fetch(
-      "http://localhost:3000/api/doctors?department=internal"
-    );
-    totalDoctors.value = 4;
+    const doctors = await apiFetch("/api/doctors?department=internal");
+    totalDoctors.value = Array.isArray(doctors) ? doctors.length : 0;
 
     todayRegistrations.value = 0;
   } catch (error) {

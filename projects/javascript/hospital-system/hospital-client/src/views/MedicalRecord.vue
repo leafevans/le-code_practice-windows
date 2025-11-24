@@ -135,6 +135,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
+import apiFetch from "../api";
 
 const dialogVisible = ref(false);
 const recordDialogVisible = ref(false);
@@ -161,11 +162,8 @@ const searchPatients = async () => {
     if (searchForm.name) params.append("name", searchForm.name);
     if (searchForm.idCard) params.append("id_card", searchForm.idCard);
 
-    const response = await fetch(
-      `http://localhost:3000/api/patients?${params}`
-    );
-    const data = await response.json();
-    patientList.value = data;
+    const data = await apiFetch(`/api/patients?${params}`);
+    patientList.value = Array.isArray(data) ? data : [];
   } catch (error) {
     console.error("查询患者失败:", error);
     ElMessage.error("查询患者信息失败");
@@ -185,13 +183,11 @@ const savePatient = async () => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/api/patients", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(patientForm),
-    });
-
-    if (response.ok) {
+    try {
+      await apiFetch("/api/patients", {
+        method: "POST",
+        body: JSON.stringify(patientForm),
+      });
       ElMessage.success("患者档案创建成功！");
       dialogVisible.value = false;
       Object.assign(patientForm, {
@@ -202,6 +198,9 @@ const savePatient = async () => {
         birth_date: "",
       });
       searchPatients();
+    } catch (err) {
+      console.error("保存患者失败:", err);
+      ElMessage.error(err.message || "保存患者信息失败");
     }
   } catch (error) {
     console.error("保存患者失败:", error);
@@ -212,11 +211,8 @@ const savePatient = async () => {
 const viewRecords = async (patient) => {
   currentPatient.value = patient;
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/registrations/patient/${patient.id}`
-    );
-    const data = await response.json();
-    registrationRecords.value = data;
+    const data = await apiFetch(`/api/registrations/patient/${patient.id}`);
+    registrationRecords.value = Array.isArray(data) ? data : [];
     recordDialogVisible.value = true;
   } catch (error) {
     console.error("查询挂号记录失败:", error);
