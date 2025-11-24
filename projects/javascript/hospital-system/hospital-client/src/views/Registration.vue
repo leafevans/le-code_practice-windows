@@ -14,9 +14,12 @@
             placeholder="请选择科室"
             style="width: 150px"
           >
-            <el-option label="内科" value="internal" />
-            <el-option label="外科" value="surgical" />
-            <el-option label="儿科" value="pediatrics" />
+            <el-option
+              v-for="dept in departmentList"
+              :key="dept.code"
+              :label="dept.name"
+              :value="dept.code"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="就诊日期">
@@ -63,7 +66,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import apiFetch from "../api";
 
@@ -73,6 +76,17 @@ const formState = reactive({
 });
 
 const doctorSchedule = ref([]);
+const departmentList = ref([]);
+
+const loadDepartments = async () => {
+  try {
+    const data = await apiFetch("/api/departments");
+    departmentList.value = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("加载科室失败:", error);
+    ElMessage.error("加载科室列表失败");
+  }
+};
 
 const queryDoctors = async () => {
   if (!formState.department || !formState.date) {
@@ -114,7 +128,6 @@ const handleRegister = (doctor) => {
               registration_date: formState.date,
             }),
           });
-          // 更新本地显示的号源数量
           doctor.availableSlots--;
           ElMessage.success("挂号成功！");
         } catch (err) {
@@ -129,6 +142,10 @@ const handleRegister = (doctor) => {
       ElMessage.info("已取消挂号");
     });
 };
+
+onMounted(() => {
+  loadDepartments();
+});
 </script>
 
 <style scoped>

@@ -55,8 +55,8 @@
       <template #header>
         <span>快捷入口</span>
       </template>
-      <el-row :gutter="20">
-        <el-col :span="6">
+      <el-row :gutter="20" justify="center">
+        <el-col :span="4">
           <el-button
             type="primary"
             @click="goTo('/registration')"
@@ -68,7 +68,7 @@
             </div>
           </el-button>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-button
             type="success"
             @click="goTo('/medical-record')"
@@ -80,7 +80,19 @@
             </div>
           </el-button>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
+          <el-button
+            type="danger"
+            @click="goTo('/doctor')"
+            style="width: 100%; height: 80px"
+          >
+            <div>
+              <el-icon size="24"><Avatar /></el-icon>
+              <p>医生管理</p>
+            </div>
+          </el-button>
+        </el-col>
+        <el-col :span="4">
           <el-button
             type="warning"
             @click="goTo('/medicine')"
@@ -92,7 +104,7 @@
             </div>
           </el-button>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-button
             type="info"
             @click="goTo('/statistics')"
@@ -127,18 +139,24 @@ const goTo = (path) => {
 
 const loadStats = async () => {
   try {
-    const patients = await apiFetch("/api/patients");
-    totalPatients.value = Array.isArray(patients) ? patients.length : 0;
+    const patientsData = await apiFetch("/api/patients?limit=1");
+    totalPatients.value = patientsData.total || 0;
 
     const medicines = await apiFetch("/api/statistics/medicines");
     totalMedicines.value = Array.isArray(medicines)
       ? medicines.reduce((sum, item) => sum + (item.count || 0), 0)
       : 0;
 
-    const doctors = await apiFetch("/api/doctors?department=internal");
-    totalDoctors.value = Array.isArray(doctors) ? doctors.length : 0;
+    const doctorsData = await apiFetch("/api/doctors?limit=1");
+    totalDoctors.value = doctorsData.total || 0;
 
     todayRegistrations.value = 0;
+    const regStats = await apiFetch("/api/statistics/registrations");
+    if (Array.isArray(regStats)) {
+      const today = new Date().toISOString().split("T")[0];
+      const todayStat = regStats.find((s) => s.date === today);
+      todayRegistrations.value = todayStat ? todayStat.count : 0;
+    }
   } catch (error) {
     console.error("加载统计数据失败:", error);
   }

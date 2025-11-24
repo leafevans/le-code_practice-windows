@@ -39,7 +39,7 @@
 
       <el-divider />
 
-      <el-table :data="medicineList" border style="width: 100%">
+      <el-table :data="paginatedMedicineList" border style="width: 100%">
         <el-table-column prop="id" label="药品ID" width="80" />
         <el-table-column prop="name" label="药品名称" width="150" />
         <el-table-column prop="specification" label="规格" width="120" />
@@ -73,33 +73,50 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end">
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="medicineList.length"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </el-card>
 
     <el-dialog v-model="dialogVisible" title="添加药品" width="500px">
-      <el-form :model="medicineForm" label-width="100px">
-        <el-form-item label="药品名称" required>
+      <el-form
+        ref="medicineFormRef"
+        :model="medicineForm"
+        :rules="rules"
+        label-width="100px"
+      >
+        <el-form-item label="药品名称" prop="name">
           <el-input v-model="medicineForm.name" />
         </el-form-item>
-        <el-form-item label="规格">
+        <el-form-item label="规格" prop="specification">
           <el-input
             v-model="medicineForm.specification"
             placeholder="例如：0.25g*24粒"
           />
         </el-form-item>
-        <el-form-item label="单位">
+        <el-form-item label="单位" prop="unit">
           <el-input v-model="medicineForm.unit" placeholder="例如：盒、瓶" />
         </el-form-item>
-        <el-form-item label="单价(元)" required>
+        <el-form-item label="单价(元)" prop="price">
           <el-input-number
             v-model="medicineForm.price"
             :min="0"
             :precision="2"
           />
         </el-form-item>
-        <el-form-item label="初始库存">
+        <el-form-item label="初始库存" prop="stock">
           <el-input-number v-model="medicineForm.stock" :min="0" />
         </el-form-item>
-        <el-form-item label="分类">
+        <el-form-item label="分类" prop="category">
           <el-select v-model="medicineForm.category" placeholder="请选择分类">
             <el-option label="抗生素" value="抗生素" />
             <el-option label="解热镇痛" value="解热镇痛" />
@@ -118,12 +135,16 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import apiFetch from "../api";
 
 const dialogVisible = ref(false);
 const medicineList = ref([]);
+const medicineFormRef = ref(null);
+
+const currentPage = ref(1);
+const pageSize = ref(10);
 
 const searchForm = reactive({
   name: "",
@@ -139,6 +160,27 @@ const medicineForm = reactive({
   category: "",
 });
 
+const rules = {
+  name: [{ required: true, message: "请输入药品名称", trigger: "blur" }],
+  price: [{ required: true, message: "请输入单价", trigger: "blur" }],
+  category: [{ required: true, message: "请选择分类", trigger: "change" }],
+};
+
+const paginatedMedicineList = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return medicineList.value.slice(start, end);
+});
+
+const handleSizeChange = (val) => {
+  pageSize.value = val;
+  currentPage.value = 1; 
+};
+
+const handleCurrentChange = (val) => {
+  currentPage.value = val;
+};
+
 const searchMedicines = async () => {
   try {
     const params = new URLSearchParams();
@@ -147,6 +189,7 @@ const searchMedicines = async () => {
 
     const data = await apiFetch(`/api/medicines?${params}`);
     medicineList.value = Array.isArray(data) ? data : [];
+    currentPage.value = 1; 
   } catch (error) {
     console.error("查询药品失败:", error);
     ElMessage.error("查询药品信息失败");
@@ -160,31 +203,28 @@ const resetSearch = () => {
 };
 
 const saveMedicine = async () => {
-  if (!medicineForm.name || !medicineForm.price) {
-    ElMessage.warning("请填写必填项！");
-    return;
-  }
+  if (!medicineFormRef.value) return;
 
-  try {
-    await apiFetch("/api/medicines", {
-      method: "POST",
-      body: JSON.stringify(medicineForm),
-    });
-    ElMessage.success("药品添加成功！");
-    dialogVisible.value = false;
-    Object.assign(medicineForm, {
-      name: "",
-      specification: "",
-      unit: "盒",
-      price: 0,
-      stock: 0,
-      category: "",
-    });
-    searchMedicines();
-  } catch (error) {
-    console.error("保存药品失败:", error);
-    ElMessage.error(error.message || "保存药品信息失败");
-  }
+  await medicineFormRef.value.validate(async (valid, fields) => {
+    if (valid) {
+      try {
+        await apiFetch("/api/medicines", {
+          method: "POST",
+          body: JSON.stringify(medicineForm),
+        });
+        ElMessage.success("药品添加成功！");
+        dialogVisible.value = false;
+        medicineFormRef.value.resetFields(); 
+        searchMedicines();
+      } catch (error) {
+        console.error("保存药品失败:", error);
+        ElMessage.error(error.message || "保存药品信息失败");
+      }
+    } else {
+      console.log("表单校验失败", fields);
+      ElMessage.warning("请检查表单填写是否正确");
+    }
+  });
 };
 
 const updateStock = (medicine) => {

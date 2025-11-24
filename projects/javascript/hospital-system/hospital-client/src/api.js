@@ -1,4 +1,8 @@
+import NProgress from 'nprogress';
+
 const DEFAULT_TIMEOUT = 15000;
+
+NProgress.configure({ showSpinner: false });
 
 function buildUrl(path) {
     const base = import.meta.env.VITE_API_BASE ?? '';
@@ -9,6 +13,7 @@ function buildUrl(path) {
 }
 
 export async function apiFetch(path, options = {}) {
+    NProgress.start();
     const url = buildUrl(path);
     const controller = new AbortController();
     const timeout = options.timeout ?? DEFAULT_TIMEOUT;
@@ -50,6 +55,8 @@ export async function apiFetch(path, options = {}) {
             throw new Error('请求超时');
         }
         throw err;
+    } finally {
+        NProgress.done();
     }
 }
 

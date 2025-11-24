@@ -56,6 +56,18 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end">
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </el-card>
 
     <el-dialog v-model="dialogVisible" title="新建患者档案" width="500px">
@@ -143,6 +155,10 @@ const patientList = ref([]);
 const registrationRecords = ref([]);
 const currentPatient = ref(null);
 
+const currentPage = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+
 const searchForm = reactive({
   name: "",
   idCard: "",
@@ -161,18 +177,37 @@ const searchPatients = async () => {
     const params = new URLSearchParams();
     if (searchForm.name) params.append("name", searchForm.name);
     if (searchForm.idCard) params.append("id_card", searchForm.idCard);
+    params.append("page", currentPage.value);
+    params.append("limit", pageSize.value);
 
     const data = await apiFetch(`/api/patients?${params}`);
-    patientList.value = Array.isArray(data) ? data : [];
+    if (data && Array.isArray(data.list)) {
+      patientList.value = data.list;
+      total.value = data.total || 0;
+    } else {
+      patientList.value = Array.isArray(data) ? data : [];
+      total.value = patientList.value.length;
+    }
   } catch (error) {
     console.error("查询患者失败:", error);
     ElMessage.error("查询患者信息失败");
   }
 };
 
+const handleSizeChange = (val) => {
+  pageSize.value = val;
+  searchPatients();
+};
+
+const handleCurrentChange = (val) => {
+  currentPage.value = val;
+  searchPatients();
+};
+
 const resetSearch = () => {
   searchForm.name = "";
   searchForm.idCard = "";
+  currentPage.value = 1;
   searchPatients();
 };
 

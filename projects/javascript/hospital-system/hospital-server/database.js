@@ -17,7 +17,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-// Promise 封装
 function query(sql, params = []) {
     return new Promise((resolve, reject) => {
         db.all(sql, params, (err, rows) => {
@@ -124,13 +123,22 @@ function initDatabase(callback) {
             )
         `);
 
-        // 创建索引
         db.run(`CREATE INDEX IF NOT EXISTS idx_patients_id_card ON patients(id_card)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_patients_name ON patients(name)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_registrations_patient_id ON registrations(patient_id)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_registrations_date ON registrations(registration_date)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_medicines_name ON medicines(name)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_medicines_category ON medicines(category)`);
+
+        try {
+            db.run(`ALTER TABLE registrations ADD COLUMN symptom TEXT`);
+        } catch (e) { }
+        try {
+            db.run(`ALTER TABLE registrations ADD COLUMN diagnosis TEXT`);
+        } catch (e) { }
+        try {
+            db.run(`ALTER TABLE registrations ADD COLUMN payment_status TEXT DEFAULT 'unpaid'`);
+        } catch (e) { }
 
         console.log('数据库表结构及索引初始化完成');
         if (callback) callback();
