@@ -1,13 +1,6 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-// clang-format off
-#include <iphlpapi.h>
-#include <icmpapi.h>
-// clang-format on
-
+// 标准库头文件
 #include <algorithm>
 #include <chrono>
 #include <cstdint>
@@ -17,21 +10,31 @@
 #include <string>
 #include <vector>
 
-// Link Winsock and IP Helper libraries.
+// Windows 系统头文件
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+// clang-format off
+// IP Helper 和 ICMP API 头文件
+#include <iphlpapi.h>
+#include <icmpapi.h>
+// clang-format on
+
+// 链接 Winsock 和 IP Helper 库
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "iphlpapi.lib")
 
-// ICMP header type.
+// ICMP 报头结构定义
 struct IcmpHeader {
-  uint8_t type;       // Type (8 = Echo Request)
-  uint8_t code;       // Code (0)
-  uint16_t checksum;  // Checksum
-  uint16_t id;        // Identifier
-  uint16_t seq;       // Sequence number
+  uint8_t type;       // 类型 (8 = 回显请求 Echo Request)
+  uint8_t code;       // 代码 (0)
+  uint16_t checksum;  // 校验和
+  uint16_t id;        // 标识符
+  uint16_t seq;       // 序列号
 };
 
-// Compute Internet checksum for a buffer (size in bytes).
-static uint16_t calculate_checksum(const uint8_t* buffer, int size) {
+// 计算缓冲区的 Internet 校验和 (大小以字节为单位)
+static uint16_t CalculateChecksum(const uint8_t* buffer, int size) {
   uint32_t sum          = 0;
   const uint16_t* words = reinterpret_cast<const uint16_t*>(buffer);
 
@@ -41,18 +44,19 @@ static uint16_t calculate_checksum(const uint8_t* buffer, int size) {
   }
 
   if (size == 1) {
-    // Handle odd byte at the end.
+    // 处理末尾的奇数字节
     const uint8_t last_byte = *(reinterpret_cast<const uint8_t*>(words));
     sum += static_cast<uint16_t>(last_byte) << 8;
   }
 
-  // Fold 32-bit sum to 16 bits and return one's complement.
+  // 将 32 位和折叠为 16 位并返回反码
   sum = (sum >> 16) + (sum & 0xFFFF);
   sum += (sum >> 16);
   return static_cast<uint16_t>(~sum);
 }
 
-static void print_usage() {
+// 打印用法说明
+static void PrintUsage() {
   std::cout << "用法: scu-ping-tool target_name [-t] [-n count] [-l size]\n";
   std::cout << "选项:\n";
   std::cout << "    -t          Ping 指定的主机，直到停止。\n";
@@ -62,10 +66,11 @@ static void print_usage() {
 
 int main(int argc, char** argv) {
   std::string target;
-  int ping_count     = 4;   // default 4
-  int data_size      = 32;  // default 32 bytes
+  int ping_count     = 4;   // 默认发送 4 次
+  int data_size      = 32;  // 默认数据大小 32 字节
   bool infinite_ping = false;
 
+  // 解析命令行参数
   if (argc < 2) {
     std::cout << "请输入要 ping 的目标主机 (例如: www.baidu.com): ";
     std::cin >> target;
@@ -80,18 +85,20 @@ int main(int argc, char** argv) {
       } else if (arg == "-l" && i + 1 < argc) {
         data_size = std::stoi(argv[++i]);
       } else if (arg == "-h" || arg == "--help") {
-        print_usage();
+        PrintUsage();
         return 0;
       }
     }
   }
 
+  // 初始化 Winsock
   WSADATA wsa_data;
   if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
-    std::cerr << "WSAStartup failed.\n";
+    std::cerr << "WSAStartup 失败。\n";
     return 1;
   }
 
+  // 创建原始套接字 (Raw Socket)
   SOCKET sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
   if (sock == INVALID_SOCKET) {
     std::cerr << "创建套接字失败: " << WSAGetLastError() << "\n";
@@ -100,15 +107,17 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  // Set receive timeout (milliseconds).
+  // 设置接收超时时间 (毫秒)
   int timeout_ms = 1000;
   setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO,
              reinterpret_cast<const char*>(&timeout_ms), sizeof(timeout_ms));
 
+  // 准备目标地址结构
   sockaddr_in dest_addr;
   std::memset(&dest_addr, 0, sizeof(dest_addr));
   dest_addr.sin_family = AF_INET;
 
+  // 解析目标 IP 地址
   dest_addr.sin_addr.s_addr = inet_addr(target.c_str());
   if (dest_addr.sin_addr.s_addr == INADDR_NONE) {
     hostent* host = gethostbyname(target.c_str());
@@ -128,8 +137,8 @@ int main(int argc, char** argv) {
 
   const int packet_size = static_cast<int>(sizeof(IcmpHeader)) + data_size;
   std::vector<uint8_t> send_buf(packet_size);
-  std::vector<uint8_t> recv_buf(packet_size +
-                                100);  // include room for IP header
+  // 接收缓冲区需要包含 IP 报头的空间
+  std::vector<uint8_t> recv_buf(packet_size + 100);
 
   int sent_count          = 0;
   int recv_count          = 0;
@@ -140,23 +149,28 @@ int main(int argc, char** argv) {
   int seq                   = 0;
   const uint16_t identifier = static_cast<uint16_t>(GetCurrentProcessId());
 
+  // 主 Ping 循环
   while (infinite_ping || seq < ping_count) {
     std::fill(send_buf.begin(), send_buf.end(), 0);
 
+    // 填充 ICMP 报头
     IcmpHeader* icmp = reinterpret_cast<IcmpHeader*>(send_buf.data());
-    icmp->type       = 8;  // Echo Request
+    icmp->type       = 8;  // 回显请求 (Echo Request)
     icmp->code       = 0;
     icmp->id         = identifier;
     icmp->seq        = static_cast<uint16_t>(seq);
     icmp->checksum   = 0;
 
+    // 填充数据部分
     std::fill(send_buf.begin() + sizeof(IcmpHeader), send_buf.end(),
               static_cast<uint8_t>('E'));
 
-    icmp->checksum = calculate_checksum(send_buf.data(), packet_size);
+    // 计算校验和
+    icmp->checksum = CalculateChecksum(send_buf.data(), packet_size);
 
     auto start = std::chrono::high_resolution_clock::now();
 
+    // 发送数据包
     int sent_bytes = sendto(
         sock, reinterpret_cast<const char*>(send_buf.data()), packet_size, 0,
         reinterpret_cast<sockaddr*>(&dest_addr), sizeof(dest_addr));
@@ -166,6 +180,7 @@ int main(int argc, char** argv) {
       ++sent_count;
     }
 
+    // 接收响应
     sockaddr_in from_addr;
     int from_len = sizeof(from_addr);
     int recv_bytes =
@@ -185,12 +200,16 @@ int main(int argc, char** argv) {
         std::cout << "一般故障。\n";
       }
     } else {
+      // 解析接收到的数据包
+      // IP 报头长度位于第一个字节的低 4 位 (单位为 4 字节)
       int ip_header_len =
           (static_cast<int>(static_cast<unsigned char>(recv_buf[0])) & 0x0f) *
           4;
       if (recv_bytes >= ip_header_len + static_cast<int>(sizeof(IcmpHeader))) {
         IcmpHeader* recv_icmp =
             reinterpret_cast<IcmpHeader*>(recv_buf.data() + ip_header_len);
+
+        // 检查是否为回显应答 (Type 0) 且 ID 匹配
         if (recv_icmp->type == 0 && recv_icmp->id == icmp->id) {
           ++recv_count;
           total_time_us += duration_us;
@@ -222,6 +241,7 @@ int main(int argc, char** argv) {
     }
   }
 
+  // 打印统计信息
   std::cout << "\n" << target << " 的 Ping 统计信息:\n";
   std::cout << "    数据包: 已发送 = " << sent_count
             << "，已接收 = " << recv_count
