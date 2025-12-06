@@ -1,6 +1,0 @@
-@LPQ.API_HostAddress = http://localhost:5080
-
-GET {{LPQ.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

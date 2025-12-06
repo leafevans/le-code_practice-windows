@@ -1,0 +1,6 @@
+@lpq_solver_HostAddress = http://localhost:5278
+
+GET {{lpq_solver_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

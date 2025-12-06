@@ -7,7 +7,7 @@ namespace LPQ.Algorithm
 {
     public class SimplexSolver
     {
-        private double[,] _tableau;
+        private double[,] _tableau = null!;
         private int _numVars;
         private int _numConstraints;
 
@@ -16,23 +16,18 @@ namespace LPQ.Algorithm
             try
             {
                 Standardize(model);
-
                 while (true)
                 {
                     int enteringCol = FindEnteringColumn();
-
                     if (enteringCol == -1)
                     {
                         return ExtractSolution(model);
                     }
-
                     int leavingRow = FindLeavingRow(enteringCol);
-
                     if (leavingRow == -1)
                     {
                         return new Solution { IsOptimal = false, Message = "问题无界 (Unbounded)" };
                     }
-
                     Pivot(leavingRow, enteringCol);
                 }
             }
@@ -46,10 +41,8 @@ namespace LPQ.Algorithm
         {
             _numVars = model.Variables.Count;
             _numConstraints = model.Constraints.Count;
-
             int totalCols = _numVars + _numConstraints + 1;
             _tableau = new double[_numConstraints + 1, totalCols];
-
             for (int i = 0; i < _numConstraints; i++)
             {
                 var constraint = model.Constraints[i];
@@ -62,7 +55,6 @@ namespace LPQ.Algorithm
                 _tableau[i, _numVars + i] = 1.0;
                 _tableau[i, totalCols - 1] = constraint.RightHandSide;
             }
-
             for (int j = 0; j < _numVars; j++)
             {
                 _tableau[_numConstraints, j] = -model.Variables[j].Coefficient;
@@ -73,7 +65,6 @@ namespace LPQ.Algorithm
         {
             int colIndex = -1;
             double minVal = 0;
-
             for (int j = 0; j < _tableau.GetLength(1) - 1; j++)
             {
                 if (_tableau[_numConstraints, j] < minVal)
@@ -89,12 +80,10 @@ namespace LPQ.Algorithm
         {
             int rowIndex = -1;
             double minRatio = double.MaxValue;
-
             for (int i = 0; i < _numConstraints; i++)
             {
                 double coeff = _tableau[i, colIndex];
                 double rhs = _tableau[i, _tableau.GetLength(1) - 1];
-
                 if (coeff > 0)
                 {
                     double ratio = rhs / coeff;
@@ -112,12 +101,10 @@ namespace LPQ.Algorithm
         {
             double pivotValue = _tableau[pivotRow, pivotCol];
             int totalCols = _tableau.GetLength(1);
-
             for (int j = 0; j < totalCols; j++)
             {
                 _tableau[pivotRow, j] /= pivotValue;
             }
-
             for (int i = 0; i <= _numConstraints; i++)
             {
                 if (i != pivotRow)
@@ -137,9 +124,41 @@ namespace LPQ.Algorithm
             {
                 IsOptimal = true,
                 VariableValues = new Dictionary<string, double>(),
-                MaxValue = _tableau[_numConstraints, _tableau.GetLength(1) - 1], // Z值
+                MaxValue = _tableau[_numConstraints, _tableau.GetLength(1) - 1],
                 Message = "Success",
             };
+            int totalRows = _tableau.GetLength(0);
+            int rhsCol = _tableau.GetLength(1) - 1;
+            for (int j = 0; j < _numVars; j++)
+            {
+                string varName = model.Variables[j].Name;
+                double value = 0;
+                int oneCount = 0;
+                int zeroCount = 0;
+                int oneRowIndex = -1;
+                for (int i = 0; i < totalRows; i++)
+                {
+                    double val = _tableau[i, j];
+                    if (Math.Abs(val - 1.0) < 1e-9)
+                    {
+                        oneCount++;
+                        oneRowIndex = i;
+                    }
+                    else if (Math.Abs(val) < 1e-9)
+                    {
+                        zeroCount++;
+                    }
+                }
+                if (
+                    oneCount == 1
+                    && (oneCount + zeroCount == totalRows)
+                    && oneRowIndex < _numConstraints
+                )
+                {
+                    value = _tableau[oneRowIndex, rhsCol];
+                }
+                sol.VariableValues[varName] = value;
+            }
             return sol;
         }
     }
