@@ -10,56 +10,55 @@
     Title="LPQ 线性规划建模系统"
     Width="1000" Height="750"
     WindowStartupLocation="CenterScreen"
-    Background="#F0F0F0">
-
+    Background="#F0F0F0"
+    Foreground="Black">
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-
     <Grid>
         <Grid RowDefinitions="Auto, *" Margin="10">
-
             <Border Grid.Row="0" BorderBrush="#888888" BorderThickness="1" Background="White"
                 Margin="0,0,0,10">
                 <Grid ColumnDefinitions="Auto, *, Auto">
                     <Border Background="#E0E0E0" Padding="10,5" Width="100">
-                        <TextBlock Text="问题陈述:" VerticalAlignment="Center" FontWeight="Bold" />
+                        <TextBlock Text="问题陈述:" VerticalAlignment="Center" FontWeight="Bold"
+                            Foreground="Black" />
                     </Border>
                     <TextBox Grid.Column="1" Text="{Binding ProblemDescription}" BorderThickness="0"
-                        VerticalContentAlignment="Center" Margin="5" />
+                        VerticalContentAlignment="Center" Margin="5" Foreground="Black"
+                        Background="Transparent" />
                     <Button Grid.Column="2" Content="导入" Background="#4472C4" Foreground="White"
                         Margin="5" Padding="15,5" />
                 </Grid>
             </Border>
-
             <Border Grid.Row="1" BorderBrush="#4472C4" BorderThickness="2" Background="White">
                 <Grid RowDefinitions="Auto, Auto, *, Auto, Auto">
-
                     <Border Grid.Row="0" Background="#E6EFFF" Padding="10,5" BorderBrush="#CCCCCC"
                         BorderThickness="0,0,0,1">
                         <TextBlock Text="建模向导:" FontWeight="Bold" Foreground="#4472C4" />
                     </Border>
-
                     <Grid Grid.Row="1" ColumnDefinitions="Auto, *" Margin="10">
                         <StackPanel Grid.Column="0" Spacing="10">
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="目标:" VerticalAlignment="Center" FontWeight="Bold" />
+                                <TextBlock Text="目标:" VerticalAlignment="Center" FontWeight="Bold"
+                                    Foreground="Black" />
                                 <RadioButton Content="max" IsChecked="{Binding IsMax}"
-                                    GroupName="Obj" />
+                                    GroupName="Obj" Foreground="Black" />
                                 <RadioButton Content="min" IsChecked="{Binding !IsMax}"
-                                    GroupName="Obj" />
+                                    GroupName="Obj" Foreground="Black" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="变量数:" VerticalAlignment="Center" />
-                                <NumericUpDown Value="{Binding NumVars}" Minimum="1" Width="80" />
-                                <TextBlock Text="约束数:" VerticalAlignment="Center" />
-                                <NumericUpDown Value="{Binding NumCons}" Minimum="1" Width="80" />
+                                <TextBlock Text="变量数:" VerticalAlignment="Center" Foreground="Black" />
+                                <NumericUpDown Value="{Binding NumVars}" Minimum="1" Width="80"
+                                    Foreground="Black" />
+                                <TextBlock Text="约束数:" VerticalAlignment="Center" Foreground="Black" />
+                                <NumericUpDown Value="{Binding NumCons}" Minimum="1" Width="80"
+                                    Foreground="Black" />
                                 <Button Command="{Binding GenerateCommand}" Content="重置表格"
                                     Background="#4472C4" Foreground="White" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>
-
                     <Border Grid.Row="2" BorderBrush="#888888" BorderThickness="1" Margin="10">
                         <ScrollViewer>
                             <StackPanel>
@@ -75,7 +74,8 @@
                                                 BorderThickness="0,0,1,1" Background="#F0F0F0">
                                                 <TextBlock Text="{Binding}"
                                                     HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center" FontWeight="Bold" />
+                                                    VerticalAlignment="Center" FontWeight="Bold"
+                                                    Foreground="Black" />
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -88,7 +88,8 @@
                                                     BorderThickness="0,0,1,1" Background="#F0F0F0">
                                                     <TextBlock Text="{Binding Header}"
                                                         HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center" />
+                                                        VerticalAlignment="Center"
+                                                        Foreground="Black" />
                                                 </Border>
                                                 <ItemsControl ItemsSource="{Binding Cells}">
                                                     <ItemsControl.ItemsPanel>
@@ -107,7 +108,8 @@
                                                                     HorizontalContentAlignment="Center"
                                                                     VerticalContentAlignment="Center"
                                                                     BorderThickness="0"
-                                                                    Background="Transparent" />
+                                                                    Background="Transparent"
+                                                                    Foreground="Black" />
                                                             </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
@@ -125,9 +127,9 @@
                             <TextBlock Text="【建模预览】" FontWeight="Bold" Foreground="#4472C4"
                                 HorizontalAlignment="Center" Margin="0,0,0,5" />
                             <TextBlock Text="{Binding MathModelText}" FontFamily="Consolas"
-                                HorizontalAlignment="Center" />
+                                HorizontalAlignment="Center" Foreground="Black" />
                             <Button Command="{Binding UpdateMathModelPreviewCommand}" Content="刷新预览"
-                                HorizontalAlignment="Right" FontSize="10" />
+                                HorizontalAlignment="Right" FontSize="10" Foreground="Black" />
                         </StackPanel>
                     </Border>
                     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right"
@@ -143,10 +145,12 @@
                 BorderThickness="2" BoxShadow="0 0 20 0 #55000000">
                 <Grid RowDefinitions="Auto, *, Auto">
                     <Border Grid.Row="0" Background="#E6EFFF" Padding="10">
-                        <TextBlock Text="规划方案" FontWeight="Bold" HorizontalAlignment="Center" />
+                        <TextBlock Text="规划方案" FontWeight="Bold" HorizontalAlignment="Center"
+                            Foreground="Black" />
                     </Border>
                     <ScrollViewer Grid.Row="1" Margin="10">
-                        <TextBlock Text="{Binding ResultLog}" FontFamily="Consolas" FontSize="14" />
+                        <TextBlock Text="{Binding ResultLog}" FontFamily="Consolas" FontSize="14"
+                            Foreground="Black" />
                     </ScrollViewer>
                     <Button Grid.Row="2" Command="{Binding ClosePopupCommand}" Content="关闭"
                         HorizontalAlignment="Center" Margin="10" Background="#4472C4"

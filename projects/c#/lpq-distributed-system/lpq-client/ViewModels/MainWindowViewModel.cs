@@ -62,7 +62,7 @@ namespace lpq_client.ViewModels
         private const string _apiUrl = "http://localhost:5278/api/Solver/solve";
 
         [ObservableProperty]
-        private string _problemDescription = "在此输入问题描述...";
+        private string _problemDescription = "在此输入问题描述";
 
         [ObservableProperty]
         private int _numVars = 2;
@@ -184,13 +184,32 @@ namespace lpq_client.ViewModels
                 }
                 else
                 {
-                    ResultLog = $"❌ 服务器错误: {response.StatusCode}";
+                    var sb = new System.Text.StringBuilder();
+                    sb.AppendLine("=== Request Failed ===");
+                    sb.AppendLine(
+                        $"[ERROR] Server responded with status code: {response.StatusCode}"
+                    );
+                    sb.AppendLine($"Timestamp: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                    sb.AppendLine("======================");
+
+                    ResultLog = sb.ToString();
                     ShowResultPopup = true;
                 }
             }
             catch (Exception ex)
             {
-                ResultLog = $"❌ 连接失败: {ex.Message}\n请检查后端是否运行";
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("=== Connection Error ===");
+                sb.AppendLine("[FATAL] Failed to connect to the solver service.");
+                sb.AppendLine($"Exception: {ex.GetType().Name}");
+                sb.AppendLine($"Message: {ex.Message}");
+                sb.AppendLine();
+                sb.AppendLine("Troubleshooting:");
+                sb.AppendLine("1. Ensure the backend service (lpq-solver) is running.");
+                sb.AppendLine("2. Verify the API URL configuration.");
+                sb.AppendLine("========================");
+
+                ResultLog = sb.ToString();
                 ShowResultPopup = true;
             }
         }
@@ -233,16 +252,31 @@ namespace lpq_client.ViewModels
         {
             if (result == null)
                 return;
-            string log = $"规划方案结果:\n\n";
-            log += $"{(IsMax ? "max" : "min")} z = {result.MaxValue:F2}\n\n";
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("=== Optimization Result ===");
+            sb.AppendLine($"Status: {(result.IsOptimal ? "Optimal" : "Not Optimal")}");
+            sb.AppendLine($"Objective Value (Z): {result.MaxValue:F4}");
+            sb.AppendLine();
+            sb.AppendLine("--- Decision Variables ---");
+
             if (result.VariableValues != null)
             {
-                foreach (var kvp in result.VariableValues)
+                foreach (var kvp in result.VariableValues.OrderBy(k => k.Key))
                 {
-                    log += $"<{kvp.Key}> = {kvp.Value:F2}\n";
+                    sb.AppendLine($"{kvp.Key, -5} : {kvp.Value, 10:F4}");
                 }
             }
-            ResultLog = log;
+            else
+            {
+                sb.AppendLine("No variables returned.");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine($"Message: {result.Message}");
+            sb.AppendLine("===========================");
+
+            ResultLog = sb.ToString();
             ShowResultPopup = true;
         }
     }
