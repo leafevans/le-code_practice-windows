@@ -129,9 +129,10 @@ namespace lpq_client.ViewModels
         [RelayCommand]
         public void UpdateMathModelPreview()
         {
-            string type = IsMax ? "max" : "min";
-            string text = $"{type} z = ";
-
+            string type = IsMax ? "\\max" : "\\min";
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine(@"\begin{aligned}");
+            sb.Append($@"& {type} z = ");
             if (GridRows.Count > 0)
             {
                 var objRow = GridRows.Last();
@@ -140,13 +141,12 @@ namespace lpq_client.ViewModels
                 {
                     string val = objRow.Cells[j].Value;
                     if (val != "0")
-                        parts.Add($"{val}x{j + 1}");
+                        parts.Add($"{val}x_{{{j + 1}}}");
                 }
-                text += string.Join(" + ", parts);
+                sb.Append(parts.Count > 0 ? string.Join(" + ", parts) : "0");
             }
-
-            text += "\n\ns.t.\n";
-
+            sb.AppendLine(@" \\");
+            sb.AppendLine(@"& \text{s.t.} \\");
             for (int i = 0; i < NumCons && i < GridRows.Count - 1; i++)
             {
                 var row = GridRows[i];
@@ -155,15 +155,15 @@ namespace lpq_client.ViewModels
                 {
                     string val = row.Cells[j].Value;
                     if (val != "0")
-                        parts.Add($"{val}x{j + 1}");
+                        parts.Add($"{val}x_{{{j + 1}}}");
                 }
                 string lhs = parts.Count > 0 ? string.Join(" + ", parts) : "0";
                 string rhs = row.Cells[NumVars].Value;
-                text += $"   {lhs} <= {rhs}\n";
+                sb.AppendLine($@"& \quad {lhs} \leq {rhs} \\");
             }
-
-            text += "   xi >= 0";
-            MathModelText = text;
+            sb.AppendLine(@"& \quad x_i \geq 0");
+            sb.Append(@"\end{aligned}");
+            MathModelText = sb.ToString();
         }
 
         [RelayCommand]
@@ -224,14 +224,12 @@ namespace lpq_client.ViewModels
                 Description = ProblemDescription,
                 ObjectiveType = IsMax ? "Max" : "Min",
             };
-
             var objRow = GridRows.Last();
             for (int j = 0; j < NumVars; j++)
             {
                 double.TryParse(objRow.Cells[j].Value, out double val);
                 model.Variables.Add(new Variable { Name = $"x{j + 1}", Coefficient = val });
             }
-
             for (int i = 0; i < NumCons; i++)
             {
                 var row = GridRows[i];
@@ -252,14 +250,12 @@ namespace lpq_client.ViewModels
         {
             if (result == null)
                 return;
-
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("=== Optimization Result ===");
             sb.AppendLine($"Status: {(result.IsOptimal ? "Optimal" : "Not Optimal")}");
             sb.AppendLine($"Objective Value (Z): {result.MaxValue:F4}");
             sb.AppendLine();
             sb.AppendLine("--- Decision Variables ---");
-
             if (result.VariableValues != null)
             {
                 foreach (var kvp in result.VariableValues.OrderBy(k => k.Key))
@@ -271,11 +267,9 @@ namespace lpq_client.ViewModels
             {
                 sb.AppendLine("No variables returned.");
             }
-
             sb.AppendLine();
             sb.AppendLine($"Message: {result.Message}");
             sb.AppendLine("===========================");
-
             ResultLog = sb.ToString();
             ShowResultPopup = true;
         }

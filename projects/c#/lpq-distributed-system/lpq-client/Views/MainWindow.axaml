@@ -9,154 +9,138 @@
     Icon="/Assets/avalonia-logo.ico"
     Title="LPQ 线性规划建模系统"
     Width="1000" Height="750"
-    WindowStartupLocation="CenterScreen"
-    Background="#F0F0F0"
-    Foreground="Black">
+    WindowStartupLocation="CenterScreen">
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid>
-        <Grid RowDefinitions="Auto, *" Margin="10">
-            <Border Grid.Row="0" BorderBrush="#888888" BorderThickness="1" Background="White"
-                Margin="0,0,0,10">
-                <Grid ColumnDefinitions="Auto, *, Auto">
-                    <Border Background="#E0E0E0" Padding="10,5" Width="100">
-                        <TextBlock Text="问题陈述:" VerticalAlignment="Center" FontWeight="Bold"
-                            Foreground="Black" />
-                    </Border>
-                    <TextBox Grid.Column="1" Text="{Binding ProblemDescription}" BorderThickness="0"
-                        VerticalContentAlignment="Center" Margin="5" Foreground="Black"
-                        Background="Transparent" />
-                    <Button Grid.Column="2" Content="导入" Background="#4472C4" Foreground="White"
-                        Margin="5" Padding="15,5" />
-                </Grid>
-            </Border>
-            <Border Grid.Row="1" BorderBrush="#4472C4" BorderThickness="2" Background="White">
-                <Grid RowDefinitions="Auto, Auto, *, Auto, Auto">
-                    <Border Grid.Row="0" Background="#E6EFFF" Padding="10,5" BorderBrush="#CCCCCC"
-                        BorderThickness="0,0,0,1">
-                        <TextBlock Text="建模向导:" FontWeight="Bold" Foreground="#4472C4" />
-                    </Border>
-                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *" Margin="10">
-                        <StackPanel Grid.Column="0" Spacing="10">
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="目标:" VerticalAlignment="Center" FontWeight="Bold"
-                                    Foreground="Black" />
-                                <RadioButton Content="max" IsChecked="{Binding IsMax}"
-                                    GroupName="Obj" Foreground="Black" />
-                                <RadioButton Content="min" IsChecked="{Binding !IsMax}"
-                                    GroupName="Obj" Foreground="Black" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="变量数:" VerticalAlignment="Center" Foreground="Black" />
-                                <NumericUpDown Value="{Binding NumVars}" Minimum="1" Width="80"
-                                    Foreground="Black" />
-                                <TextBlock Text="约束数:" VerticalAlignment="Center" Foreground="Black" />
-                                <NumericUpDown Value="{Binding NumCons}" Minimum="1" Width="80"
-                                    Foreground="Black" />
-                                <Button Command="{Binding GenerateCommand}" Content="重置表格"
-                                    Background="#4472C4" Foreground="White" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                    <Border Grid.Row="2" BorderBrush="#888888" BorderThickness="1" Margin="10">
-                        <ScrollViewer>
-                            <StackPanel>
-                                <ItemsControl ItemsSource="{Binding ColHeaders}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Width="80" Height="30" BorderBrush="#CCCCCC"
-                                                BorderThickness="0,0,1,1" Background="#F0F0F0">
-                                                <TextBlock Text="{Binding}"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center" FontWeight="Bold"
-                                                    Foreground="Black" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <ItemsControl ItemsSource="{Binding GridRows}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Border Width="80" Height="30" BorderBrush="#CCCCCC"
-                                                    BorderThickness="0,0,1,1" Background="#F0F0F0">
-                                                    <TextBlock Text="{Binding Header}"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Foreground="Black" />
+    <Grid RowDefinitions="Auto, Auto, *, Auto, Auto" Margin="20">
+        <StackPanel Grid.Row="0" Spacing="10" Margin="0,0,0,20">
+            <TextBlock Text="LPQ 分布式建模系统" Theme="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock Text="基于单纯形算法的线性规划求解器" Classes="Caption" Foreground="Gray" />
+        </StackPanel>
+        <Border Grid.Row="1" Theme="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20"
+            CornerRadius="8" Background="White" BoxShadow="0 2 10 0 #10000000">
+            <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="问题描述:" VerticalAlignment="Center"
+                    Margin="0,0,10,0" FontWeight="SemiBold" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProblemDescription}"
+                    Watermark="请输入线性规划问题描述..." Margin="0,0,10,0" />
+                <Button Grid.Row="0" Grid.Column="2" Content="导入数据" />
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                    Orientation="Horizontal" Spacing="20" Margin="0,20,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="目标:" VerticalAlignment="Center" FontWeight="SemiBold" />
+                        <RadioButton Content="Max" IsChecked="{Binding IsMax}" GroupName="Obj" />
+                        <RadioButton Content="Min" IsChecked="{Binding !IsMax}" GroupName="Obj" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="变量数:" VerticalAlignment="Center" />
+                        <NumericUpDown Value="{Binding NumVars}" Minimum="1" Maximum="10"
+                            FormatString="0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="约束数:" VerticalAlignment="Center" />
+                        <NumericUpDown Value="{Binding NumCons}" Minimum="1" Maximum="10"
+                            FormatString="0" />
+                    </StackPanel>
+
+                    <Button Command="{Binding GenerateCommand}" Content="生成表格" Classes="Accent" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Theme="{StaticResource CardBorder}" Padding="0" CornerRadius="8"
+            ClipToBounds="True" BorderBrush="#E0E0E0" BorderThickness="1">
+            <ScrollViewer>
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding ColHeaders}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Background="#F8F9FA" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="100" Height="40" BorderBrush="#E0E0E0"
+                                    BorderThickness="0,0,1,1">
+                                    <TextBlock Text="{Binding}" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" FontWeight="SemiBold" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding GridRows}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="100" Height="40" BorderBrush="#E0E0E0"
+                                        BorderThickness="0,0,1,1" Background="#F8F9FA">
+                                        <TextBlock Text="{Binding Header}"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            FontWeight="SemiBold" />
+                                    </Border>
+                                    <ItemsControl ItemsSource="{Binding Cells}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Width="100" Height="40"
+                                                    BorderBrush="#E0E0E0" BorderThickness="0,0,1,1"
+                                                    Background="{Binding Background}">
+                                                    <TextBox Text="{Binding Value}"
+                                                        IsReadOnly="{Binding IsReadOnly}"
+                                                        HorizontalContentAlignment="Center"
+                                                        VerticalContentAlignment="Center"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        CornerRadius="0" />
                                                 </Border>
-                                                <ItemsControl ItemsSource="{Binding Cells}">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <StackPanel Orientation="Horizontal" />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Border Width="80" Height="30"
-                                                                BorderBrush="#CCCCCC"
-                                                                BorderThickness="0,0,1,1"
-                                                                Background="{Binding Background}">
-                                                                <TextBox Text="{Binding Value}"
-                                                                    IsReadOnly="{Binding IsReadOnly}"
-                                                                    HorizontalContentAlignment="Center"
-                                                                    VerticalContentAlignment="Center"
-                                                                    BorderThickness="0"
-                                                                    Background="Transparent"
-                                                                    Foreground="Black" />
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+        <Border Grid.Row="3" Margin="0,20,0,0" Padding="15" Background="#F8F9FA" CornerRadius="8"
+            BorderBrush="#E0E0E0" BorderThickness="1">
+            <StackPanel>
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Text="数学模型预览" FontWeight="SemiBold" Foreground="#666" />
+                    <Button Grid.Column="1" Command="{Binding UpdateMathModelPreviewCommand}"
+                        Content="刷新" FontSize="12" Padding="8,4" />
+                </Grid>
+                <TextBlock Text="{Binding MathModelText}" FontFamily="Consolas" Margin="0,10,0,0"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
+        <Button Grid.Row="4" Command="{Binding SolveCommand}" Content="开始计算"
+            HorizontalAlignment="Right" Margin="0,20,0,0"
+            Padding="30,10" FontSize="16" Classes="Accent" />
+        <Grid Grid.RowSpan="5" IsVisible="{Binding ShowResultPopup}" Background="#80000000">
+            <Border Width="400" Height="500" Background="White" CornerRadius="12"
+                BoxShadow="0 10 30 0 #40000000">
+                <Grid RowDefinitions="Auto, *, Auto" Margin="20">
+                    <TextBlock Grid.Row="0" Text="计算结果"
+                        Theme="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
+                    <Border Grid.Row="1" Background="#F8F9FA" CornerRadius="8" Margin="0,20"
+                        Padding="15">
+                        <ScrollViewer>
+                            <SelectableTextBlock Text="{Binding ResultLog}" FontFamily="Consolas" />
                         </ScrollViewer>
                     </Border>
-                    <Border Grid.Row="3" Margin="10" BorderBrush="#CCCCCC" BorderThickness="1"
-                        Padding="10" Background="#FAFAFA">
-                        <StackPanel>
-                            <TextBlock Text="【建模预览】" FontWeight="Bold" Foreground="#4472C4"
-                                HorizontalAlignment="Center" Margin="0,0,0,5" />
-                            <TextBlock Text="{Binding MathModelText}" FontFamily="Consolas"
-                                HorizontalAlignment="Center" Foreground="Black" />
-                            <Button Command="{Binding UpdateMathModelPreviewCommand}" Content="刷新预览"
-                                HorizontalAlignment="Right" FontSize="10" Foreground="Black" />
-                        </StackPanel>
-                    </Border>
-                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right"
-                        Margin="10" Spacing="10">
-                        <Button Command="{Binding SolveCommand}" Content="计算" Background="#4472C4"
-                            Foreground="White" Padding="30,5" FontWeight="Bold" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Grid>
-        <Grid IsVisible="{Binding ShowResultPopup}" Background="#80000000">
-            <Border Width="300" Height="400" Background="White" BorderBrush="#4472C4"
-                BorderThickness="2" BoxShadow="0 0 20 0 #55000000">
-                <Grid RowDefinitions="Auto, *, Auto">
-                    <Border Grid.Row="0" Background="#E6EFFF" Padding="10">
-                        <TextBlock Text="规划方案" FontWeight="Bold" HorizontalAlignment="Center"
-                            Foreground="Black" />
-                    </Border>
-                    <ScrollViewer Grid.Row="1" Margin="10">
-                        <TextBlock Text="{Binding ResultLog}" FontFamily="Consolas" FontSize="14"
-                            Foreground="Black" />
-                    </ScrollViewer>
                     <Button Grid.Row="2" Command="{Binding ClosePopupCommand}" Content="关闭"
-                        HorizontalAlignment="Center" Margin="10" Background="#4472C4"
-                        Foreground="White" Padding="20,5" />
+                        HorizontalAlignment="Center" Width="120" />
                 </Grid>
             </Border>
         </Grid>
+
     </Grid>
 </Window>
