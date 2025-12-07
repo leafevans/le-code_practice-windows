@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LPQ 分布式求解系统</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"],
+          ],
+        },
+      };
+    </script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+  </head>
+  <body class="bg-base-200 min-h-screen p-8 font-sans">
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="navbar bg-base-100 rounded-box shadow-lg">
+        <div class="flex-1">
+          <a class="btn btn-ghost text-xl text-primary">🧮 LPQ Solver</a>
+        </div>
+        <div class="flex-none">
+          <div class="badge badge-outline">Electron Client</div>
+        </div>
+      </div>
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-gray-700">1. 问题配置</h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div class="form-control w-full">
+              <label class="label"
+                ><span class="label-text">目标类型</span></label
+              >
+              <select
+                id="objType"
+                class="select select-bordered w-full select-primary"
+              >
+                <option value="Max">最大化 (Max)</option>
+                <option value="Min">最小化 (Min)</option>
+              </select>
+            </div>
+            <div class="form-control w-full">
+              <label class="label"
+                ><span class="label-text">变量数量 (x)</span></label
+              >
+              <input
+                type="number"
+                id="numVars"
+                value="2"
+                min="1"
+                max="10"
+                class="input input-bordered w-full"
+              />
+            </div>
+            <div class="form-control w-full">
+              <label class="label"
+                ><span class="label-text">约束数量</span></label
+              >
+              <input
+                type="number"
+                id="numCons"
+                value="2"
+                min="1"
+                max="10"
+                class="input input-bordered w-full"
+              />
+            </div>
+            <button onclick="generateTable()" class="btn btn-primary">
+              生成表格
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="input-area" class="hidden space-y-6">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-gray-700">2. 目标函数系数</h2>
+            <div
+              id="obj-inputs"
+              class="flex flex-wrap gap-4 items-center"
+            ></div>
+          </div>
+        </div>
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-gray-700">3. 约束条件</h2>
+            <div id="cons-inputs" class="space-y-3"></div>
+          </div>
+        </div>
+        <div class="card bg-base-100 shadow-xl border-l-4 border-primary">
+          <div class="card-body">
+            <h2 class="card-title text-gray-700">4. 模型预览</h2>
+            <div
+              id="math-preview"
+              class="py-4 text-lg text-center overflow-x-auto"
+            ></div>
+            <div class="card-actions justify-end">
+              <button
+                onclick="solve()"
+                class="btn btn-wide btn-accent text-white text-lg"
+              >
+                🚀 开始计算
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <dialog id="result_modal" class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg mb-4">计算结果</h3>
+          <div id="result-content" class="space-y-4"></div>
+          <div class="modal-action">
+            <form method="dialog">
+              <button class="btn">关闭</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>
