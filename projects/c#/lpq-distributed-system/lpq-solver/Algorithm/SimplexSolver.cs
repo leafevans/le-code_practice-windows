@@ -21,7 +21,18 @@ namespace LPQ.Algorithm
                     int enteringCol = FindEnteringColumn();
                     if (enteringCol == -1)
                     {
-                        return ExtractSolution(model);
+                        var sol = ExtractSolution(model);
+                        if (
+                            string.Equals(
+                                model.ObjectiveType,
+                                "Min",
+                                StringComparison.OrdinalIgnoreCase
+                            )
+                        )
+                        {
+                            sol.MaxValue = -sol.MaxValue;
+                        }
+                        return sol;
                     }
                     int leavingRow = FindLeavingRow(enteringCol);
                     if (leavingRow == -1)
@@ -40,24 +51,55 @@ namespace LPQ.Algorithm
         private void Standardize(LPQModel model)
         {
             _numVars = model.Variables.Count;
-            _numConstraints = model.Constraints.Count;
+            var processedConstraints = new List<(Dictionary<string, double> Coeffs, double Rhs)>();
+            foreach (var cons in model.Constraints)
+            {
+                if (cons.Operator == "<=")
+                {
+                    processedConstraints.Add((cons.Coefficients, cons.RightHandSide));
+                }
+                else if (cons.Operator == ">=")
+                {
+                    var negatedCoeffs = cons.Coefficients.ToDictionary(k => k.Key, v => -v.Value);
+                    processedConstraints.Add((negatedCoeffs, -cons.RightHandSide));
+                }
+                else if (cons.Operator == "=")
+                {
+                    processedConstraints.Add((cons.Coefficients, cons.RightHandSide));
+                    var negatedCoeffs = cons.Coefficients.ToDictionary(k => k.Key, v => -v.Value);
+                    processedConstraints.Add((negatedCoeffs, -cons.RightHandSide));
+                }
+                else
+                {
+                    processedConstraints.Add((cons.Coefficients, cons.RightHandSide));
+                }
+            }
+            _numConstraints = processedConstraints.Count;
             int totalCols = _numVars + _numConstraints + 1;
             _tableau = new double[_numConstraints + 1, totalCols];
             for (int i = 0; i < _numConstraints; i++)
             {
-                var constraint = model.Constraints[i];
+                var (coeffs, rhs) = processedConstraints[i];
                 for (int j = 0; j < _numVars; j++)
                 {
                     string varName = model.Variables[j].Name;
-                    if (constraint.Coefficients.ContainsKey(varName))
-                        _tableau[i, j] = constraint.Coefficients[varName];
+                    if (coeffs.ContainsKey(varName))
+                        _tableau[i, j] = coeffs[varName];
                 }
                 _tableau[i, _numVars + i] = 1.0;
-                _tableau[i, totalCols - 1] = constraint.RightHandSide;
+                _tableau[i, totalCols - 1] = rhs;
             }
+            bool isMin = string.Equals(
+                model.ObjectiveType,
+                "Min",
+                StringComparison.OrdinalIgnoreCase
+            );
             for (int j = 0; j < _numVars; j++)
             {
-                _tableau[_numConstraints, j] = -model.Variables[j].Coefficient;
+                double coeff = model.Variables[j].Coefficient;
+                if (isMin)
+                    coeff = -coeff;
+                _tableau[_numConstraints, j] = -coeff;
             }
         }
 

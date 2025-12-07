@@ -20,8 +20,6 @@ namespace LPQ.Domain
     {
         public string Description { get; set; } = string.Empty;
         public string ObjectiveType { get; set; } = "Max";
-
-        // 初始化列表
         public List<Variable> Variables { get; set; } = new List<Variable>();
         public List<Constraint> Constraints { get; set; } = new List<Constraint>();
     }
@@ -30,7 +28,6 @@ namespace LPQ.Domain
     {
         public bool IsOptimal { get; set; }
         public double MaxValue { get; set; }
-
         public Dictionary<string, double>? VariableValues { get; set; }
         public string Message { get; set; } = string.Empty;
     }

@@ -9,7 +9,6 @@ namespace LPQ.API.Controllers
     public class SolverController(SimplexSolver solver) : ControllerBase
     {
         private readonly SimplexSolver _solver = solver;
-
         [HttpPost("solve")]
         public IActionResult Solve([FromBody] LPQModel model)
         {
