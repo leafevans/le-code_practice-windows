@@ -117,8 +117,13 @@
                     <Button Grid.Column="1" Command="{Binding UpdateMathModelPreviewCommand}"
                         Content="刷新" FontSize="12" Padding="8,4" />
                 </Grid>
-                <TextBlock Text="{Binding MathModelText}" FontFamily="Consolas" Margin="0,10,0,0"
-                    TextWrapping="Wrap" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Disabled" Margin="0,10,0,0">
+                    <SelectableTextBlock Text="{Binding MathModelText}"
+                        FontFamily="Consolas, Cascadia Code, Courier New"
+                        FontSize="16"
+                        LineHeight="24" />
+                </ScrollViewer>
             </StackPanel>
         </Border>
         <Button Grid.Row="4" Command="{Binding SolveCommand}" Content="开始计算"
