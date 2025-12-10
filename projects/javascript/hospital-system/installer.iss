@@ -9,9 +9,13 @@ Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
 
+[Dirs]
+Name: "{app}"; Permissions: users-modify
+
 [Files]
 Source: "Release\hospital-system.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\hospital-client\*"; DestDir: "{app}\hospital-client"; Flags: ignoreversion recursesubdirs
+Source: "hospital-server\hospital.db"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\医院管理系统"; Filename: "{app}\hospital-system.exe"

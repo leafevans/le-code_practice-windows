@@ -77,21 +77,35 @@ function initDatabase(callback) {
             )
         `);
 
-        db.run(`
-            CREATE TABLE IF NOT EXISTS registrations (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                patient_id INTEGER NOT NULL,
-                doctor_id INTEGER NOT NULL,
-                department_code TEXT NOT NULL,
-                registration_date TEXT NOT NULL,
-                status TEXT DEFAULT 'pending',
-                fee REAL DEFAULT 10.0,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (patient_id) REFERENCES patients(id),
-                FOREIGN KEY (doctor_id) REFERENCES doctors(id),
-                FOREIGN KEY (department_code) REFERENCES departments(code)
-            )
-        `);
+        // 创建挂号表
+        db.run(`CREATE TABLE IF NOT EXISTS registrations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            patient_id INTEGER,
+            doctor_id INTEGER,
+            department_code TEXT,
+            registration_date TEXT,
+            status TEXT DEFAULT 'pending',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(patient_id) REFERENCES patients(id),
+            FOREIGN KEY(doctor_id) REFERENCES doctors(id)
+        )`);
+
+        // 尝试添加新字段（如果不存在）
+        const columnsToAdd = [
+            'ALTER TABLE registrations ADD COLUMN symptom TEXT',
+            'ALTER TABLE registrations ADD COLUMN diagnosis TEXT',
+            'ALTER TABLE registrations ADD COLUMN fee REAL DEFAULT 0',
+            'ALTER TABLE registrations ADD COLUMN payment_status TEXT DEFAULT "unpaid"'
+        ];
+
+        columnsToAdd.forEach(sql => {
+            db.run(sql, (err) => {
+                // 忽略 "duplicate column name" 错误
+                if (err && !err.message.includes('duplicate column name')) {
+                    console.error('添加字段失败:', err.message);
+                }
+            });
+        });
 
         db.run(`
             CREATE TABLE IF NOT EXISTS medicines (
@@ -129,16 +143,6 @@ function initDatabase(callback) {
         db.run(`CREATE INDEX IF NOT EXISTS idx_registrations_date ON registrations(registration_date)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_medicines_name ON medicines(name)`);
         db.run(`CREATE INDEX IF NOT EXISTS idx_medicines_category ON medicines(category)`);
-
-        try {
-            db.run(`ALTER TABLE registrations ADD COLUMN symptom TEXT`);
-        } catch (e) { }
-        try {
-            db.run(`ALTER TABLE registrations ADD COLUMN diagnosis TEXT`);
-        } catch (e) { }
-        try {
-            db.run(`ALTER TABLE registrations ADD COLUMN payment_status TEXT DEFAULT 'unpaid'`);
-        } catch (e) { }
 
         console.log('数据库表结构及索引初始化完成');
         if (callback) callback();
