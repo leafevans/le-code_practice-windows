@@ -77,7 +77,6 @@ function initDatabase(callback) {
             )
         `);
 
-        // 创建挂号表
         db.run(`CREATE TABLE IF NOT EXISTS registrations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             patient_id INTEGER,
@@ -90,7 +89,6 @@ function initDatabase(callback) {
             FOREIGN KEY(doctor_id) REFERENCES doctors(id)
         )`);
 
-        // 尝试添加新字段（如果不存在）
         const columnsToAdd = [
             'ALTER TABLE registrations ADD COLUMN symptom TEXT',
             'ALTER TABLE registrations ADD COLUMN diagnosis TEXT',
@@ -100,7 +98,6 @@ function initDatabase(callback) {
 
         columnsToAdd.forEach(sql => {
             db.run(sql, (err) => {
-                // 忽略 "duplicate column name" 错误
                 if (err && !err.message.includes('duplicate column name')) {
                     console.error('添加字段失败:', err.message);
                 }

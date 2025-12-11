@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const { initDatabase, insertInitialData, getDoctorsByDepartment, query, run, db } = require('./database');
+const { initDatabase, insertInitialData, getDoctorsByDepartment, query, run, get, db } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
