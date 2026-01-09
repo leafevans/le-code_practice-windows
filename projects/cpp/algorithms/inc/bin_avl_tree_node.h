@@ -13,7 +13,7 @@ enum BalanceFactor {
 template <typename ElemType>
 struct BinAvlTreeNode {
 
-  ElemType m_tElem;             // 节点存储的元素
+  ElemType m_tElem;               // 节点存储的元素
   BalanceFactor m_eBalance;       // 节点的平衡因子
   BinAvlTreeNode* m_pLeftChild;   // 指向左子节点的指针
   BinAvlTreeNode* m_pRightChild;  // 指向右子节点的指针

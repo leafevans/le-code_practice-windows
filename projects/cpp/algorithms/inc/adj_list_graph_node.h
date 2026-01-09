@@ -69,7 +69,7 @@ bool AdjListGraphNode<ElemType, WeightType>::InsertEdge(int nNode,
 // 删除一条边
 template <class ElemType, class WeightType>
 bool AdjListGraphNode<ElemType, WeightType>::DeleteEdge(int nNode) {
-  SimpleLkList<AdjListGraphEdge<WeightType>>*psllAdj = &m_sllAdj;
+  SimpleLkList<AdjListGraphEdge<WeightType>>* psllAdj = &m_sllAdj;
   psllAdj->Head();
   AdjListGraphEdge<WeightType> algeElem;
 
