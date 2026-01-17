@@ -94,3 +94,24 @@ SELECT
         ELSE '二线城市'
     END AS `工作地址`
 FROM emp;
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '编号',
+    name VARCHAR(10) NOT NULL UNIQUE COMMENT '姓名',
+    age INT CHECK (
+        age > 0
+        AND age <= 120
+    ) COMMENT '年龄',
+    status CHAR(1) DEFAULT '1' COMMENT '状态',
+    gender CHAR(1) COMMENT '性别'
+) COMMENT '用户';
+
+INSERT INTO
+    users (name, age, status, gender)
+VALUES ('Miku', 19, '1', '女');
+
+INSERT INTO
+    users (name, age, status, gender)
+VALUES ('Fender', 20, '0', '男');
+
+INSERT INTO users (name, age, gender) VALUES ('Mike', 30, '女');
