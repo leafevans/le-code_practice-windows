@@ -148,3 +148,5 @@ logs/
 *.temp
 *.swp
 *.bak
+
+.jj
