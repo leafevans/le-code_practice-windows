@@ -94,22 +94,8 @@ VALUES (
 DESC emp;
 
 ALTER TABLE emp
-ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY emp (dept_id) REFERENCES dept (id);
-
-ALTER TABLE emp DROP FOREIGN KEY fk_emp_dept_id;
-
-DELETE FROM dept WHERE id = 1;
-
-ALTER TABLE emp DROP FOREIGN KEY fk_emp_dept_id;
-
-ALTER TABLE emp
-ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY emp (dept_id) REFERENCES dept (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY emp (dept_id) REFERENCES dept (id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 UPDATE dept SET id = 6 WHERE id = 1;
 
 DELETE FROM dept WHERE id = 6;
-
-ALTER TABLE emp
-ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY emp (dept_id) REFERENCES dept (id) ON DELETE SET NULL ON UPDATE CASCADE;
-
-DELETE FROM dept WHERE id = 1;
