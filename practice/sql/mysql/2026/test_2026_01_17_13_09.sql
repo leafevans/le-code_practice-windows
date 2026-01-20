@@ -99,3 +99,7 @@ ADD CONSTRAINT fk_emp_dept_id FOREIGN KEY emp (dept_id) REFERENCES dept (id) ON 
 UPDATE dept SET id = 6 WHERE id = 1;
 
 DELETE FROM dept WHERE id = 6;
+
+SHOW DATABASES;
+
+SELECT DATABASE();
