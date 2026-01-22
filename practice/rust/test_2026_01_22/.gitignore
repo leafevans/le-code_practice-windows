@@ -1,0 +1,16 @@
+/target/
+*.exe
+*.dll
+*.dylib
+*.so
+*.rlib
+*~
+*.swp
+*.tmp
+*.log
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
