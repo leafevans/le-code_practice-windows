@@ -19,12 +19,12 @@ public:
         int maxLen = 0;
         for (int num : s) {
             if (!s.count(num - 1)) {
-                int cur = num, curLen = 1;
-                while (s.count(cur + 1)) {
-                    ++cur;
-                    ++curLen;
+                int curr = num, currLen = 1;
+                while (s.count(curr + 1)) {
+                    ++curr;
+                    ++currLen;
                 }
-                maxLen = max(maxLen, curLen);
+                maxLen = max(maxLen, currLen);
             }
         }
         return maxLen;
