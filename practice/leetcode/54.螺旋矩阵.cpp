@@ -14,8 +14,7 @@ public:
             return {};
         }
         vector<int> res;
-        int m = matrix.size(), n = matrix[0].size();
-        int top = 0, bottom = m - 1, left = 0, right = n - 1;
+        int top = 0, bottom = matrix.size() - 1, left = 0, right = matrix[0].size() - 1;
         while (top <= bottom && left <= right) {
             for (int j = left; j <= right; ++j) {
                 res.push_back(matrix[top][j]);
