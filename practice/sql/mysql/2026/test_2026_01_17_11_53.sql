@@ -1,22 +1,19 @@
 DROP TABLE IF EXISTS `score`;
 
-CREATE TABLE `score` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(64) NOT NULL,
-    `math` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-    `english` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-    `chinese` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+CREATE TABLE
+    `score` (
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(64) NOT NULL,
+        `math` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+        `english` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+        `chinese` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 INSERT INTO
-    `score` (
-        `name`,
-        `math`,
-        `english`,
-        `chinese`
-    )
-VALUES ('张三', 92, 88, 79),
+    `score` (`name`, `math`, `english`, `chinese`)
+VALUES
+    ('张三', 92, 88, 79),
     ('李四', 78, 65, 59),
     ('王五', 58, 55, 62),
     ('赵六', 85, 90, 91),
@@ -42,4 +39,5 @@ SELECT
         WHEN chinese >= 60 THEN '及格'
         ELSE '不及格'
     END AS '语文'
-FROM score;
+FROM
+    score;
