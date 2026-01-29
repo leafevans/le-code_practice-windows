@@ -216,3 +216,137 @@ END;
 CALL sp_export_users_by_age (30);
 
 SELECT * FROM tmp_users;
+
+--
+DROP FUNCTION IF EXISTS fn_sum_to_n;
+
+CREATE FUNCTION IF NOT EXISTS `fn_sum_to_n`(n INT)
+RETURNS INT DETERMINISTIC
+BEGIN
+DECLARE total INT DEFAULT 0;
+WHILE n > 0 DO 
+SET total := total + n;
+SET n := n - 1;
+END WHILE;
+RETURN total;
+END;
+
+SELECT fn_sum_to_n (77);
+
+--
+CREATE TABLE IF NOT EXISTS `user_log` (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    operation VARCHAR(20) NOT NULL COMMENT '操作类型',
+    operation_time DATETIME NOT NULL COMMENT '操作时间',
+    operation_id INT(11) NOT NULL COMMENT '操作 ID',
+    operation_params VARCHAR(500) COMMENT '操作参数',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
+-- 插入数据触发器
+DROP TRIGGER IF EXISTS trg_user_after_insert;
+
+CREATE TRIGGER IF NOT EXISTS `trg_user_after_insert`
+AFTER INSERT ON user FOR EACH ROW
+BEGIN
+INSERT INTO
+    user_log (
+        id,
+        operation,
+        operation_time,
+        operation_id,
+        operation_params
+    )
+VALUES (
+        NULL,
+        'INSERT',
+        NOW(),
+        NEW.id,
+        CONCAT(
+            '插入的数据内容为：id = ',
+            NEW.id,
+            ', name = ',
+            NEW.name,
+            ', phone = ',
+            NEW.phone,
+            ', email = ',
+            NEW.email,
+            ', profession = ',
+            NEW.profession
+        )
+    );
+END;
+
+SHOW TRIGGERS;
+
+INSERT INTO
+    user (
+        id,
+        name,
+        phone,
+        email,
+        profession,
+        age,
+        gender,
+        status,
+        createtime
+    )
+VALUES (
+        25,
+        '织田信长',
+        '18809091212',
+        'odanobunaga@163.com',
+        '软件工程',
+        23,
+        '1',
+        '1',
+        NOW()
+    );
+
+SELECT * FROM user_log;
+
+-- 修改数据触发器
+DROP TRIGGER IF EXISTS trg_user_after_update;
+
+CREATE TRIGGER IF NOT EXISTS `trg_user_after_update`
+AFTER UPDATE ON user FOR EACH ROW
+BEGIN 
+INSERT INTO
+    user_log (
+        id,
+        operation,
+        operation_time,
+        operation_id,
+        operation_params
+    )
+VALUES (
+        NULL,
+        'UPDATE',
+        NOW(),
+        NEW.id,
+        CONCAT(
+            '更新之前的数据内容为：id = ',
+            OLD.id,
+            ', name = ',
+            OLD.name,
+            ', phone = ',
+            OLD.phone,
+            ', email = ',
+            OLD.email,
+            ', profession = ',
+            OLD.profession,
+            '更新之后的数据内容为：id = ',
+            NEW.id,
+            ', name = ',
+            NEW.name,
+            ', phone = ',
+            NEW.phone,
+            ', email = ',
+            NEW.email,
+            ', profession = ',
+            NEW.profession
+        )
+    );
+END;
+
+SHOW TRIGGERS;
