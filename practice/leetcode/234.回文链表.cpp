@@ -18,15 +18,18 @@
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
+        if (!head->next) {
+            return true;
+        }
         ListNode* slow = head;
         ListNode* fast = head;
-        while (fast != nullptr && fast->next != nullptr) {
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
         ListNode* p1 = head;
         ListNode* p2 = reverseList(slow);
-        while (p2 != nullptr) {
+        while (p2) {
             if (p1->val != p2->val) {
                 return false;
             }
@@ -40,7 +43,7 @@ private:
     ListNode* reverseList(ListNode* head) {
         ListNode* prev = nullptr;
         ListNode* curr = head;
-        while (curr != nullptr) {
+        while (curr) {
             ListNode* next = curr->next;
             curr->next = prev;
             prev = curr;

@@ -350,3 +350,47 @@ VALUES (
 END;
 
 SHOW TRIGGERS;
+
+UPDATE user SET age = 32 WHERE id = 23;
+
+SELECT * FROM user_log;
+
+UPDATE user SET profession = '会计' WHERE id <= 3;
+
+-- 删除数据触发器
+DROP TRIGGER IF EXISTS trg_user_after_delete;
+
+CREATE TRIGGER IF NOT EXISTS `trg_user_after_delete`
+AFTER DELETE ON user FOR EACH ROW
+BEGIN
+INSERT INTO
+    user_log (
+        id,
+        operation,
+        operation_time,
+        operation_id,
+        operation_params
+    )
+VALUES (
+        NULL,
+        'DELETE',
+        NOW(),
+        OLD.id,
+        CONCAT(
+            '删除的数据内容为：id = ',
+            OLD.id,
+            ', name = ',
+            OLD.name,
+            ', phone = ',
+            OLD.phone,
+            ', email = ',
+            OLD.email,
+            ', profession = ',
+            OLD.profession
+        )
+    );
+END;
+
+DELETE FROM user WHERE id = 25;
+
+SELECT * FROM user_log;
