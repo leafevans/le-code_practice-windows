@@ -30,8 +30,7 @@ public:
             return false;
         }
         prev = root;
-        bool right = isValidBST(root->right);
-        return right;
+        return isValidBST(root->right);
     }
 
 private:
