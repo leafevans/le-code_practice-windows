@@ -978,14 +978,545 @@
 
 // import "fmt"
 
+//	func main() {
+//		n := 2
+//		switch n {
+//		case 1, 3, 5, 7, 9:
+//			fmt.Println("奇数")
+//		case 0, 2, 4, 6, 8:
+//			fmt.Println("偶数")
+//		default:
+//			fmt.Println(n)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		switch n := 7; n {
+//		case 1, 3, 5, 7, 9:
+//			fmt.Println("奇数")
+//		case 0, 2, 4, 6, 8:
+//			fmt.Println("偶数")
+//		default:
+//			fmt.Println(n)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		age := 56
+//		switch {
+//		case age < 25:
+//			fmt.Println("好好学习")
+//		case age <= 60:
+//			fmt.Println("好好工作")
+//		case age > 60:
+//			fmt.Println("好好享受")
+//		default:
+//			fmt.Println("好好活着")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		str := "a"
+//		switch str {
+//		case "a":
+//			fmt.Println("a")
+//			fallthrough
+//		case "b":
+//			fmt.Println("b")
+//			fallthrough
+//		case "c":
+//			fmt.Println("c")
+//			fallthrough
+//		default:
+//			fmt.Println("...")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
 // func main() {
-// 	n := 2
-// 	switch n {
-// 	case 1, 3, 5, 7, 9:
-// 		fmt.Println("奇数")
-// 	case 0, 2, 4, 6, 8:
-// 		fmt.Println("偶数")
-// 	default:
-// 		fmt.Println(n)
+// label:
+//
+//		for i := range 2 {
+//			for j := range 10 {
+//				if j == 3 {
+//					break label
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+//
+//		for i := range 2 {
+//			for j := range 4 {
+//				if j == 2 {
+//					continue label
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		n := 30
+//		fmt.Println("ok1")
+//		if n > 20 {
+//			goto label
+//		}
+//		fmt.Println("ok2")
+//		fmt.Println("ok3")
+//		fmt.Println("ok4")
+//
+// label:
+//
+//		fmt.Println("ok5")
+//		fmt.Println("ok6")
+//		fmt.Println("ok7")
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	for i := range 10 {
+// 		for j := range 10 {
+// 			if j == 10 {
+// 				goto breakTag
+// 			}
+// 			fmt.Printf("i = %v, j = %v\n", i, j)
+// 		}
+
+//	}
+//	return
+//
+// breakTag:
+//
+//		fmt.Println("结束循环")
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var arr [3]int
+//		arr[0] = 80
+//		arr[1] = 100
+//		arr[2] = 96
+//		fmt.Println(arr)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var testArray [3]int
+//		var numArray = [3]int{1, 2}
+//		var cityArray = [3]string{"北京", "上海"}
+//		fmt.Println(testArray)
+//		fmt.Println(numArray)
+//		fmt.Println(cityArray)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var testArray [3]int
+//		var numArray = [...]int{1, 2}
+//		cityArray := [...]string{"北京", "上海", "深圳"}
+//		fmt.Println(testArray)
+//		fmt.Println(numArray)
+//		fmt.Printf("numArray 类型为 %T\n", numArray)
+//		fmt.Println(cityArray)
+//		fmt.Printf("cityArray 类型为 %T\n", cityArray)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := [...]int{0: 1, 3: 5, 6: 8, 4: 2}
+//		fmt.Println(arr)
+//		fmt.Printf("Type of arr: %T\n", arr)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := [...]string{"北京", "上海", "深圳"}
+//		for i := 0; i < len(arr); i++ {
+//			fmt.Println(arr[i])
+//		}
+//		for idx, val := range arr {
+//			fmt.Println(idx, val)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := [3]int{10, 20, 30}
+//		arr2 := arr
+//		arr2[0] = 40
+//		fmt.Println(arr)
+//		fmt.Println(arr2)
+//		fmt.Println()
+//		arr3 := [3][2]int{
+//			{1, 1},
+//			{1, 1},
+//			{1, 1},
+//		}
+//		arr4 := arr3
+//		arr4[2][0] = 100
+//		fmt.Println(arr3)
+//		fmt.Println(arr4)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		a, b, c := 10, 20, 30
+//		ptrArr := [3]*int{&a, &b, &c}
+//		fmt.Println("指针数组本身（值类型，数组地址）：", &ptrArr)
+//		fmt.Println("指针数组的元素（存储的是指针地址）：", ptrArr)
+//		for i, ptr := range ptrArr {
+//			fmt.Printf("ptrArr[%d] 指向的值：%d\n", i, *ptr)
+//		}
+//		ptrArr2 := ptrArr
+//		ptrArr2[0] = &c
+//		fmt.Println("ptrArr[0] 指向的值：", *ptrArr[0])
+//		fmt.Println("ptrArr2[0] 指向的值：", *ptrArr2[0])
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	arr := [3][2]string{
+// 		{"北京", "上海"},
+// 		{"广州", "深圳"},
+// 		{"成都", "重庆"},
 // 	}
+// 	fmt.Println(arr)
+// 	fmt.Println(arr[2][1])
+
+//		for _, v1 := range arr {
+//			for _, v2 := range v1 {
+//				fmt.Printf("%s\t", v2)
+//			}
+//			fmt.Println()
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := [...]int{1, -4, 232, 22, 54, 98, -34}
+//		sum := 0
+//		for _, val := range arr {
+//			sum += val
+//		}
+//		mean := float64(sum) / float64(len(arr))
+//		fmt.Printf("sum = %v, mean = %v\n", sum, mean)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := []int{1, -1, 12, 65, 11}
+//		max := arr[0]
+//		maxIdx := 0
+//		for idx, val := range arr {
+//			if max < val {
+//				max = val
+//				maxIdx = idx
+//			}
+//		}
+//		fmt.Printf("max = %v, maxIdx = %v\n", max, maxIdx)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := []int{1, 3, 5, 7, 8}
+//		for i := range arr {
+//			for j := i + 1; j < len(arr); j++ {
+//				if arr[i]+arr[j] == 8 {
+//					fmt.Printf("(%v, %v)\n", i, j)
+//				}
+//			}
+//		}
+//	}
+// package main
+
+// func arraySum(x [4]int) int {
+// 	sum := 0
+// 	for _, v := range x {
+// 		sum += v
+// 	}
+// 	return sum
 // }
+
+//	func main() {
+//		a := [4]int{1, 2, 3, 4}
+//		println(arraySum(a))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var a []string
+//		var b = []int{}
+//		var c = []bool{false, true}
+//		fmt.Println(a)
+//		fmt.Println(b)
+//		fmt.Println(c)
+//		fmt.Println(a == nil)
+//		fmt.Println(b == nil)
+//		fmt.Println(c == nil)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := []string{"北京", "上海", "深圳"}
+//		for _, val := range arr {
+//			fmt.Println(val)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := [5]int{55, 56, 57, 58, 59}
+//		arr2 := arr[1:4]
+//		fmt.Println(arr2)
+//		fmt.Printf("Type of arr2: %T\n", arr2)
+//		arr2[0] = 1
+//		fmt.Println(arr)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := [...]string{"北京", "上海", "广州", "深圳", "成都", "重庆"}
+//		fmt.Printf("arr: %v\ttype: %T\tlen: %v\tcap: %v\n", arr, arr, len(arr), cap(arr))
+//		arr2 := arr[1:3]
+//		fmt.Printf("arr2: %v\ttype: %T\tlen: %v\tcap: %v\n", arr2, arr2, len(arr2), cap(arr2))
+//		arr3 := arr2[1:5]
+//		fmt.Printf("arr3: %v\ttype: %T\tlen: %v\tcap: %v\n", arr3, arr3, len(arr3), cap(arr3))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		arr := []int{2, 3, 5, 7, 11, 13}
+//		fmt.Println(arr)
+//		fmt.Printf("len = %v, cap = %v\n", len(arr), cap(arr))
+//		arr2 := arr[:2]
+//		fmt.Println(arr2)
+//		fmt.Printf("len = %v, cap = %v\n", len(arr2), cap(arr2))
+//		arr3 := arr[1:3]
+//		fmt.Println(arr3)
+//		fmt.Printf("len = %v, cap = %v\n", len(arr3), cap(arr3))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		slice := make([]int, 2, 10)
+//		fmt.Printf("val = %v, len = %v, cap = %v\n", slice, len(slice), cap(slice))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		slice := make([]int, 2, 10)
+//		fmt.Printf("val = %v, len = %d, cap = %d\n", slice, len(slice), cap(slice))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var slice []int
+//		slice2 := []int{}
+//		slice3 := make([]int, 0)
+//		fmt.Printf("bool = %v, len = %v, cap = %v\n", slice == nil, len(slice), cap(slice))
+//		fmt.Printf("bool = %v, len = %v, cap = %v\n", slice2 == nil, len(slice2), cap(slice2))
+//		fmt.Printf("bool = %v, len = %v, cap = %v\n", slice3 == nil, len(slice3), cap(slice3))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		slice := make([]int, 3)
+//		slice2 := slice
+//		slice2[0] = 100
+//		fmt.Println(slice)
+//		fmt.Println(slice2)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var numSlice []int
+//		for i := range 10 {
+//			numSlice = append(numSlice, i)
+//			fmt.Printf("%v\tlen: %v\tcap: %v\tptr: %p\n", numSlice, len(numSlice), cap(numSlice), numSlice)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var citySlice []string
+//		citySlice = append(citySlice, "北京")
+//		citySlice = append(citySlice, "上海", "广州", "深圳")
+//		cityArr := [2]string{"成都", "杭州"}
+//		citySlice = append(citySlice, cityArr[:]...)
+//		fmt.Println(citySlice)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		slice := []int{100, 200, 300}
+//		slice2 := []int{400, 500, 600}
+//		slice3 := append(slice, slice2...)
+//		fmt.Println(slice3)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		numSlice := []int{30, 31, 32, 33, 34, 35, 36, 37}
+//		numSlice = append(numSlice[:2], numSlice[3:]...)
+//		fmt.Println(numSlice)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		slice := make([]string, 5, 10)
+//		for i := range 12 {
+//			slice = append(slice, fmt.Sprintf("%v", i))
+//		}
+//		fmt.Println(slice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		slice := []int{3, 7, 8, 9, 1}
+//		sort.Ints(slice)
+//		fmt.Println(slice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		sort.Ints(intSlice)
+//		sort.Float64s(floatSlice)
+//		sort.Strings(stringSlice)
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		sort.Sort(sort.Reverse(sort.IntSlice(intSlice)))
+//		sort.Sort(sort.Reverse(sort.Float64Slice(floatSlice)))
+//		sort.Sort(sort.Reverse(sort.StringSlice(stringSlice)))
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//		sort.Sort(sort.IntSlice(intSlice))
+//		sort.Sort(sort.Float64Slice(floatSlice))
+//		sort.Sort(sort.StringSlice(stringSlice))
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+	floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+	stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+	sort.Sort(sort.IntSlice(intSlice))
+	sort.Sort(sort.Float64Slice(floatSlice))
+	sort.Sort(sort.StringSlice(stringSlice))
+	fmt.Println(intSlice)
+	fmt.Println(floatSlice)
+	fmt.Println(stringSlice)
+	sort.Sort(sort.Reverse(sort.IntSlice(intSlice)))
+	sort.Sort(sort.Reverse(sort.Float64Slice(floatSlice)))
+	sort.Sort(sort.Reverse(sort.StringSlice(stringSlice)))
+	fmt.Println(intSlice)
+	fmt.Println(floatSlice)
+	fmt.Println(stringSlice)
+}
