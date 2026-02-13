@@ -1496,27 +1496,398 @@
 //		fmt.Println(floatSlice)
 //		fmt.Println(stringSlice)
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		sort.Sort(sort.IntSlice(intSlice))
+//		sort.Sort(sort.Float64Slice(floatSlice))
+//		sort.Sort(sort.StringSlice(stringSlice))
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//		sort.Sort(sort.Reverse(sort.IntSlice(intSlice)))
+//		sort.Sort(sort.Reverse(sort.Float64Slice(floatSlice)))
+//		sort.Sort(sort.Reverse(sort.StringSlice(stringSlice)))
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"cmp"
+// 	"fmt"
+// 	"slices"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		slices.Sort(intSlice)
+//		slices.Sort(floatSlice)
+//		slices.Sort(stringSlice)
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//		slices.SortFunc(intSlice, func(a, b int) int { return cmp.Compare(b, a) })
+//		slices.SortFunc(floatSlice, func(a, b float64) int { return cmp.Compare(b, a) })
+//		slices.SortFunc(stringSlice, func(a, b string) int { return cmp.Compare(b, a) })
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		scoreMap := make(map[string]int, 8)
+//		scoreMap["哈基米"] = 90
+//		scoreMap["曼波"] = 100
+//		fmt.Println(scoreMap)
+//		fmt.Println(scoreMap["曼波"])
+//		fmt.Printf("Type of scoreMap: %T\n", scoreMap)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		userinfo := map[string]string{
+//			"username": "叮咚鸡",
+//			"password": "大狗叫",
+//		}
+//		fmt.Println(userinfo)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		scoreMap := make(map[string]int, 8)
+//		scoreMap["哈基米"] = 90
+//		scoreMap["曼波"] = 100
+//		val, ok := scoreMap["哈基米"]
+//		if ok {
+//			fmt.Println(val)
+//		} else {
+//			fmt.Println("查无此人")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		scoreMap := make(map[string]int)
+//		scoreMap["孙连城"] = 90
+//		scoreMap["李达康"] = 100
+//		scoreMap["沙瑞金"] = 60
+//		delete(scoreMap, "李达康")
+//		for key := range scoreMap {
+//			fmt.Println(key)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"math/rand"
+// 	"slices"
+// )
+
+//	func main() {
+//		scoreMap := make(map[string]int, 200)
+//		for i := range 100 {
+//			key := fmt.Sprintf("stu%02d", i)
+//			val := rand.Intn(100)
+//			scoreMap[key] = val
+//		}
+//		keys := make([]string, 0, 200)
+//		for key := range scoreMap {
+//			keys = append(keys, key)
+//		}
+//		slices.Sort(keys)
+//		for _, key := range keys {
+//			fmt.Println(key, scoreMap[key])
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"math/rand"
+// 	"slices"
+// )
+
+//	func main() {
+//		scoreMap := make(map[string]int, 200)
+//		for i := range 100 {
+//			key := fmt.Sprintf("stu%02d", i)
+//			val := rand.Intn(100)
+//			scoreMap[key] = val
+//		}
+//		keys := make([]string, 0, 200)
+//		for key := range scoreMap {
+//			keys = append(keys, key)
+//		}
+//		slices.Sort(keys)
+//		for _, key := range keys {
+//			fmt.Println(key, scoreMap[key])
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		str := "Hello 哈基米"
+//		for idx, ch := range str {
+//			fmt.Printf("%v(%c)\n", idx, ch)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		mapSlice := make([]map[string]string, 3)
+//		for i, v := range mapSlice {
+//			fmt.Printf("i = %v, v = %v\n", i, v)
+//		}
+//		fmt.Println("After init...")
+//		mapSlice[0] = make(map[string]string, 10)
+//		mapSlice[0] = make(map[string]string, 10)
+//		mapSlice[0]["name"] = "哈基米"
+//		mapSlice[0]["password"] = "123456"
+//		mapSlice[0]["address"] = "双流区"
+//		for i, v := range mapSlice {
+//			fmt.Printf("i = %v, v = %v\n", i, v)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		sliceMap := make(map[string][]string, 3)
+//		fmt.Println(sliceMap)
+//		fmt.Println("After init...")
+//		key := "中国"
+//		val, ok := sliceMap[key]
+//		if !ok {
+//			val = make([]string, 0, 2)
+//		}
+//		val = append(val, "北京", "上海")
+//		sliceMap[key] = val
+//		fmt.Println(sliceMap)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		sliceMap := make(map[string][]string, 3)
+//		fmt.Println(sliceMap)
+//		fmt.Println("After init...")
+//		key := "中国"
+//		val, ok := sliceMap[key]
+//		if !ok {
+//			val = make([]string, 0, 2)
+//		}
+//		val = append(val, "北京", "上海")
+//		sliceMap[key] = val
+//		fmt.Println(sliceMap)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		wordMap := make(map[string]int)
+//		str := "how do you do"
+//		for _, word := range strings.Split(str, " ") {
+//			if word == "" {
+//				continue
+//			}
+//			wordMap[word]++
+//		}
+//		fmt.Println(wordMap)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		wordMap := make(map[string]int)
+//		str := "how   do you  do"
+//		for word := range strings.FieldsSeq(str) {
+//			wordMap[word]++
+//		}
+//		fmt.Println(wordMap)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		wordMap := make(map[string]int)
+//		str := "how  do you do"
+//		for _, word := range strings.Fields(str) {
+//			wordMap[word]++
+//		}
+//		fmt.Println(wordMap)
+//	}
+// package main
+
+// import "fmt"
+
+// func sayHello() {
+// 	fmt.Println("Hello World!")
+// }
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+//	func main() {
+//		sayHello()
+//		fmt.Println(add(10, 20))
+//	}
+// package main
+
+// import "fmt"
+
+// func add(nums ...int) (sum int) {
+// 	for _, num := range nums {
+// 		sum += num
+// 	}
+// 	return
+// }
+
+//	func main() {
+//		fmt.Println(add())
+//		fmt.Println(add(10))
+//		fmt.Println(add(10, 20))
+//		fmt.Println(add(10, 20, 30))
+//		fmt.Println(add(10, 20, 30, 40))
+//	}
+// package main
+
+// import "fmt"
+
+// func add(x int, y ...int) (sum int) {
+// 	sum = x
+// 	for _, num := range y {
+// 		sum += num
+// 	}
+// 	return
+// }
+
+//	func main() {
+//		fmt.Println(add(10))
+//		fmt.Println(add(10, 20))
+//		fmt.Println(add(10, 20, 30))
+//		fmt.Pri ntln(add(10, 20, 30, 40))
+//	}
+// package main
+
+//	func calc(x, y int) (sum, diff int) {
+//		sum = x + y
+//		diff = x - y
+//		return
+//	}
+// package main
+
+// import "fmt"
+
+// var num = 10
+
+// func testGlobal() {
+// 	fmt.Printf("num = %v\n", num)
+// }
+
+//	func main() {
+//		testGlobal()
+//	}
+// package main
+
+// import "fmt"
+
+//	func testLocal() {
+//		var x int64 = 100
+//		fmt.Printf("x = %d\n", x)
+//	}
+// package main
+
+// import "fmt"
+
+// var num = 10
+
+// func testNum() {
+// 	num := 100
+// 	fmt.Printf("num = %d\n", num)
+// }
+
+//	func main() {
+//		testNum()
+//		fmt.Printf("num = %d\n", num)
+//	}
+// package main
+
+// import "fmt"
+
+// func testLocal(x, y int) {
+// 	fmt.Println(x, y)
+// 	if x > 0 {
+// 		z := 100
+// 		fmt.Println(z)
+// 	}
+// 	for i := range 10 {
+// 		fmt.Println(i)
+// 	}
+// }
+
+//	func main() {
+//		testLocal(1, 2)
+//	}
 package main
 
-import (
-	"fmt"
-	"sort"
-)
+import "fmt"
+
+type calc func(int, int) int
+
+func add(x, y int) int {
+	return x + y
+}
+
+func sub(x, y int) int {
+	return x - y
+}
 
 func main() {
-	intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
-	floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
-	stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
-	sort.Sort(sort.IntSlice(intSlice))
-	sort.Sort(sort.Float64Slice(floatSlice))
-	sort.Sort(sort.StringSlice(stringSlice))
-	fmt.Println(intSlice)
-	fmt.Println(floatSlice)
-	fmt.Println(stringSlice)
-	sort.Sort(sort.Reverse(sort.IntSlice(intSlice)))
-	sort.Sort(sort.Reverse(sort.Float64Slice(floatSlice)))
-	sort.Sort(sort.Reverse(sort.StringSlice(stringSlice)))
-	fmt.Println(intSlice)
-	fmt.Println(floatSlice)
-	fmt.Println(stringSlice)
+	var c calc = add
+	fmt.Printf("Type of c: %T\n", c)
+	fmt.Println(c(1, 2))
+	f := add
+	fmt.Printf("Type of f: %T\n", f)
+	fmt.Println(f(10, 20))
 }
