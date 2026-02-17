@@ -1869,25 +1869,380 @@
 //	func main() {
 //		testLocal(1, 2)
 //	}
+// package main
+
+// import "fmt"
+
+// type calc func(int, int) int
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func sub(x, y int) int {
+// 	return x - y
+// }
+
+//	func main() {
+//		var c calc = add
+//		fmt.Printf("Type of c: %T\n", c)
+//		fmt.Println(c(1, 2))
+//		f := add
+//		fmt.Printf("Type of f: %T\n", f)
+//		fmt.Println(f(10, 20))
+//	}
+// package main
+
+// import "fmt"
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func calc(x, y int, fn func(x, y int) int) int {
+// 	return fn(x, y)
+// }
+
+//	func main() {
+//		fmt.Println(calc(10, 20, add))
+//	}
+// package main
+
+// import "fmt"
+
+// func add(x, y int) int {
+// 	return x + y
+// }
+
+// func calc(x, y int, fn func(x, y int) int) int {
+// 	return fn(x, y)
+// }
+
+//	func main() {
+//		fmt.Println(calc(20, 10, add))
+//	}
+// package main
+
+// import "fmt"
+
+// func add(x, y int) (sum int) {
+// 	sum = x + y
+// 	return
+// }
+
+// func sub(x, y int) (diff int) {
+// 	diff = x - y
+// 	return
+// }
+
+// func calc(option byte) func(int, int) int {
+// 	switch option {
+// 	case '+':
+// 		return add
+// 	case '-':
+// 		return sub
+// 	case '*':
+// 		return func(x, y int) int {
+// 			return x * y
+// 		}
+// 	default:
+// 		return nil
+// 	}
+// }
+
+//	func main() {
+//		fmt.Println(calc('+')(10, 20))
+//		fmt.Println(calc('-')(10, 20))
+//		fmt.Println(calc('*')(10, 20))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		add := func(x, y int) {
+//			fmt.Println(x + y)
+//		}
+//		add(10, 20) // 通过变量调用匿名函数
+//		// 自执行函数指匿名函数定义完加 () 直接执行
+//		func(x, y int) {
+//			fmt.Println(x + y)
+//		}(10, 20)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		add := func(x, y int) {
+//			fmt.Println(x + y)
+//		}
+//		add(100, 10)
+//		func(x, y int) {
+//			fmt.Println(x + y)
+//		}(20, 30)
+//	}
+// package main
+
+// import "fmt"
+
+// func adder() func(int) int {
+// 	var x int
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+//	func main() {
+//		var fn = adder()
+//		fmt.Println(fn(10))
+//		fmt.Println(fn(20))
+//		fmt.Println(fn(30))
+//		fn2 := adder()
+//		fmt.Println(fn2(40))
+//		fmt.Println(fn2(50))
+//		fmt.Printf("%T\n", fn)
+//	}
+// package main
+
+// import "fmt"
+
+// func adder(x int) func(int) int {
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+//	func main() {
+//		fn := adder(10)
+//		fmt.Println(fn(10))
+//		fmt.Println(fn(20))
+//		fmt.Println(fn(30))
+//		fn2 := adder(20)
+//		fmt.Println(fn2(40))
+//		fmt.Println(fn2(50))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func makeSuffix(suffix string) func(string) string {
+// 	return func(name string) string {
+// 		if !strings.HasSuffix(name, suffix) {
+// 			return name + suffix
+// 		}
+// 		return name
+// 	}
+// }
+
+//	func main() {
+//		jpgFn := makeSuffix(".jpg")
+//		txtFn := makeSuffix(".txt")
+//		fmt.Println(jpgFn("test"))
+//		fmt.Println(txtFn("test"))
+//	}
+// package main
+
+// import "strings"
+
+//	func makeSuffix(suffix string) func(string) string {
+//		return func(name string) string {
+//			if !strings.HasSuffix(name, suffix) {
+//				return name + suffix
+//			}
+//			return name
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func makeSuffix(suffix string) func(string) string {
+// 	return func(name string) string {
+// 		if !strings.HasSuffix(name, suffix) {
+// 			return name + suffix
+// 		}
+// 		return name
+// 	}
+// }
+
+//	func main() {
+//		jpgFn := makeSuffix(".jpg")
+//		txtFn := makeSuffix(".txt")
+//		fmt.Println(jpgFn("test"))
+//		fmt.Println(txtFn("test"))
+//	}
+// package main
+
+// import "fmt"
+
+// func calc(base int) (func(int) int, func(int) int) {
+// 	add := func(i int) int {
+// 		base += i
+// 		return base
+// 	}
+// 	sub := func(i int) int {
+// 		base -= i
+// 		return base
+// 	}
+// 	return add, sub
+// }
+
+//	func main() {
+//		fn, fn2 := calc(10)
+//		fmt.Println(fn(1), fn2(2))
+//		fmt.Println(fn(3), fn2(4))
+//		fmt.Println(fn(5), fn2(6))
+//	}
+// package main
+
+// import "fmt"
+
+// func calc(base int) (add func(int) int, sub func(int) int) {
+// 	add = func(i int) int {
+// 		base += i
+// 		return base
+// 	}
+// 	sub = func(i int) int {
+// 		base -= i
+// 		return base
+// 	}
+// 	return
+// }
+
+//	func main() {
+//		fn, fn2 := calc(10)
+//		fmt.Println(fn(1), fn2(2))
+//		fmt.Println(fn(3), fn2(4))
+//		fmt.Println(fn(5), fn2(6))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		fmt.Println("Start!")
+//		defer fmt.Println(1)
+//		defer fmt.Println(2)
+//		defer fmt.Println(3)
+//		fmt.Println("结束！")
+//	}
+// package main
+
+// import "fmt"
+
+// func f1() int {
+// 	// 局部变量 x = 5
+// 	x := 5
+// 	// defer 执行时 x 变为 6，但不影响返回值
+// 	defer func() {
+// 		x++
+// 	}()
+// 	// 返回 x 的值为 5
+// 	return x
+// }
+
+// // x 是命名返回值，初始值为 0
+// func f2() (x int) {
+// 	// defer 执行时，x 变为 6
+// 	defer func() {
+// 		x++
+// 	}()
+// 	// 设置 x = 5，然后 defer 修改为 6
+// 	return 5
+// }
+
+// // y 是命名返回值，初始为 0
+// func f3() (y int) {
+// 	// 局部变量 x = 5
+// 	x := 5
+// 	// defer 修改局部变量 x 为 6，不影响 y
+// 	defer func() {
+// 		x++
+// 	}()
+// 	// 设置 y = x，此时 x 为 5
+// 	return x
+// }
+
+// // x 是命名返回值，初始为 0
+// func f4() (x int) {
+// 	// defer 接受 x 的副本（0）
+// 	defer func(x int) {
+// 		// 修改副本为 1，不影响原 x
+// 		x++
+// 	}(x)
+// 	// 设置 x = 5
+// 	return 5
+// }
+
+//	func main() {
+//		fmt.Println(f1())
+//		fmt.Println(f2())
+//		fmt.Println(f3())
+//		fmt.Println(f4())
+//	}
+// package main
+
+// import "fmt"
+
+// func f1() int {
+// 	x := 5
+// 	defer func() {
+// 		x++
+// 	}()
+// 	return x
+// }
+
+// func f2() (x int) {
+// 	defer func() {
+// 		x++
+// 	}()
+// 	return 5
+// }
+
+// func f3() (y int) {
+// 	x := 5
+// 	defer func() {
+// 		x++
+// 	}()
+// 	return x
+// }
+
+// func f4() (x int) {
+// 	defer func(x int) {
+// 		x++
+// 	}(x)
+// 	return 5
+// }
+
+//	func main() {
+//		fmt.Println(f1())
+//		fmt.Println(f2())
+//		fmt.Println(f3())
+//		fmt.Println(f4())
+//	}
 package main
 
 import "fmt"
 
-type calc func(int, int) int
-
-func add(x, y int) int {
-	return x + y
-}
-
-func sub(x, y int) int {
-	return x - y
+func calc(index string, a, b int) int {
+	ret := a + b
+	fmt.Println(index, a, b, ret)
+	return ret
 }
 
 func main() {
-	var c calc = add
-	fmt.Printf("Type of c: %T\n", c)
-	fmt.Println(c(1, 2))
-	f := add
-	fmt.Printf("Type of f: %T\n", f)
-	fmt.Println(f(10, 20))
+	x, y := 1, 1
+	defer calc("AA", x, calc("A", x, y))
+	x = 10
+	defer calc("BB", x, calc("B", x, y))
+	y = 20
 }
