@@ -2229,20 +2229,84 @@
 //		fmt.Println(f3())
 //		fmt.Println(f4())
 //	}
-package main
+// package main
 
-import "fmt"
+// import "fmt"
 
-func calc(index string, a, b int) int {
-	ret := a + b
-	fmt.Println(index, a, b, ret)
-	return ret
-}
+// func calc(index string, a, b int) int {
+// 	ret := a + b
+// 	fmt.Println(index, a, b, ret)
+// 	return ret
+// }
 
-func main() {
-	x, y := 1, 1
-	defer calc("AA", x, calc("A", x, y))
-	x = 10
-	defer calc("BB", x, calc("B", x, y))
-	y = 20
-}
+//	func main() {
+//		x, y := 1, 1
+//		defer calc("AA", x, calc("A", x, y))
+//		x = 10
+//		defer calc("BB", x, calc("B", x, y))
+//		y = 20
+//	}
+// package main
+
+// import "fmt"
+
+// func calc(idx string, a, b int) int {
+// 	ret := a + b
+// 	fmt.Println(idx, a, b, ret)
+// 	return ret
+// }
+
+//	func main() {
+//		x, y := 1, 1
+//		defer calc("AA", x, calc("A", x, y))
+//		x = 10
+//		defer calc("BB", x, calc("B", x, y))
+//		y = 20
+//	}
+// package main
+
+// import "fmt"
+
+// func fnA() {
+// 	fmt.Println("fn A")
+// }
+
+// func fnB() {
+// 	panic("panic in B")
+// }
+
+// func fnC() {
+// 	fmt.Println("fn C")
+// }
+
+//	func main() {
+//		fnA()
+//		fnB()
+//		fnC()
+//	}
+// package main
+
+// import "fmt"
+
+// func fnA() {
+// 	fmt.Println("fn A")
+// }
+
+// func fnB() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Println("recover in B", err)
+// 		}
+// 	}()
+// 	panic("panic in B")
+// }
+
+// func fnC() {
+// 	fmt.Println("fn C")
+// }
+
+// func main() {
+// 	fnA()
+// 	fnB()
+// 	fnC()
+// }
