@@ -2625,22 +2625,353 @@
 //			n++
 //		}
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		n := 0
+//		ticker := time.NewTicker(time.Second)
+//		for v := range ticker.C {
+//			fmt.Println(v.Second())
+//			n++
+//			if n > 5 {
+//				ticker.Stop()
+//				break
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		n := 0
+//		ticker := time.NewTicker(time.Second)
+//		for v := range ticker.C {
+//			fmt.Println(v.Format("2006-01-02 15:04:05"))
+//			n++
+//			if n > 5 {
+//				ticker.Stop()
+//				break
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		n := 0
+//		for {
+//			time.Sleep(time.Second)
+//			n++
+//			fmt.Println(n)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		a := 10
+//		b := &a
+//		fmt.Printf("a: %v, ptr(a): %p\n", a, &a)
+//		fmt.Printf("b: %v, type: %T, ptr(b): %p\n", b, b, &b)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		a := 10
+//		b := &a
+//		fmt.Printf("Type of b: %T\n", b)
+//		c := *b
+//		fmt.Printf("Type of c: %T\n", c)
+//		fmt.Printf("Value of c: %v\n", c)
+//	}
+// package main
+
+// import "fmt"
+
+// func modify1(x int) {
+// 	x = 100
+// }
+
+// func modify2(x *int) {
+// 	*x = 100
+// }
+
+//	func main() {
+//		a := 10
+//		modify1(a)
+//		fmt.Println(a)
+//		modify2(&a)
+//		fmt.Println(a)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var userinfo map[string]string
+//		userinfo["username"] = "张三"
+//		fmt.Println(userinfo)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var a *int
+//		*a = 100
+//		fmt.Println(*a)
+//	}
+// package main
+
+// import "fmt"
+
+// func adder() func(int) int {
+// 	var x int
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+//	func main() {
+//		var fn = adder()
+//		fmt.Println(fn(10))
+//		fmt.Println(fn(20))
+//		fmt.Println(fn(30))
+//		fn2 := adder()
+//		fmt.Println(fn2(40))
+//		fmt.Println(fn2(50))
+//	}
+// package main
+
+// import "fmt"
+
+// func adder(x int) func(int) int {
+// 	return func(y int) int {
+// 		x += y
+// 		return x
+// 	}
+// }
+
+//	func main() {
+//		fn := adder(10)
+//		fmt.Println(fn(10))
+//		fmt.Println(fn(20))
+//		fmt.Println(fn(30))
+//		fn2 := adder(20)
+//		fmt.Println(fn2(40))
+//		fmt.Println(fn2(50))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func makeSuffix(suffix string) func(string) string {
+// 	return func(name string) string {
+// 		if !strings.HasSuffix(name, suffix) {
+// 			return name + suffix
+// 		}
+// 		return name
+// 	}
+// }
+
+//	func main() {
+//		jpgFn := makeSuffix(".jpg")
+//		txtFn := makeSuffix(".txt")
+//		fmt.Println(jpgFn("test"))
+//		fmt.Println(txtFn("test"))
+//	}
+// package main
+
+// import "fmt"
+
+// func calc(base int) (add func(int) int, sub func(int) int) {
+// 	add = func(i int) int {
+// 		base += i
+// 		return base
+// 	}
+// 	sub = func(i int) int {
+// 		base -= i
+// 		return base
+// 	}
+// 	return
+// }
+
+//	func main() {
+//		a := 10
+//		fn, fn2 := calc(a)
+//		fmt.Println(fn(1), fn2(2))
+//		fmt.Println(fn(3), fn2(4))
+//		fmt.Println(fn(5), fn2(6))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var funcs []func()
+//		for i := 0; i < 5; i++ {
+//			funcs = append(funcs, func() {
+//				fmt.Println(i)
+//			})
+//		}
+//		for _, f := range funcs {
+//			f()
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var funcs []func()
+
+// 	for i := range 5 {
+// 		funcs = append(funcs, func(num int) func() {
+// 			return func() {
+// 				fmt.Println(i)
+// 			}
+// 		}(i))
+// 	}
+
+//		for _, f := range funcs {
+//			f()
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func f1() int {
+// 	x := 5
+// 	defer func() {
+// 		x++
+// 	}()
+// 	return x
+// }
+
+// func f2() (x int) {
+// 	defer func() {
+// 		x++
+// 	}()
+// 	return 5
+// }
+
+// func f3() (y int) {
+// 	x := 5
+// 	defer func() {
+// 		x++
+// 	}()
+// 	return x
+// }
+
+// func f4() (x int) {
+// 	defer func(x int) {
+// 		x++
+// 	}(x)
+// 	return 5
+// }
+
+//	func main() {
+//		fmt.Println(f1())
+//		fmt.Println(f2())
+//		fmt.Println(f3())
+//		fmt.Println(f4())
+//	}
+// package main
+
+// import "fmt"
+
+// func fnA() {
+// 	fmt.Println("fn A")
+// }
+
+// func fnB() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Println("recover in B", err)
+// 		}
+// 	}()
+// 	panic("panic in B")
+// }
+
+// func fnC() {
+// 	fmt.Println("fn C")
+// }
+
+//	func main() {
+//		fnA()
+//		fnB()
+//		fnC()
+//	}
+// package main
+
+// import "fmt"
+
+// func fn() {
+// 	defer func() {
+// 		err := recover()
+// 		if err != nil {
+// 			fmt.Println("抛出异常给管理员发送邮件")
+// 			fmt.Println(err)
+// 		}
+// 	}()
+
+// 	a := 10
+// 	b := 0
+// 	res := a / b
+// 	fmt.Println("res =", res)
+// }
+
+//	func main() {
+//		fn()
+//	}
 package main
 
 import (
+	"errors"
 	"fmt"
-	"time"
 )
 
-func main() {
-	n := 0
-	ticker := time.NewTicker(time.Second)
-	for v := range ticker.C {
-		fmt.Println(v.Second())
-		n++
-		if n > 5 {
-			ticker.Stop()
-			break
-		}
+func readFile(filename string) error {
+	if filename == "main.go" {
+		return nil
 	}
+	return errors.New("读取文件错误")
+}
+
+func fn() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("抛出异常给管理员发送邮件")
+		}
+	}()
+	err := readFile("xxx.go")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("继续执行")
+}
+
+func main() {
+	fn()
 }
