@@ -2305,8 +2305,342 @@
 // 	fmt.Println("fn C")
 // }
 
-// func main() {
-// 	fnA()
-// 	fnB()
-// 	fnC()
+//	func main() {
+//		fnA()
+//		fnB()
+//		fnC()
+//	}
+// package main
+
+// import "fmt"
+
+// func fn() {
+// 	defer func() {
+// 		err := recover()
+// 		if err != nil {
+// 			fmt.Println("抛出异常给管理员发生邮件")
+// 			fmt.Println(err)
+// 		}
+// 	}()
+// 	a := 10
+// 	b := 0
+// 	res := a / b
+// 	fmt.Println("res =", res)
 // }
+
+//	func main() {
+//		fn()
+//	}
+// package main
+
+// import (
+// 	"errors"
+// 	"fmt"
+// )
+
+// func readFile(filename string) error {
+// 	if filename == "main.go" {
+// 		return nil
+// 	}
+// 	return errors.New("读取文件错误")
+// }
+
+// func fn() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Println("抛出异常给管理员发送邮件")
+// 		}
+// 	}()
+// 	err := readFile("xxx.go")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Println("继续执行")
+// }
+
+//	func main() {
+//		fn()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// )
+
+// func readFile(filename string) {
+// 	if filename == "main.go" {
+// 		return
+// 	}
+// 	panic("读取文件错误")
+// }
+
+// func fn() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Println("捕获到 panic：", err)
+// 			fmt.Println("抛出异常给管理员发送邮件")
+// 		}
+// 	}()
+
+// 	readFile("xxx.go")
+// 	fmt.Println("继续执行")
+// }
+
+//	func main() {
+//		fn()
+//		fmt.Println("程序正常退出")
+//	}
+// package main
+
+// import (
+// 	"errors"
+// 	"fmt"
+// )
+
+// func readFile(filename string) error {
+// 	if filename == "main.go" {
+// 		return nil
+// 	}
+// 	return errors.New("读取文件错误")
+// }
+
+// func fn() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Println("抛出异常给管理员发生邮件")
+// 		}
+// 	}()
+// 	err := readFile("xxx.go")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Println("继续执行")
+// }
+
+//	func main() {
+//		fn()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		// 获取当前时间
+//		now := time.Now()
+//		fmt.Printf("Current time: %v\n", now)
+//		year := now.Year()     // 年
+//		month := now.Month()   // 月
+//		day := now.Day()       // 天
+//		hour := now.Hour()     // 时
+//		minute := now.Minute() // 分
+//		second := now.Second() // 秒
+//		fmt.Printf("%d-%02d-%02d %02d:%02d:%02d\n",
+//			year, month, day, hour, minute, second)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		now := time.Now()
+//		fmt.Println(now.Format("2006-01-02 15:04:05"))
+//		fmt.Println(now.Format("2006-01-02 03:04:05"))
+//		fmt.Println(now.Format("2006/01/02 15:04"))
+//		fmt.Println(now.Format("15:04 2006/01/02"))
+//		fmt.Println(now.Format("2006/01/02"))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		// 获取当前时间
+//		now := time.Now()
+//		unixTime := now.Unix()       // 秒级时间戳（10 位）
+//		unixMilli := now.UnixMilli() // 毫秒级时间戳（13 位）
+//		unixMicro := now.UnixMicro() // 微秒级时间戳（16 位）
+//		unixNano := now.UnixNano()   // 纳秒级时间戳（19 位）
+//		// 打印所有精度的时间戳
+//		fmt.Printf("Current Unix Time (秒): %v\n", unixTime)
+//		fmt.Printf("Current Unix Milli (毫秒): %v\n", unixMilli)
+//		fmt.Printf("Current Unix Micro (微秒): %v\n", unixMicro)
+//		fmt.Printf("Current Unix Nano (纳秒): %v\n", unixNano)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		// 获取当前时间
+//		now := time.Now()
+//		unixTime := now.Unix()       // 秒级时间戳（10 位）
+//		unixMilli := now.UnixMilli() // 毫秒级时间戳（13 位）
+//		unixMicro := now.UnixMicro() // 微秒级时间戳（16 位）
+//		unixNano := now.UnixNano()   // 纳秒级时间戳（19 位）
+//		// 打印所有精度的时间戳
+//		fmt.Printf("Current Unix Time (秒): %v\n", unixTime)
+//		fmt.Printf("Current Unix Milli (毫秒): %v\n", unixMilli)
+//		fmt.Printf("Current Unix Micro (微秒): %v\n", unixMicro)
+//		fmt.Printf("Current Unix Nano (纳秒): %v\n", unixNano)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func unixToTime(timestamp int64) {
+// 	timeObj := time.Unix(timestamp, 0)
+// 	str := timeObj.Format("2006-01-02 15:04:05")
+// 	fmt.Println(str)
+// }
+
+//	func main() {
+//		unixToTime(1758348998)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func unixToTime(timestamp int64) {
+// 	timeObj := time.Unix(timestamp, 123456789)
+// 	timeStr := timeObj.Format("2006-01-02 15:04:05")
+// 	fmt.Println(timeStr)
+// }
+
+//	func main() {
+//		unixToTime(1958948998)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		timeStr := "2026-02-17 22:12:22"
+//		timeTemple := "2006-01-02 15:04:05"
+//		timeObj, _ := time.ParseInLocation(timeTemple, timeStr, time.Local)
+//		fmt.Println(timeObj.Unix())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		timeStr := "2011-02-18 22:12:22"
+//		timeTemple := "2006-01-02 15:04:05"
+//		timeObj, _ := time.ParseInLocation(timeTemple, timeStr, time.Local)
+//		fmt.Println(timeObj.Unix())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		now := time.Now()
+//		later := now.Add(time.Hour*4 + time.Minute*20)
+//		fmt.Println(later.Hour(), later.Minute())
+//		fmt.Println(later.Sub(now))
+//		fmt.Println(now.Equal(later))
+//		fmt.Println(now.Before(later))
+//		fmt.Println(now.After(later))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		ticker := time.NewTicker(time.Second)
+//		n := 0
+//		for v := range ticker.C {
+//			fmt.Println(v.Second())
+//			n++
+//			if n > 5 {
+//				ticker.Stop()
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		ticker := time.NewTicker(time.Second * 2)
+//		n := 0
+//		for v := range ticker.C {
+//			fmt.Println(v.Second())
+//			n++
+//			if n > 5 {
+//				ticker.Stop()
+//				break
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		n := 0
+//		for {
+//			if n >= 5 {
+//				break
+//			}
+//			time.Sleep(time.Second * 2)
+//			fmt.Println(time.Now().Second())
+//			n++
+//		}
+//	}
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	n := 0
+	ticker := time.NewTicker(time.Second)
+	for v := range ticker.C {
+		fmt.Println(v.Second())
+		n++
+		if n > 5 {
+			ticker.Stop()
+			break
+		}
+	}
+}
