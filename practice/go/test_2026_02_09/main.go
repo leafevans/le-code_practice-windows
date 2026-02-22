@@ -2945,33 +2945,204 @@
 //	func main() {
 //		fn()
 //	}
+// package main
+
+// import (
+// 	"errors"
+// 	"fmt"
+// )
+
+// func readFile(filename string) error {
+// 	if filename == "main.go" {
+// 		return nil
+// 	}
+// 	return errors.New("读取文件错误")
+// }
+
+// func fn() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Println("抛出异常给管理员发送邮件")
+// 		}
+// 	}()
+// 	err := readFile("xxx.go")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Println("继续执行")
+// }
+
+//	func main() {
+//		fn()
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		a := new(int)
+//		b := new(bool)
+//		fmt.Printf("%T\n", a)
+//		fmt.Printf("%T\n", b)
+//		fmt.Println(*a)
+//		fmt.Println(*b)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var a *int = new(int)
+//		*a = 10
+//		fmt.Println(*a)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var userinfo map[string]string
+//		userinfo = make(map[string]string, 1e2)
+//		userinfo["username"] = "哈基米"
+//		fmt.Println(userinfo)
+//	}
+// package main
+
+// import "fmt"
+
+// type newInt int  // 类型定义
+// type myInt = int // 类型别名
+
+//	func main() {
+//		var a newInt
+//		var b myInt
+//		fmt.Printf("Val: %v, Type: %T\n", a, a)
+//		fmt.Printf("Val: %v, Type: %T\n", b, b)
+//	}
+// package main
+
+//	type person struct {
+//		name string
+//		city string
+//		age  int8
+//	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name string
+// 	city string
+// 	age int
+// }
+
+//	func main() {
+//		var p1 person
+//		p1.name = "哈基米"
+//		p1.city = "北京"
+//		p1.age = 18
+//		fmt.Printf("p1 = %v\n", p1)
+//		fmt.Printf("p1 = %#v\n", p1)
+//	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name string
+// 	city string
+// 	age  int8
+// }
+
+//	func main() {
+//		var p2 = new(person)
+//		p2.name = "曼波"
+//		p2.age = 18
+//		p2.city = "上海"
+//		fmt.Printf("%T\n", p2)
+//		fmt.Printf("p2 = %#v\n", p2)
+//	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name string
+// 	city string
+// 	age  int
+// }
+
+//	func main() {
+//		var p2 = new(person)
+//		(*p2).name = "manbo"
+//		p2.age = 18
+//		p2.city = "shanghai"
+//		fmt.Printf("%T\n", p2)
+//		fmt.Printf("p2 = %#v\n", p2)
+//	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name, city string
+// 	age        int
+// }
+
+//	func main() {
+//		p3 := &person{}
+//		fmt.Printf("%T\n", p3)
+//		fmt.Printf("p3 = %#v\n", p3)
+//		p3.name = "hachimi"
+//		p3.age = 30
+//		p3.city = "杭州"
+//		(*p3).age = 50
+//		fmt.Printf("p3 = %#v\n", p3)
+//	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name, city string
+// 	age        int
+// }
+
+//	func main() {
+//		p4 := &person{
+//			name: "manba",
+//			city: "yili",
+//			age:  18,
+//		}
+//		fmt.Printf("p4 = %#v\n", p4)
+//	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name, city string
+// 	age        int
+// }
+
+//	func main() {
+//		p6 := &person{city: "北京"}
+//		fmt.Printf("%#v\n", p6)
+//	}
 package main
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
-func readFile(filename string) error {
-	if filename == "main.go" {
-		return nil
-	}
-	return errors.New("读取文件错误")
-}
-
-func fn() {
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Println("抛出异常给管理员发送邮件")
-		}
-	}()
-	err := readFile("xxx.go")
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("继续执行")
+type person struct {
+	name, city string
+	age        int
 }
 
 func main() {
-	fn()
+	p := person{
+		"LBJ",
+		"New York",
+		28,
+	}
+	fmt.Printf("p = %#v\n", p)
 }
