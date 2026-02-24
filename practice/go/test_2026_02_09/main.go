@@ -3276,14 +3276,122 @@
 // 	Sno    string
 // }
 
-// func main() {
-// 	jsonStr := `{"Id":1, "Gender":"女", "Name":"平泽唯", "Sno":"s0001"}`
-// 	s := new(Student)
-// 	err := json.Unmarshal([]byte(jsonStr), s)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	fmt.Printf("%#v\n%v\n", s, s.Name)
+//	func main() {
+//		jsonStr := `{"Id":1, "Gender":"女", "Name":"平泽唯", "Sno":"s0001"}`
+//		s := new(Student)
+//		err := json.Unmarshal([]byte(jsonStr), s)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//		fmt.Printf("%#v\n%v\n", s, s.Name)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int    `json:"id"`
+// 	Gender string `json:"gender"`
+// 	Name   string `json:"name"`
+// 	Sno    string `json:"sno"`
 // }
+
+//	func main() {
+//		s := &Student{Id: 1, Gender: "女", Name: "平泽唯", Sno: "s0001"}
+//		fmt.Printf("%#v\n", s)
+//		jsonByte, _ := json.Marshal(s)
+//		jsonStr := string(jsonByte)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// // 学生
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// }
+
+// // 班级
+// type Class struct {
+// 	Title    string
+// 	Students []Student
+// }
+
+// func main() {
+// 	c := &Class{
+// 		Title:    "0301",
+// 		Students: make([]Student, 0, 200),
+// 	}
+
+// 	for i := range 10 {
+// 		s := Student{
+// 			Name:   fmt.Sprintf("stu_%02d", i),
+// 			Gender: "女",
+// 			Id:     i,
+// 		}
+// 		c.Students = append(c.Students, s)
+// 	}
+
+// 	data, err := json.Marshal(c)
+
+// 	if err != nil {
+// 		fmt.Println("JSON marshal failed.")
+// 		return
+// 	}
+
+//		fmt.Printf("JSON: %s\n", data)
+//	}
 package main
 
+import (
+	"fmt"
+
+	json "github.com/json-iterator/go"
+)
+
+// 学生
+type Student struct {
+	Id     int    `json:"id"`
+	Gender string `json:"gender"`
+	Name   string `json:"name"`
+}
+
+// 班级
+type Class struct {
+	Title    string    `json:"title"`
+	Students []Student `json:"students"`
+}
+
+func main() {
+	c := &Class{
+		Title:    "0302",
+		Students: make([]Student, 0, 200),
+	}
+
+	for i := range 10 {
+		s := Student{
+			Name:   fmt.Sprintf("stu_%02d", i),
+			Gender: "女",
+			Id:     i,
+		}
+		c.Students = append(c.Students, s)
+	}
+
+	data, err := json.Marshal(c)
+
+	if err != nil {
+		fmt.Println("JSON marshal failed.")
+		return
+	}
+
+	fmt.Printf("JSON: %s\n", data)
+}
