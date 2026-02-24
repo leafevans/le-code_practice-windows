@@ -3129,20 +3129,161 @@
 //		p6 := &person{city: "北京"}
 //		fmt.Printf("%#v\n", p6)
 //	}
+// package main
+
+// import "fmt"
+
+// type person struct {
+// 	name, city string
+// 	age        int
+// }
+
+//	func main() {
+//		p := person{
+//			"LBJ",
+//			"New York",
+//			28,
+//		}
+//		fmt.Printf("p = %#v\n", p)
+//	}
+// package main
+
+// import "fmt"
+
+// type Person struct {
+// 	name string
+// 	age  int
+// }
+
+// func (p Person) PrintInfo() {
+// 	fmt.Printf("Name: %v, Age: %v\n", p.name, p.age)
+// }
+
+//	func main() {
+//		p1 := Person{
+//			"曼波",
+//			25,
+//		}
+//		p1.PrintInfo()
+//	}
+// package main
+
+// import "fmt"
+
+// type Person struct {
+// 	name string
+// 	age  int8
+// }
+
+// func (p Person) printInfo() {
+// 	fmt.Printf("Name: %v\tAge: %d\n", p.name, p.age)
+// }
+
+// func (p *Person) setInfo(name string, age int) {
+// 	p.name = name
+// 	p.age = int8(age)
+// }
+
+//	func main() {
+//		p1 := &Person{
+//			name: "哈牛魔",
+//			age:  29,
+//		}
+//		p1.printInfo()
+//		p1.setInfo("ccn", 111)
+//		p1.printInfo()
+//	}
+// package main
+
+// import "fmt"
+
+// type myInt int
+
+// func (m myInt) SayHello() {
+// 	fmt.Println("Hello int!")
+// }
+
+//	func main() {
+//		var m1 myInt
+//		m1.SayHello()
+//		m1 = 100
+//		fmt.Printf("%#v\t%T\n", m1, m1)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+
+// 	json "github.com/json-iterator/go"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	name   string
+// 	Sno    string
+// }
+
+//	func main() {
+//		s := &Student{
+//			Id:     1,
+//			Gender: "女",
+//			name:   "平泽唯",
+//			Sno:    "s001",
+//		}
+//		fmt.Printf("%#v\n", s)
+//		jsonByte, _ := json.Marshal(s)
+//		jsonStr := string(jsonByte)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	name   string
+// 	Sno    string
+// }
+
+//	func main() {
+//		s := &Student{
+//			Id:     1,
+//			Gender: "女",
+//			name:   "平泽唯",
+//			Sno:    "s0001",
+//		}
+//		fmt.Printf("%#v\n", s)
+//		jsonByte, _ := json.Marshal(s)
+//		jsonStr := string(jsonByte)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// 	Sno    string
+// }
+
+// func main() {
+// 	jsonStr := `{"Id":1, "Gender":"女", "Name":"平泽唯", "Sno":"s0001"}`
+// 	s := new(Student)
+// 	err := json.Unmarshal([]byte(jsonStr), s)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	fmt.Printf("%#v\n%v\n", s, s.Name)
+// }
 package main
 
-import "fmt"
-
-type person struct {
-	name, city string
-	age        int
-}
-
-func main() {
-	p := person{
-		"LBJ",
-		"New York",
-		28,
-	}
-	fmt.Printf("p = %#v\n", p)
-}
