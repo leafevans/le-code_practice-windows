@@ -13,8 +13,8 @@ public:
     }
 
 private:
-    vector<vector<int>> res;
     vector<int> path;
+    vector<vector<int>> res;
 
     void backtrack(vector<int>& candidates, int target, int start) {
         if (target < 0) {
@@ -22,6 +22,7 @@ private:
         }
         if (target == 0) {
             res.push_back(path);
+            return;
         }
 
         for (int i = start; i < candidates.size(); ++i) {
