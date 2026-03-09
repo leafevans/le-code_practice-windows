@@ -1,5 +1,7 @@
--- Active: 1768800322203@@127.0.0.1@3307
+-- Active: 1773015712865@@127.0.0.1@3307@test
 USE practice;
+
+DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE IF NOT EXISTS `user` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -301,5 +303,3 @@ CREATE INDEX idx_user_profession_age_status ON user (profession, age, status);
 CREATE INDEX idx_user_email ON user (email);
 
 DROP INDEX idx_user_email ON user;
-
-
