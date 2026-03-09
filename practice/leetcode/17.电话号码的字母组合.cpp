@@ -17,7 +17,7 @@ private:
     string path;
     const vector<string> MAPPING = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
-    void backtrack(const string& digits, int idx) {
+    void backtrack(string digits, int idx) {
         if (idx == digits.size()) {
             res.push_back(path);
             return;

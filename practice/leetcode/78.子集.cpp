@@ -16,7 +16,7 @@ private:
     vector<int> path;
     vector<vector<int>> res;
 
-    void backtrack(const vector<int>& nums, int start) {
+    void backtrack(vector<int>& nums, int start) {
         res.push_back(path);
         for (int i = start; i < nums.size(); ++i) {
             path.push_back(nums[i]);
