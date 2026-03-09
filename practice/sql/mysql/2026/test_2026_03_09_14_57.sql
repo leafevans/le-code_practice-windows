@@ -62,3 +62,28 @@ USE INDEX (
 )
 WHERE
     profession = '软件工程';
+
+SELECT COUNT(DISTINCT email) / COUNT(*) FROM user;
+
+SELECT COUNT( DISTINCT SUBSTRING(email, 1, 5) ) / COUNT(*) FROM user;
+
+CREATE INDEX idx_user_email_prefix5 ON user (email (5));
+
+EXPLAIN SELECT * FROM user WHERE email = 'daqiao555@sina.com';
+
+EXPLAIN
+SELECT id, phone, name
+FROM user
+WHERE
+    phone = '17799990010'
+    AND name = '韩信';
+
+CREATE UNIQUE INDEX uniq_user_phone_name ON user (phone, name);
+
+EXPLAIN
+SELECT id, phone, name
+FROM user
+USE INDEX (uniq_user_phone_name)
+WHERE
+    phone = '17799990010'
+    AND name = '韩信';
