@@ -20,6 +20,7 @@ private:
         if (target < 0) {
             return;
         }
+
         if (target == 0) {
             res.push_back(path);
             return;
