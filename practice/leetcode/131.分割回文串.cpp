@@ -8,38 +8,37 @@
 class Solution {
 public:
     vector<vector<string>> partition(string s) {
-        int n = s.size();
-        vector<vector<bool>> isPal(n, vector<bool>(n, false));
-        for (int i = n - 1; i >= 0; --i) {
-            for (int j = i; j < n; ++j) {
-                if (s[i] == s[j] && (j - i < 2 || isPal[i + 1][j - 1])) {
-                    isPal[i][j] = true;
-                }
-            }
-        }
-
-        dfs(s, 0, isPal);
+        backtrack(s, 0);
         return res;
     }
 
 private:
-    vector<vector<string>> res;
     vector<string> path;
+    vector<vector<string>> res;
 
-    void dfs(const string& s, int start, const vector<vector<bool>>& isPal) {
-        int n = s.size();
-        if (start == n) {
+    void backtrack(const string& s, int start) {
+        if (start == s.size()) {
             res.push_back(path);
             return;
         }
 
-        for (int end = start; end < n; ++end) {
-            if (isPal[start][end]) {
-                path.push_back(s.substr(start, end - start + 1));
-                dfs(s, end + 1, isPal);
+        for (int i = start; i < s.size(); ++i) {
+            if (isPalin(s, start, i)) {
+                string str = s.substr(start, i - start + 1);
+                path.push_back(str);
+                backtrack(s, i + 1);
                 path.pop_back();
             }
         }
+    }
+
+    bool isPalin(const string& s, int left, int right) {
+        while (left < right) {
+            if (s[left++] != s[right--]) {
+                return false;
+            }
+        }
+        return true;
     }
 };
 // @lc code=end
