@@ -32,10 +32,8 @@ private:
 
         char tmp = board[i][j];
         board[i][j] = '#';
-
         bool found = dfs(board, word, pos + 1, i - 1, j) || dfs(board, word, pos + 1, i + 1, j) ||
                      dfs(board, word, pos + 1, i, j - 1) || dfs(board, word, pos + 1, i, j + 1);
-
         board[i][j] = tmp;
 
         return found;
