@@ -3395,6 +3395,341 @@
 
 //		fmt.Printf("JSON: %s\n", data)
 //	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// }
+
+// type Class struct {
+// 	Title    string
+// 	Students []Student
+// }
+
+// func main() {
+// 	str := `{
+//     "Title": "0302",
+//     "Students": [
+//         {
+//             "Id": 0,
+//             "Gender": "女",
+//             "Name": "stu_00"
+//         },
+//         {
+//             "Id": 1,
+//             "Gender": "女",
+//             "Name": "stu_01"
+//         },
+//         {
+//             "Id": 2,
+//             "Gender": "女",
+//             "Name": "stu_02"
+//         },
+//         {
+//             "Id": 3,
+//             "Gender": "女",
+//             "Name": "stu_03"
+//         },
+//         {
+//             "Id": 4,
+//             "Gender": "女",
+//             "Name": "stu_04"
+//         },
+//         {
+//             "Id": 5,
+//             "Gender": "女",
+//             "Name": "stu_05"
+//         },
+//         {
+//             "Id": 6,
+//             "Gender": "女",
+//             "Name": "stu_06"
+//         },
+//         {
+//             "Id": 7,
+//             "Gender": "女",
+//             "Name": "stu_07"
+//         },
+//         {
+//             "Id": 8,
+//             "Gender": "女",
+//             "Name": "stu_08"
+//         },
+//         {
+//             "Id": 9,
+//             "Gender": "女",
+//             "Name": "stu_09"
+//         }
+//     ]
+// }
+// 	`
+// 	c := new(Class)
+// 	err := json.Unmarshal([]byte(str), c)
+
+//		if err != nil {
+//			fmt.Println("JSON unmarshal failed!")
+//			return
+//		}
+//		fmt.Printf("%#v\n", c)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	name   string
+// 	Sno    string
+// }
+
+// func main() {
+// 	s := &Student{
+// 		Id:     1,
+// 		Gender: "女",
+// 		name:   "平泽唯",
+// 		Sno:    "s0001",
+// 	}
+// 	fmt.Printf("%#v\n", s)
+
+//		jsonByte, _ := json.Marshal(s)
+//		jsonStr := string(jsonByte)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// 	Sno    string
+// }
+
+// func main() {
+// 	jsonStr := `{"Id":1, "Gender":"女", "Name":"平泽唯", "Sno":"s0001"}`
+// 	s := Student{}
+// 	err := json.Unmarshal([]byte(jsonStr), &s)
+
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+
+//		fmt.Printf("%#v\n%v\n", s, s.Name)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int    `json:"id"`
+// 	Gender string `json:"gender"`
+// 	Name   string `json:"name"`
+// 	Sno    string `json:"sno"`
+// }
+
+// func main() {
+// 	s := &Student{
+// 		Id:     1,
+// 		Gender: "女",
+// 		Name:   "平泽唯",
+// 		Sno:    "s0001",
+// 	}
+// 	fmt.Printf("%#v\n", s)
+
+//		jsonByte, _ := json.Marshal(s)
+//		jsonStr := string(jsonByte)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// }
+
+// type Class struct {
+// 	Title    string
+// 	Students []Student
+// }
+
+// func main() {
+// 	c := &Class{
+// 		Title:    "0302",
+// 		Students: make([]Student, 0, 200),
+// 	}
+
+// 	for i := range 10 {
+// 		s := Student{
+// 			Name:   fmt.Sprintf("stu_%02d", i),
+// 			Gender: "女",
+// 			Id:     i,
+// 		}
+// 		c.Students = append(c.Students, s)
+// 	}
+
+// 	data, err := json.Marshal(c)
+
+// 	if err != nil {
+// 		fmt.Println("JSON marshal failed.")
+// 		return
+// 	}
+
+//		fmt.Printf("JSON: %s\n", data)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// }
+
+// type Class struct {
+// 	Title    string
+// 	Students []Student
+// }
+
+// func main() {
+// 	c := &Class{
+// 		Title:    "0302",
+// 		Students: make([]Student, 0, 200),
+// 	}
+
+// 	for i := range 10 {
+// 		s := Student{
+// 			Name:   fmt.Sprintf("stu_%02d", i),
+// 			Gender: "女",
+// 			Id:     i,
+// 		}
+// 		c.Students = append(c.Students, s)
+// 	}
+
+// 	data, err := json.Marshal(c)
+
+// 	if err != nil {
+// 		fmt.Println("JSON marshal failed.")
+// 		return
+// 	}
+
+//		fmt.Printf("JSON: %s\n", data)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// }
+
+// type Class struct {
+// 	Title    string
+// 	Students []Student
+// }
+
+// func main() {
+// 	str := `
+// {
+//     "Title": "0302",
+//     "Students": [
+//         {
+//             "Id": 0,
+//             "Gender": "女",
+//             "Name": "stu_00"
+//         },
+//         {
+//             "Id": 1,
+//             "Gender": "女",
+//             "Name": "stu_01"
+//         },
+//         {
+//             "Id": 2,
+//             "Gender": "女",
+//             "Name": "stu_02"
+//         },
+//         {
+//             "Id": 3,
+//             "Gender": "女",
+//             "Name": "stu_03"
+//         },
+//         {
+//             "Id": 4,
+//             "Gender": "女",
+//             "Name": "stu_04"
+//         },
+//         {
+//             "Id": 5,
+//             "Gender": "女",
+//             "Name": "stu_05"
+//         },
+//         {
+//             "Id": 6,
+//             "Gender": "女",
+//             "Name": "stu_06"
+//         },
+//         {
+//             "Id": 7,
+//             "Gender": "女",
+//             "Name": "stu_07"
+//         },
+//         {
+//             "Id": 8,
+//             "Gender": "女",
+//             "Name": "stu_08"
+//         },
+//         {
+//             "Id": 9,
+//             "Gender": "女",
+//             "Name": "stu_09"
+//         }
+//     ]
+// }
+// `
+
+// 	c := new(Class)
+
+// 	err := json.Unmarshal([]byte(str), c)
+
+// 	if err != nil {
+// 		fmt.Println("JSON unmarshal failed!")
+// 		return
+// 	}
+
+//		fmt.Printf("%#v\n", c)
+//	}
 package main
 
 import (
@@ -3402,19 +3737,22 @@ import (
 	"fmt"
 )
 
+// 学生
 type Student struct {
 	Id     int
 	Gender string
 	Name   string
 }
 
+// 班级
 type Class struct {
 	Title    string
 	Students []Student
 }
 
 func main() {
-	str := `{
+	str := `
+{
     "Title": "0302",
     "Students": [
         {
@@ -3469,13 +3807,16 @@ func main() {
         }
     ]
 }
-	`
-	c := new(Class)
+`
+
+	c := &Class{}
+
 	err := json.Unmarshal([]byte(str), c)
 
 	if err != nil {
 		fmt.Println("JSON unmarshal failed!")
 		return
 	}
+
 	fmt.Printf("%#v\n", c)
 }
