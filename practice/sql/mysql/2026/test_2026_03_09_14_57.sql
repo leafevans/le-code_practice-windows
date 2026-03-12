@@ -87,3 +87,62 @@ USE INDEX (uniq_user_phone_name)
 WHERE
     phone = '17799990010'
     AND name = '韩信';
+
+EXPLAIN SELECT id, age, phone FROM user ORDER BY age;
+
+SHOW INDEX FROM user;
+
+EXPLAIN SELECT id, age, phone FROM user ORDER BY age, phone;
+
+CREATE INDEX idx_user_age_phone ON user (age, phone);
+
+EXPLAIN
+SELECT id, age, phone
+FROM user
+ORDER BY age DESC, phone DESC;
+
+EXPLAIN SELECT id, age, phone FROM user ORDER BY phone, age;
+
+EXPLAIN
+SELECT id, age
+FROM user FORCE INDEX (idx_user_age_phone_desc)
+ORDER BY age ASC, phone DESC;
+
+CREATE INDEX idx_user_age_phone_desc ON user (age ASC, phone DESC);
+
+SHOW VARIABLES LIKE 'sort_buffer_size';
+
+SHOW INDEX FROM user;
+
+DROP INDEX idx_user_profession_age_status ON user;
+
+EXPLAIN SELECT profession, COUNT(*) FROM user GROUP BY profession;
+
+CREATE INDEX idx_user_profession_age_status ON user (profession, age, status);
+
+EXPLAIN SELECT age, COUNT(*) FROM user GROUP BY age;
+
+EXPLAIN
+SELECT profession, age, COUNT(*)
+FROM user
+GROUP BY
+    profession,
+    age;
+
+EXPLAIN
+SELECT age, COUNT(*)
+FROM user
+WHERE
+    profession = '软件工程'
+GROUP BY
+    age;
+
+SELECT * FROM user LIMIT 2000000, 10;
+
+SELECT u1.id
+FROM user u1
+    JOIN (
+        SELECT id
+        FROM user
+        LIMIT 5000000, 10
+    ) u2 ON u1.id = u2.id;
