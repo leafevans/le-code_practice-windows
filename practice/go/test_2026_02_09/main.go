@@ -3820,20 +3820,63 @@
 
 //		fmt.Printf("%#v\n", c)
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// )
+
+// var x int8 = 20
+
+// const pi = 3.14
+
+// func init() {
+// 	fmt.Println(x)
+// }
+
+//	func main() {
+//		fmt.Println("Hello World!")
+//	}
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-var x int8 = 20
+type Usber interface {
+	Start()
+	Stop()
+}
 
-const pi = 3.14
+type Phone struct {
+	Name string
+}
 
-func init() {
-	fmt.Println(x)
+func (p Phone) Start() {
+	fmt.Println(p.Name, "开机")
+}
+
+func (p Phone) Stop() {
+	fmt.Println(p.Name, "关机")
+}
+
+type Camera struct{}
+
+func (c Camera) Start() {
+	fmt.Println("相机 开机")
+}
+
+func (c Camera) Stop() {
+	fmt.Println("相机 关机")
 }
 
 func main() {
-	fmt.Println("Hello World!")
+	var phone Usber = Phone{
+		Name: "一加手机",
+	}
+	phone.Start()
+	phone.Stop()
+
+	camera := Camera{}
+	var c Usber = camera
+	c.Start()
+	c.Stop()
 }
