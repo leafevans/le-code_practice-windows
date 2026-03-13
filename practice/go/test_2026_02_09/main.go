@@ -4023,11 +4023,117 @@
 //		studentInfo["married"] = false
 //		fmt.Println(studentInfo)
 //	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var slice = []any{"平泽唯", 20, true, 32.2}
+//		fmt.Println(slice)
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var x any = "Hello Golang!"
+// 	v, ok := x.(string)
+
+//		if ok {
+//			fmt.Printf("Type: %T, Value: %v\n", v, v)
+//		} else {
+//			fmt.Println("类型断言失败")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var x any = "Hello Golang!"
+// 	v, ok := x.(string)
+
+//		if ok {
+//			fmt.Println(v)
+//		} else {
+//			fmt.Println("类型断言失败")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var x any = "Hello Golang!"
+// 	v, ok := x.(string)
+
+//		if ok {
+//			fmt.Println(v)
+//		} else {
+//			fmt.Println("类型断言失败")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var x any = "Hello Golang!"
+// 	v, ok := x.(string)
+
+//		if ok {
+//			fmt.Println(v)
+//		} else {
+//			fmt.Println("类型断言失败")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func justifyType(x any) {
+// 	switch x.(type) {
+// 	case string:
+// 		fmt.Println("string 类型")
+// 	case int:
+// 		fmt.Println("int 类型")
+// 	case bool:
+// 		fmt.Println("bool 类型")
+// 	case float32:
+// 		fmt.Println("float32 类型")
+// 	case float64:
+// 		fmt.Println("float64 类型")
+// 	default:
+// 		fmt.Println("Unsupport type!")
+// 	}
+// }
+
+//	func main() {
+//		justifyType(10)
+//		justifyType("Hello World!")
+//	}
 package main
 
 import "fmt"
 
+func justifyType(x any) {
+	switch x.(type) {
+	case string:
+		fmt.Println("string 类型")
+	case int:
+		fmt.Println("int 类型")
+	case bool:
+		fmt.Println("bool 类型")
+	case float32:
+		fmt.Println("float32 类型")
+	case float64:
+		fmt.Println("float64 类型")
+	default:
+		fmt.Println("Unsupport type!")
+	}
+}
+
 func main() {
-	var slice = []any{"平泽唯", 20, true, 32.2}
-	fmt.Println(slice)
+	justifyType(10)
+	justifyType("Hello World")
 }
