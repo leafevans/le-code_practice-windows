@@ -4386,7 +4386,109 @@
 // 	var d1 Animaler = dog
 // 	var d2 Peter = dog
 
-// 	fmt.Println(d2.GetName())
-// 	d1.SetName("布莱恩")
-// 	fmt.Println(d2.GetName())
+//		fmt.Println(d2.GetName())
+//		d1.SetName("布莱恩")
+//		fmt.Println(d2.GetName())
+//	}
+// package main
+
+// import "fmt"
+
+// type Animaler interface {
+// 	SetName(string)
 // }
+
+// type Peter interface {
+// 	GetName() string
+// }
+
+// type Dog struct {
+// 	Name string
+// }
+
+// func (d *Dog) SetName(name string) {
+// 	d.Name = name
+// }
+
+// func (d Dog) GetName() string {
+// 	return d.Name
+// }
+
+// func main() {
+// 	dog := &Dog{Name: "布鲁斯"}
+
+// 	var d1 Animaler = dog
+// 	var d2 Peter = dog
+
+//		fmt.Println(d2.GetName())
+//		d1.SetName("布莱恩")
+//		fmt.Println(d2.GetName())
+//	}
+// package main
+
+// import "fmt"
+
+// type Runner interface {
+// 	Run()
+// }
+
+// type Swimer interface {
+// 	Swim()
+// }
+
+// type Animal interface {
+// 	Runner
+// 	Swimer
+// }
+
+// type Cat struct {
+// 	Name string
+// }
+
+// func (c Cat) Run() {
+// 	fmt.Println("基米跑步")
+// }
+
+// func (c Cat) Swim() {
+// 	fmt.Println("基米游泳")
+// }
+
+//	func main() {
+//		var cat Animal = &Cat{Name: "哈基米"}
+//		cat.Run()
+//		cat.Swim()
+//	}
+package main
+
+import "fmt"
+
+type Runner interface {
+	Run()
+}
+
+type Swimer interface {
+	Swim()
+}
+
+type Animal interface {
+	Runner
+	Swimer
+}
+
+type Cat struct {
+	Name string
+}
+
+func (c Cat) Run() {
+	fmt.Println("基米跑步")
+}
+
+func (c Cat) Swim() {
+	fmt.Println("基米游泳")
+}
+
+func main() {
+	var cat Animal = &Cat{Name: "哈基米"}
+	cat.Run()
+	cat.Swim()
+}
