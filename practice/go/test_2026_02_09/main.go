@@ -4112,28 +4112,281 @@
 //		justifyType(10)
 //		justifyType("Hello World!")
 //	}
-package main
+// package main
 
-import "fmt"
+// import "fmt"
 
-func justifyType(x any) {
-	switch x.(type) {
-	case string:
-		fmt.Println("string 类型")
-	case int:
-		fmt.Println("int 类型")
-	case bool:
-		fmt.Println("bool 类型")
-	case float32:
-		fmt.Println("float32 类型")
-	case float64:
-		fmt.Println("float64 类型")
-	default:
-		fmt.Println("Unsupport type!")
-	}
-}
+// func justifyType(x any) {
+// 	switch x.(type) {
+// 	case string:
+// 		fmt.Println("string 类型")
+// 	case int:
+// 		fmt.Println("int 类型")
+// 	case bool:
+// 		fmt.Println("bool 类型")
+// 	case float32:
+// 		fmt.Println("float32 类型")
+// 	case float64:
+// 		fmt.Println("float64 类型")
+// 	default:
+// 		fmt.Println("Unsupport type!")
+// 	}
+// }
 
-func main() {
-	justifyType(10)
-	justifyType("Hello World")
-}
+//	func main() {
+//		justifyType(10)
+//		justifyType("Hello World")
+//	}
+// package main
+
+// import "fmt"
+
+// func justifyType(x any) {
+// 	switch x.(type) {
+// 	case string:
+// 		fmt.Println("string 类型")
+// 	case int:
+// 		fmt.Println("int 类型")
+// 	case bool:
+// 		fmt.Println("bool 类型")
+// 	case float32:
+// 		fmt.Println("float32 类型")
+// 	case float64:
+// 		fmt.Println("float64 类型")
+// 	default:
+// 		fmt.Println("Unsopport type!")
+// 	}
+// }
+
+//	func main() {
+//		justifyType(10)
+//		justifyType("Hello World")
+//	}
+// package main
+
+// import "fmt"
+
+// type Address struct {
+// 	Name  string
+// 	Phone int
+// }
+
+// func main() {
+// 	userinfo := make(map[string]any)
+// 	userinfo["username"] = "平泽唯"
+// 	userinfo["age"] = 18
+// 	userinfo["hobby"] = []string{"偷闲", "吃甜品"}
+
+// 	fmt.Println(userinfo["hobby"].([]string)[1])
+
+// 	address := Address{
+// 		Name:  "田中井律",
+// 		Phone: 1234567890,
+// 	}
+// 	userinfo["address"] = address
+
+//		a, ok := userinfo["address"].(Address)
+//		if ok {
+//			fmt.Println(a.Name)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// type Address struct {
+// 	Name  string
+// 	Phone int
+// }
+
+// func main() {
+// 	userinfo := make(map[string]any)
+// 	userinfo["username"] = "平泽唯"
+// 	userinfo["age"] = 18
+// 	userinfo["hobby"] = []string{"偷闲", "吃甜品"}
+
+// 	fmt.Println(userinfo["hobby"].([]string)[1])
+
+// 	address := Address{
+// 		Name:  "田中井律",
+// 		Phone: 1234567890,
+// 	}
+// 	userinfo["address"] = address
+
+//		a, ok := userinfo["address"].(Address)
+//		if ok {
+//			fmt.Println(a.Name)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// type Address struct {
+// 	Name  string
+// 	Phone int
+// }
+
+// func main() {
+// 	userinfo := make(map[string]any)
+// 	userinfo["username"] = "平泽唯"
+// 	userinfo["age"] = 18
+// 	userinfo["hobby"] = []string{"偷闲", "吃甜品"}
+
+// 	fmt.Println(userinfo["hobby"].([]string)[1])
+
+// 	address := Address{
+// 		Name:  "田中井律",
+// 		Phone: 1234567890,
+// 	}
+
+//		userinfo["address"] = address
+//		a, ok := userinfo["address"].(Address)
+//		if ok {
+//			fmt.Println(a.Name)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func justifyType(x any) {
+// 	switch x.(type) {
+// 	case string:
+// 		fmt.Println("string 类型")
+// 	case int:
+// 		fmt.Println("int 类型")
+// 	case bool:
+// 		fmt.Println("bool 类型")
+// 	case float32:
+// 		fmt.Println("float32 类型")
+// 	case float64:
+// 		fmt.Println("float64 类型")
+// 	default:
+// 		fmt.Println("Unsupport type!")
+// 	}
+// }
+
+//	func main() {
+//		justifyType(10)
+//		justifyType(3.14)
+//		justifyType("Hello World")
+//	}
+// package main
+
+// import "fmt"
+
+// type Address struct {
+// 	Name  string
+// 	Phone int
+// }
+
+// func main() {
+// 	userinfo := make(map[string]any)
+// 	userinfo["username"] = "平泽唯"
+// 	userinfo["age"] = 18
+// 	userinfo["hobby"] = []string{"偷闲", "吃甜品"}
+
+// 	fmt.Println(userinfo["hobby"].([]string)[1])
+
+// 	address := Address{
+// 		Name:  "田中井律",
+// 		Phone: 1234567890,
+// 	}
+// 	userinfo["address"] = address
+
+//		a, ok := userinfo["address"].(Address)
+//		if ok {
+//			fmt.Println(a.Name)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// type Usber interface {
+// 	Start()
+// 	Stop()
+// }
+
+// type Phone struct {
+// 	Name string
+// }
+
+// func (p Phone) Start() {
+// 	fmt.Println(p.Name, "开机")
+// }
+
+// func (p Phone) Stop() {
+// 	fmt.Println(p.Name, "关机")
+// }
+
+// func main() {
+// 	phone1 := Phone{
+// 		Name: "小米手机",
+// 	}
+// 	var p1 Usber = phone1
+// 	p1.Start()
+
+//		var p2 Usber = &Phone{
+//			Name: "苹果手机",
+//		}
+//		p2.Start()
+//	}
+// package main
+
+// import "fmt"
+
+// type Usber interface {
+// 	Start()
+// 	Stop()
+// }
+
+// type Phone struct {
+// 	Name string
+// }
+
+// func (p *Phone) Start() { fmt.Println(p.Name, "开机") }
+
+// func (p *Phone) Stop() { fmt.Println(p.Name, "关机") }
+
+//	func main() {
+//		var p2 Usber = &Phone{
+//			Name: "苹果手机",
+//		}
+//		p2.Start()
+//	}
+// package main
+
+// import "fmt"
+
+// type Animaler interface {
+// 	SetName(string)
+// }
+
+// type Peter interface {
+// 	GetName() string
+// }
+
+// type Dog struct {
+// 	Name string
+// }
+
+// func (d *Dog) SetName(name string) {
+// 	d.Name = name
+// }
+
+// func (d Dog) GetName() string {
+// 	return d.Name
+// }
+
+// func main() {
+// 	dog := &Dog{Name: "布鲁斯"}
+
+// 	var d1 Animaler = dog
+// 	var d2 Peter = dog
+
+// 	fmt.Println(d2.GetName())
+// 	d1.SetName("布莱恩")
+// 	fmt.Println(d2.GetName())
+// }
