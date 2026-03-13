@@ -3730,93 +3730,98 @@
 
 //		fmt.Printf("%#v\n", c)
 //	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// // 学生
+// type Student struct {
+// 	Id     int
+// 	Gender string
+// 	Name   string
+// }
+
+// // 班级
+// type Class struct {
+// 	Title    string
+// 	Students []Student
+// }
+
+// func main() {
+// 	str := `
+// {
+//     "Title": "0302",
+//     "Students": [
+//         {
+//             "Id": 0,
+//             "Gender": "女",
+//             "Name": "stu_00"
+//         },
+//         {
+//             "Id": 1,
+//             "Gender": "女",
+//             "Name": "stu_01"
+//         },
+//         {
+//             "Id": 2,
+//             "Gender": "女",
+//             "Name": "stu_02"
+//         },
+//         {
+//             "Id": 3,
+//             "Gender": "女",
+//             "Name": "stu_03"
+//         },
+//         {
+//             "Id": 4,
+//             "Gender": "女",
+//             "Name": "stu_04"
+//         },
+//         {
+//             "Id": 5,
+//             "Gender": "女",
+//             "Name": "stu_05"
+//         },
+//         {
+//             "Id": 6,
+//             "Gender": "女",
+//             "Name": "stu_06"
+//         },
+//         {
+//             "Id": 7,
+//             "Gender": "女",
+//             "Name": "stu_07"
+//         },
+//         {
+//             "Id": 8,
+//             "Gender": "女",
+//             "Name": "stu_08"
+//         },
+//         {
+//             "Id": 9,
+//             "Gender": "女",
+//             "Name": "stu_09"
+//         }
+//     ]
+// }
+// `
+
+// 	c := &Class{}
+
+// 	err := json.Unmarshal([]byte(str), c)
+
+// 	if err != nil {
+// 		fmt.Println("JSON unmarshal failed!")
+// 		return
+// 	}
+
+//		fmt.Printf("%#v\n", c)
+//	}
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// 学生
-type Student struct {
-	Id     int
-	Gender string
-	Name   string
-}
-
-// 班级
-type Class struct {
-	Title    string
-	Students []Student
-}
-
 func main() {
-	str := `
-{
-    "Title": "0302",
-    "Students": [
-        {
-            "Id": 0,
-            "Gender": "女",
-            "Name": "stu_00"
-        },
-        {
-            "Id": 1,
-            "Gender": "女",
-            "Name": "stu_01"
-        },
-        {
-            "Id": 2,
-            "Gender": "女",
-            "Name": "stu_02"
-        },
-        {
-            "Id": 3,
-            "Gender": "女",
-            "Name": "stu_03"
-        },
-        {
-            "Id": 4,
-            "Gender": "女",
-            "Name": "stu_04"
-        },
-        {
-            "Id": 5,
-            "Gender": "女",
-            "Name": "stu_05"
-        },
-        {
-            "Id": 6,
-            "Gender": "女",
-            "Name": "stu_06"
-        },
-        {
-            "Id": 7,
-            "Gender": "女",
-            "Name": "stu_07"
-        },
-        {
-            "Id": 8,
-            "Gender": "女",
-            "Name": "stu_08"
-        },
-        {
-            "Id": 9,
-            "Gender": "女",
-            "Name": "stu_09"
-        }
-    ]
-}
-`
 
-	c := &Class{}
-
-	err := json.Unmarshal([]byte(str), c)
-
-	if err != nil {
-		fmt.Println("JSON unmarshal failed!")
-		return
-	}
-
-	fmt.Printf("%#v\n", c)
 }
