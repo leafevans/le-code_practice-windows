@@ -3837,46 +3837,197 @@
 //	func main() {
 //		fmt.Println("Hello World!")
 //	}
+// package main
+
+// import "fmt"
+
+// type Usber interface {
+// 	Start()
+// 	Stop()
+// }
+
+// type Phone struct {
+// 	Name string
+// }
+
+// func (p Phone) Start() {
+// 	fmt.Println(p.Name, "开机")
+// }
+
+// func (p Phone) Stop() {
+// 	fmt.Println(p.Name, "关机")
+// }
+
+// type Camera struct{}
+
+// func (c Camera) Start() {
+// 	fmt.Println("相机 开机")
+// }
+
+// func (c Camera) Stop() {
+// 	fmt.Println("相机 关机")
+// }
+
+// func main() {
+// 	var phone Usber = Phone{
+// 		Name: "一加手机",
+// 	}
+// 	phone.Start()
+// 	phone.Stop()
+
+//		camera := Camera{}
+//		var c Usber = camera
+//		c.Start()
+//		c.Stop()
+//	}
+// package main
+
+// import "fmt"
+
+// type Usber interface {
+// 	Start()
+// 	Stop()
+// }
+
+// type Phone struct {
+// 	Name string
+// }
+
+// func (p Phone) Start() {
+// 	fmt.Println(p.Name, "开机")
+// }
+
+// func (p Phone) Stop() {
+// 	fmt.Println(p.Name, "关机")
+// }
+
+// type Camera struct{}
+
+// func (c Camera) Start() {
+// 	fmt.Println("相机 开机")
+// }
+
+// func (c Camera) Stop() {
+// 	fmt.Println("相机 关机")
+// }
+
+// func main() {
+// 	var phone Usber = Phone{
+// 		Name: "一加手机",
+// 	}
+// 	phone.Start()
+// 	phone.Stop()
+
+//		camera := Camera{}
+//		var c Usber = camera
+//		c.Start()
+//		c.Stop()
+//	}
+// package main
+
+// import "fmt"
+
+// type Usber interface {
+// 	Start()
+// 	Stop()
+// }
+
+// type Phone struct {
+// 	Name string
+// }
+
+// func (p Phone) Start() {
+// 	fmt.Println(p.Name, "开机")
+// }
+
+// func (p Phone) Stop() {
+// 	fmt.Println(p.Name, "关机")
+// }
+
+// type Computer struct {
+// 	Name string
+// }
+
+// func (c Computer) Work(usb Usber) {
+// 	usb.Start()
+// 	usb.Stop()
+// }
+
+//	func main() {
+//		phone := Phone{
+//			Name: "小米手机",
+//		}
+//		computer := Computer{}
+//		computer.Work(phone)
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var x any
+// 	s := "Hello World!"
+// 	x = s
+// 	fmt.Printf("Type: %T, Value: %v\n", x, x)
+
+// 	i := 100
+// 	x = i
+// 	fmt.Printf("Type: %T, Value: %v\n", x, x)
+
+//		b := true
+//		x = b
+//		fmt.Printf("Type: %T, Value: %v\n", x, x)
+//	}
+// package main
+
+// import "fmt"
+
+// func show(a any) {
+// 	fmt.Printf("Type: %T, Value: %v\n", a, a)
+// }
+
+// func main() {
+// 	var x any
+
+// 	s := "Hello World!"
+// 	x = s
+// 	fmt.Printf("Type: %T, Value: %v\n", x, x)
+
+// 	i := 100
+// 	x = i
+// 	fmt.Printf("Type: %T, Value: %v\n", x, x)
+
+//		b := true
+//		x = b
+//		fmt.Printf("Type: %T, Value: %v\n", x, x)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var studentInfo = make(map[string]any)
+//		studentInfo["name"] = "平泽唯"
+//		studentInfo["age"] = 18
+//		studentInfo["married"] = false
+//		fmt.Println(studentInfo)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		var studentInfo = make(map[string]any)
+//		studentInfo["name"] = "平泽唯"
+//		studentInfo["age"] = 18
+//		studentInfo["married"] = false
+//		fmt.Println(studentInfo)
+//	}
 package main
 
 import "fmt"
 
-type Usber interface {
-	Start()
-	Stop()
-}
-
-type Phone struct {
-	Name string
-}
-
-func (p Phone) Start() {
-	fmt.Println(p.Name, "开机")
-}
-
-func (p Phone) Stop() {
-	fmt.Println(p.Name, "关机")
-}
-
-type Camera struct{}
-
-func (c Camera) Start() {
-	fmt.Println("相机 开机")
-}
-
-func (c Camera) Stop() {
-	fmt.Println("相机 关机")
-}
-
 func main() {
-	var phone Usber = Phone{
-		Name: "一加手机",
-	}
-	phone.Start()
-	phone.Stop()
-
-	camera := Camera{}
-	var c Usber = camera
-	c.Start()
-	c.Stop()
+	var slice = []any{"平泽唯", 20, true, 32.2}
+	fmt.Println(slice)
 }
