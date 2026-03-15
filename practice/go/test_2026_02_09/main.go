@@ -4609,22 +4609,689 @@
 //		delete(scoreMap, "沙瑞金")
 //		fmt.Println(scoreMap)
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func fn() {
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 10 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		go fn()
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func fn() {
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 10 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		go fn()
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func fn(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 10 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		wg.Add(1)
+//		go fn(&wg)
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(10 * time.Millisecond)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func fn(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 10 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		wg.Add(1)
+//		go fn(&wg)
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func fn(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	ticker := time.NewTicker(10 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 5 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		wg.Add(1)
+//		go fn(&wg)
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func fn(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 5 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		wg.Add(1)
+//		go fn(&wg)
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func fn(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 10 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	wg.Add(1)
+// 	go fn(&wg)
+
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func fn(num int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	fmt.Println("Hello Goroutine!", num)
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		for i := range 10 {
+//			wg.Add(1)
+//			go fn(i, &wg)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func fn(num int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	fmt.Println("Hello Goroutine!", num)
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		for i := range 10 {
+//			wg.Add(1)
+//			go fn(i, &wg)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func fn(num int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	fmt.Println("Hello Goroutine!", num)
+// }
+
+//	func main() {
+//		var wg sync.WaitGroup
+//		for i := range 10 {
+//			wg.Add(1)
+//			go fn(i, &wg)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func fn(num int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	fmt.Println("Hello Goroutine!", num)
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+
+//		for i := range 10 {
+//			wg.Add(1)
+//			go fn(i, &wg)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"runtime"
+// )
+
+// func main() {
+// 	cpuNum := runtime.NumCPU()
+// 	fmt.Println("cpuNum =", cpuNum)
+
+//		runtime.GOMAXPROCS(cpuNum - 1)
+//		fmt.Println("OK!")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"runtime"
+// )
+
+// func main() {
+// 	cpuNum := runtime.NumCPU()
+// 	fmt.Println("cpuNum =", cpuNum)
+
+//		runtime.GOMAXPROCS(cpuNum - 1)
+//		fmt.Println("OK!")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func main() {
+// 	start := time.Now()
+// 	primeCount := 0
+
+// 	for num := 2; num < 1.2e5; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 			}
+// 		}
+// 		if isPrime {
+// 			primeCount++
+// 		}
+// 	}
+// 	elapsed := time.Since(start)
+
+//		fmt.Println(primeCount, elapsed)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func main() {
+// 	start := time.Now()
+// 	primeCount := 0
+
+// 	for num := 2; num < 1.2e5; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 			}
+// 		}
+// 		if isPrime {
+// 			primeCount++
+// 		}
+// 	}
+// 	elapsed := time.Since(start)
+
+//		fmt.Println(primeCount, elapsed)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func countPrime(start, end int, wg *sync.WaitGroup, res *int) {
+// 	defer wg.Done()
+// 	count := 0
+// 	for num := start; num < end; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 			}
+// 		}
+// 		if isPrime {
+// 			count++
+// 		}
+// 	}
+// 	*res = count
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	parts := 10
+// 	interval := 120000 / parts
+// 	res := make([]int, parts)
+
+// 	for i := range parts {
+// 		wg.Add(1)
+// 		s := i * interval
+// 		e := (i + 1) * interval
+// 		if s < 2 {
+// 			s = 2
+// 		}
+// 		go countPrime(s, e, &wg, &res[i])
+// 	}
+
+// 	wg.Wait()
+// 	total := 0
+// 	for _, v := range res {
+// 		total += v
+// 	}
+
+//		fmt.Println(total, time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func countPrime(start, end int, wg *sync.WaitGroup, res *int) {
+// 	defer wg.Done()
+// 	count := 0
+// 	for num := start; num < end; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			count++
+// 		}
+// 	}
+// 	*res = count
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	parts := 10
+// 	intervals := 120000 / parts
+// 	res := make([]int, parts)
+
+// 	for i := range parts {
+// 		s := max(2, i*intervals)
+// 		e := (i + 1) * intervals
+// 		wg.Add(1)
+// 		go countPrime(s, e, &wg, &res[i])
+// 	}
+// 	wg.Wait()
+
+// 	count := 0
+// 	for _, v := range res {
+// 		count += v
+// 	}
+
+//		fmt.Println(count, time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func countPrime(start, end int, wg *sync.WaitGroup, res *int) {
+// 	defer wg.Done()
+
+// 	for num := start; num < end; num++ {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			(*res)++
+// 		}
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	parts := 10
+// 	intervals := 1200000 / parts
+// 	res := make([]int, parts)
+
+// 	for i := range parts {
+// 		s := max(2, i*intervals)
+// 		e := (i + 1) * intervals
+// 		wg.Add(1)
+// 		go countPrime(s, e, &wg, &res[i])
+// 	}
+// 	wg.Wait()
+
+// 	count := 0
+// 	for _, v := range res {
+// 		count += v
+// 	}
+
+//		fmt.Println(count, time.Since(start))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		ch := make(chan int, 1)
+//		ch <- 10
+//		<-ch
+//		ch <- 12
+//		<-ch
+//		fmt.Println("Success")
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		ch := make(chan int, 1)
+//		ch <- 10
+//		<-ch
+//		ch <- 12
+//		<-ch
+//		ch <- 17
+//		fmt.Println("Success")
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	ch := make(chan int, 5)
+
+// 	for i := range 5 {
+// 		ch <- i + 1
+// 	}
+// 	close(ch)
+
+//		for v := range ch {
+//			fmt.Print(v, " ")
+//		}
+//		fmt.Println()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func write(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for i := range 10 {
+// 		fmt.Printf("写入数据：%v\n", i+1)
+// 		ch <- i + 1
+// 	}
+
+// 	close(ch)
+// }
+
+// func read(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for v := range ch {
+// 		fmt.Printf("读取数据：%v\n", v)
+// 	}
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	ch := make(chan int)
+
+// 	wg.Add(2)
+// 	go write(ch, &wg)
+// 	go read(ch, &wg)
+// 	wg.Wait()
+
+//		fmt.Println("读取完毕")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func write(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for i := range 10 {
+// 		fmt.Printf("写入数据：%v\n", i+1)
+// 		ch <- i + 1
+// 	}
+
+// 	close(ch)
+// }
+
+// func read(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for v := range ch {
+// 		fmt.Printf("读取数据：%v\n", v)
+// 	}
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	ch := make(chan int)
+
+// 	wg.Add(2)
+// 	go write(ch, &wg)
+// 	go read(ch, &wg)
+// 	wg.Wait()
+
+//		fmt.Println("读取完毕")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func write(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for i := range 10 {
+// 		fmt.Printf("写入数据：%v\n", i+1)
+// 		ch <- i + 1
+// 	}
+
+// 	close(ch)
+// }
+
+// func read(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for v := range ch {
+// 		fmt.Printf("读取数据：%v\n", v)
+// 	}
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	ch := make(chan int)
+
+// 	wg.Add(2)
+// 	go write(ch, &wg)
+// 	go read(ch, &wg)
+// 	wg.Wait()
+
+// 	fmt.Println("读取完毕")
+// }
 package main
 
-import (
-	"fmt"
-	"time"
-)
-
-func fn() {
-	ticker := time.NewTicker(50 * time.Millisecond)
-	defer ticker.Stop()
-
-	count := 0
-	for range ticker.C {
-		if count >= 10 {
-			break
-		}
-		fmt.Printf("")
-	}
+func main() {
+	
 }
