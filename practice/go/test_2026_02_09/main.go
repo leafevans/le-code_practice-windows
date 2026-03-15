@@ -4458,37 +4458,173 @@
 //		cat.Run()
 //		cat.Swim()
 //	}
+// package main
+
+// import "fmt"
+
+// type Runner interface {
+// 	Run()
+// }
+
+// type Swimer interface {
+// 	Swim()
+// }
+
+// type Animal interface {
+// 	Runner
+// 	Swimer
+// }
+
+// type Cat struct {
+// 	Name string
+// }
+
+// func (c Cat) Run() {
+// 	fmt.Println("基米跑步")
+// }
+
+// func (c Cat) Swim() {
+// 	fmt.Println("基米游泳")
+// }
+
+//	func main() {
+//		var cat Animal = &Cat{Name: "哈基米"}
+//		cat.Run()
+//		cat.Swim()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func fn() {
+// 	ticker := time.NewTicker(50 * time.Millisecond)
+// 	defer ticker.Stop()
+
+// 	count := 0
+// 	for range ticker.C {
+// 		if count >= 10 {
+// 			break
+// 		}
+// 		fmt.Printf("fn: 小 Go，你好！\t%v\n", count)
+// 		count++
+// 	}
+// }
+
+//	func main() {
+//		go fn()
+//		for i := range 10 {
+//			fmt.Printf("main: 小 Go，你好！\t%v\n", i)
+//			time.Sleep(50 * time.Millisecond)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		timeStr := "2026-02-17 22:12:22"
+//		timeTemple := "2006-01-02 15:04:05"
+//		timeObj, _ := time.ParseInLocation(timeTemple, timeStr, time.Local)
+//		fmt.Println(timeObj.Unix())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func main() {
+// 	ticker := time.NewTicker(time.Second)
+// 	n := 0
+
+// 	for v := range ticker.C {
+// 		fmt.Println(v)
+// 		n++
+
+//			if n > 5 {
+//				ticker.Stop()
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+//	func main() {
+//		n := 0
+//		for {
+//			n++
+//			time.Sleep(time.Second)
+//			fmt.Println(time.Now())
+//			if n > 5 {
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		scoreMap := make(map[string]int, 8)
+//		scoreMap["哈基米"] = 90
+//		scoreMap["曼波"] = 100
+//		fmt.Println(scoreMap)
+//		fmt.Println(scoreMap["曼波"])
+//		fmt.Printf("Type of scoreMap: %T\n", scoreMap)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		userinfo := map[string]string{
+//			"username": "叮咚鸡",
+//			"password": "大狗叫",
+//		}
+//		fmt.Println(userinfo)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		scoreMap := map[string]int{
+//			"孙连城": 90,
+//			"李达康": 100,
+//			"沙瑞金": 60,
+//		}
+//		fmt.Println(scoreMap)
+//		delete(scoreMap, "沙瑞金")
+//		fmt.Println(scoreMap)
+//	}
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-type Runner interface {
-	Run()
-}
+func fn() {
+	ticker := time.NewTicker(50 * time.Millisecond)
+	defer ticker.Stop()
 
-type Swimer interface {
-	Swim()
-}
-
-type Animal interface {
-	Runner
-	Swimer
-}
-
-type Cat struct {
-	Name string
-}
-
-func (c Cat) Run() {
-	fmt.Println("基米跑步")
-}
-
-func (c Cat) Swim() {
-	fmt.Println("基米游泳")
-}
-
-func main() {
-	var cat Animal = &Cat{Name: "哈基米"}
-	cat.Run()
-	cat.Swim()
+	count := 0
+	for range ticker.C {
+		if count >= 10 {
+			break
+		}
+		fmt.Printf("")
+	}
 }
