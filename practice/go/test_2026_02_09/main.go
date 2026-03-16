@@ -5537,6 +5537,346 @@
 
 // 	wg.Wait()
 
-// 	fmt.Println()
-// 	fmt.Println(time.Since(start))
+//		fmt.Println()
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	ch1 := make(chan int, 2)
+// 	ch1 <- 10
+// 	ch1 <- 12
+// 	m1 := <-ch1
+// 	m2 := <-ch1
+// 	fmt.Println(m1, m2)
+
+//		ch2 := make(chan<- int, 2)
+//		ch2 <- 10
+//		ch2 <- 12
+//		ch3 := make(<-chan int, 2)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func genNums(nums chan<- int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := 2; num < 120; num++ {
+// 		nums <- num
+// 	}
+// 	close(nums)
 // }
+
+// func filterPrime(nums <-chan int, primes chan<- int, exit chan<- bool, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := range nums {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			primes <- num
+// 		}
+// 	}
+// 	exit <- true
+// }
+
+// func printPrime(primes <-chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for prime := range primes {
+// 		fmt.Println(prime)
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	workers := 5
+// 	nums := make(chan int, 10)
+// 	primes := make(chan int, 10)
+// 	exit := make(chan bool, workers)
+
+// 	wg.Add(1)
+// 	go genNums(nums, &wg)
+
+// 	for range workers {
+// 		wg.Add(1)
+// 		go filterPrime(nums, primes, exit, &wg)
+// 	}
+
+// 	wg.Add(1)
+// 	go printPrime(primes, &wg)
+
+// 	wg.Go(func() {
+// 		for range workers {
+// 			<-exit
+// 		}
+// 		close(primes)
+// 	})
+
+// 	wg.Wait()
+
+//		fmt.Println()
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		switch n := 7; n {
+//		case 1, 3, 5, 7, 9:
+//			fmt.Println("奇数")
+//		case 2, 4, 6, 8:
+//			fmt.Println("偶数")
+//		default:
+//			fmt.Println(n)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		age := 56
+//		switch {
+//		case age < 25:
+//			fmt.Println("好好学习")
+//		case age <= 60:
+//			fmt.Println("好好工作")
+//		case age > 60:
+//			fmt.Println("好好享受")
+//		default:
+//			fmt.Println("好好活着")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		str := "a"
+//		switch str {
+//		case "a":
+//			fmt.Println("a")
+//			fallthrough
+//		case "b":
+//			fmt.Println("b")
+//			fallthrough
+//		case "c":
+//			fmt.Println("c")
+//			fallthrough
+//		default:
+//			fmt.Println("...")
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+//
+//		for i := range 2 {
+//			for j := range 3 {
+//				if j == 3 {
+//					break label
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+//
+//		for i := range 2 {
+//			for j := range 10 {
+//				if j == 3 {
+//					break label
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		for i := range 2 {
+//			for j := range 4 {
+//				if j == 2 {
+//					continue
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+//
+//		for i := range 2 {
+//			for j := range 4 {
+//				if j == 2 {
+//					continue label
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// label:
+//
+//		for i := range 2 {
+//			for j := range 4 {
+//				if j == 2 {
+//					continue label
+//				}
+//				fmt.Printf("i = %v, j = %v\n", i, j)
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		sort.Ints(intSlice)
+//		sort.Float64s(floatSlice)
+//		sort.Strings(stringSlice)
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		sort.Sort(sort.Reverse(sort.IntSlice(intSlice)))
+//		sort.Sort(sort.Reverse(sort.Float64Slice(floatSlice)))
+//		sort.Sort(sort.Reverse(sort.StringSlice(stringSlice)))
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sort"
+// )
+
+//	func main() {
+//		intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+//		floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+//		stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+//		sort.Sort(sort.Reverse(sort.IntSlice(intSlice)))
+//		sort.Sort(sort.Reverse(sort.Float64Slice(floatSlice)))
+//		sort.Sort(sort.Reverse(sort.StringSlice(stringSlice)))
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"slices"
+// )
+
+// func main() {
+// 	intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+// 	floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+// 	stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+
+// 	slices.Sort(intSlice)
+// 	slices.Sort(floatSlice)
+// 	slices.Sort(stringSlice)
+
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"slices"
+// )
+
+// func main() {
+// 	intSlice := []int{2, 4, 3, 5, 7, 6, 9, 8, 1, 0}
+// 	floatSlice := []float64{4.2, 5.9, 12.4, 10.2, 50.7, 99.9, 31.4, 27.81828, 3.14}
+// 	stringSlice := []string{"a", "c", "b", "z", "x", "w", "y", "d", "f", "i"}
+
+// 	slices.SortFunc(intSlice, func(a, b int) int {
+// 		if a > b {
+// 			return 1
+// 		} else if a < b {
+// 			return -1
+// 		} else {
+// 			return 0
+// 		}
+// 	})
+// 	slices.SortFunc(floatSlice, func(a, b float64) int {
+// 		if a > b {
+// 			return -1
+// 		} else if a < b {
+// 			return 1
+// 		} else {
+// 			return 0
+// 		}
+// 	})
+// 	slices.SortFunc(stringSlice, func(a, b string) int {
+// 		if a > b {
+// 			return 1
+// 		} else if a < b {
+// 			return -1
+// 		} else {
+// 			return 0
+// 		}
+// 	})
+
+//		fmt.Println(intSlice)
+//		fmt.Println(floatSlice)
+//		fmt.Println(stringSlice)
+//	}
+package main
+
+func main() {
+
+}
