@@ -5288,10 +5288,43 @@
 // 	go read(ch, &wg)
 // 	wg.Wait()
 
+//		fmt.Println("读取完毕")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func write(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for i := range 10 {
+// 		fmt.Printf("写入数据：%v\n", i+1)
+// 		ch <- i + 1
+// 	}
+
+// 	close(ch)
+// }
+
+// func read(ch chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for v := range ch {
+// 		fmt.Printf("读取数据：%v\n", v)
+// 	}
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	ch := make(chan int)
+
+// 	wg.Add(2)
+// 	go write(ch, &wg)
+// 	go read(ch, &wg)
+// 	wg.Wait()
+
 // 	fmt.Println("读取完毕")
 // }
 package main
-
-func main() {
-	
-}
