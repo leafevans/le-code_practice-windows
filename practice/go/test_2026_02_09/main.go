@@ -5325,6 +5325,218 @@
 // 	go read(ch, &wg)
 // 	wg.Wait()
 
-// 	fmt.Println("读取完毕")
+//		fmt.Println("读取完毕")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func genNums(nums chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := 2; num < 120; num++ {
+// 		nums <- num
+// 	}
+// 	close(nums)
 // }
-package main
+
+// func filterPrime(nums, primes chan int, exit chan bool, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := range nums {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			primes <- num
+// 		}
+// 	}
+// 	exit <- true
+// }
+
+// func printPrime(primes chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for prime := range primes {
+// 		fmt.Print(prime, " ")
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	workers := 5
+// 	nums := make(chan int, 10)
+// 	primes := make(chan int, 10)
+// 	exit := make(chan bool, workers)
+
+// 	wg.Add(1)
+// 	go genNums(nums, &wg)
+
+// 	for range workers {
+// 		wg.Add(1)
+// 		go filterPrime(nums, primes, exit, &wg)
+// 	}
+
+// 	wg.Add(1)
+// 	go printPrime(primes, &wg)
+
+// 	wg.Go(func() {
+// 		for range workers {
+// 			<-exit
+// 		}
+// 		close(primes)
+// 	})
+
+// 	wg.Wait()
+
+//		fmt.Println()
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func genNums(nums chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := 2; num < 120; num++ {
+// 		nums <- num
+// 	}
+// 	close(nums)
+// }
+
+// func filterPrime(nums, primes chan int, exit chan bool, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := range nums {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			primes <- num
+// 		}
+// 	}
+// 	exit <- true
+// }
+
+// func printPrime(primes chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for prime := range primes {
+// 		fmt.Print(prime, " ")
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	workers := 5
+// 	nums := make(chan int, 10)
+// 	primes := make(chan int, 10)
+// 	exit := make(chan bool, workers)
+
+// 	wg.Add(1)
+// 	go genNums(nums, &wg)
+
+// 	for range workers {
+// 		wg.Add(1)
+// 		go filterPrime(nums, primes, exit, &wg)
+// 	}
+
+// 	wg.Add(1)
+// 	go printPrime(primes, &wg)
+
+// 	wg.Go(func() {
+// 		for range workers {
+// 			<-exit
+// 		}
+// 		close(primes)
+// 	})
+
+// 	wg.Wait()
+
+//		fmt.Println()
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func genNums(nums chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := 2; num < 120; num++ {
+// 		nums <- num
+// 	}
+// 	close(nums)
+// }
+
+// func filterPrime(nums, primes chan int, exit chan bool, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for num := range nums {
+// 		isPrime := true
+// 		for i := 2; i*i <= num; i++ {
+// 			if num%i == 0 {
+// 				isPrime = false
+// 				break
+// 			}
+// 		}
+// 		if isPrime {
+// 			primes <- num
+// 		}
+// 	}
+// 	exit <- true
+// }
+
+// func printPrime(primes chan int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for prime := range primes {
+// 		fmt.Print(prime, " ")
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	workers := 5
+// 	nums := make(chan int, 10)
+// 	primes := make(chan int, 10)
+// 	exit := make(chan bool, workers)
+
+// 	wg.Add(1)
+// 	go genNums(nums, &wg)
+
+// 	for range workers {
+// 		wg.Add(1)
+// 		go filterPrime(nums, primes, exit, &wg)
+// 	}
+
+// 	wg.Add(1)
+// 	go printPrime(primes, &wg)
+
+// 	wg.Go(func() {
+// 		for range workers {
+// 			<-exit
+// 		}
+// 		close(primes)
+// 	})
+
+// 	wg.Wait()
+
+// 	fmt.Println()
+// 	fmt.Println(time.Since(start))
+// }
