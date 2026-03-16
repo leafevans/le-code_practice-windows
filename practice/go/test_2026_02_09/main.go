@@ -5995,9 +5995,432 @@
 // 	go sayHello(&wg)
 // 	go test(&wg)
 
-// 	for i := range 10 {
-// 		fmt.Println("main() ok =", i)
-// 		time.Sleep(time.Millisecond * 100)
+//		for i := range 10 {
+//			fmt.Println("main() ok =", i)
+//			time.Sleep(time.Millisecond * 100)
+//		}
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap map[int]int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	numMap[num] = res
+// }
+
+// func main() {
+// 	numMap := make(map[int]int)
+// 	var wg sync.WaitGroup
+
+// 	for i := 1; i <= 60; i++ {
+// 		wg.Add(1)
+// 		go factorial(i, numMap, &wg)
+// 	}
+
+// 	wg.Wait()
+
+//		for i, v := range numMap {
+//			fmt.Printf("map[%d] = %d\n", i, v)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap map[int]int, wg *sync.WaitGroup, mutex *sync.Mutex) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	mutex.Lock()
+// 	numMap[num] = res
+// 	mutex.Unlock()
+// }
+
+// func main() {
+// 	numMap := make(map[int]int)
+// 	var wg sync.WaitGroup
+// 	var mutex sync.Mutex
+
+// 	for i := 1; i <= 10; i++ {
+// 		wg.Add(1)
+// 		go factorial(i, numMap, &wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		for i, v := range numMap {
+//			fmt.Printf("map[%d] = %d\n", i, v)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap map[int]int, wg *sync.WaitGroup, mutex *sync.Mutex) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	mutex.Lock()
+// 	numMap[num] = res
+// 	mutex.Unlock()
+// }
+
+// func main() {
+// 	numMap := make(map[int]int)
+// 	var wg sync.WaitGroup
+// 	var mutex sync.Mutex
+
+// 	for i := 1; i <= 10; i++ {
+// 		wg.Add(1)
+// 		go factorial(i, numMap, &wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		for i, v := range numMap {
+//			fmt.Printf("map[%d] = %v\n", i, v)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func write(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.Lock()
+// 	fmt.Println("---执行写操作")
+// 	time.Sleep(time.Millisecond * 100)
+// 	mutex.Unlock()
+// }
+
+// func read(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.RLock()
+// 	fmt.Println("***执行读操作")
+// 	time.Sleep(time.Microsecond * 100)
+// 	mutex.RUnlock()
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	var mutex sync.RWMutex
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go write(&wg, &mutex)
+// 	}
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go read(&wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func write(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.Lock()
+// 	fmt.Println("---执行写操作")
+// 	time.Sleep(100 * time.Millisecond)
+// 	mutex.Unlock()
+// }
+
+// func read(wg *sync.WaitGroup, mutex *sync.RWMutex) {
+// 	defer wg.Done()
+// 	mutex.RLock()
+// 	fmt.Println("***执行读操作")
+// 	time.Sleep(100 * time.Millisecond)
+// 	mutex.RUnlock()
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	var wg sync.WaitGroup
+// 	var mutex sync.RWMutex
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go write(&wg, &mutex)
+// 	}
+
+// 	for range 10 {
+// 		wg.Add(1)
+// 		go read(&wg, &mutex)
+// 	}
+
+// 	wg.Wait()
+
+//		fmt.Println(time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap *sync.Map, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	numMap.Store(num, res)
+// }
+
+// func main() {
+// 	var numMap sync.Map
+// 	var wg sync.WaitGroup
+
+// 	wg.Add(10)
+// 	for i := 1; i <= 10; i++ {
+// 		go factorial(i, &numMap, &wg)
 // 	}
 // 	wg.Wait()
+
+//		for k, v := range numMap.Range {
+//			fmt.Printf("map[%d] = %d\n", k, v)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func factorial(num int, numMap *sync.Map, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	res := 1
+// 	for i := 1; i <= num; i++ {
+// 		res *= i
+// 	}
+// 	numMap.Store(num, res)
 // }
+
+// func main() {
+// 	var numMap sync.Map
+// 	var wg sync.WaitGroup
+
+// 	wg.Add(10)
+// 	for i := 1; i <= 10; i++ {
+// 		go factorial(i, &numMap, &wg)
+// 	}
+// 	wg.Wait()
+
+//		for k, v := range numMap.Range {
+//			fmt.Printf("map[%d] = %d\n", k, v)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	str1 := "Hello "
+// 	str2 := "Golang!"
+
+// 	fmt.Println(str1 + str2)
+
+//		var str3 string = fmt.Sprintf("%v%v", str1, str2)
+//		fmt.Println(str3)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		str := "123-456-789"
+//		arr := strings.Split(str, "-")
+//		fmt.Println(arr)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		var str = "this is golang"
+//		var flag = strings.Contains(str, "golang")
+//		fmt.Println(flag)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		str := "this is golang"
+//		var flag bool = strings.HasPrefix(str, "this")
+//		fmt.Println(flag)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func main() {
+// 	str := "this is golang"
+// 	var flag bool = strings.HasPrefix(str, "this")
+// 	fmt.Println(flag)
+
+//		flag = strings.HasSuffix(str, "go")
+//		fmt.Println(flag)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+// func main() {
+// 	str := "this is golang"
+// 	var index = strings.Index(str, "is")
+// 	fmt.Println(index)
+
+//		index = strings.LastIndex(str, "is")
+//		fmt.Println(index)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"strings"
+// )
+
+//	func main() {
+//		var str = "123-456-789"
+//		var arr = strings.Split(str, "-")
+//		var str2 = strings.Join(arr, "*")
+//		fmt.Println(str2)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	ID     int    `json:"id"`
+// 	Gender string `json:"gender"`
+// 	Name   string `json:"name"`
+// 	Sno    string `json:"sno"`
+// }
+
+//	func main() {
+//		s1 := Student{
+//			ID:     1,
+//			Gender: "男",
+//			Name:   "李四",
+//			Sno:    "s0001",
+//		}
+//		data, _ := json.Marshal(s1)
+//		jsonStr := string(data)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"encoding/json"
+// 	"fmt"
+// )
+
+// type Student struct {
+// 	ID     int    `json:"id"`
+// 	Gender string `json:"gender"`
+// 	Name   string `json:"name"`
+// 	Sno    string `json:"sno"`
+// }
+
+//	func main() {
+//		s1 := Student{
+//			ID:     1,
+//			Gender: "男",
+//			Name:   "李四",
+//			Sno:    "s0001",
+//		}
+//		data, _ := json.Marshal(s1)
+//		jsonStr := string(data)
+//		fmt.Println(jsonStr)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("Type: %v\n", t)
+// }
+
+//	func main() {
+//		var f float32 = 12.5
+//		reflectType(f)
+//		var i int64 = 100
+//		reflectType(i)
+//	}
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func reflectType(x any) {
+	t := reflect.TypeOf(x)
+	fmt.Printf("Type: %v\n", t)
+}
+
+func main() {
+	var f float32 = 12.5
+	reflectType(f)
+	var i int64 = 100
+	reflectType(i)
+}
