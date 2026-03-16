@@ -5875,8 +5875,129 @@
 //		fmt.Println(floatSlice)
 //		fmt.Println(stringSlice)
 //	}
-package main
+// package main
 
-func main() {
+// import "fmt"
 
-}
+// func main() {
+// 	intChan := make(chan int, 10)
+// 	for i := range 10 {
+// 		intChan <- i
+// 	}
+
+// 	stringChan := make(chan string, 5)
+// 	for i := range 5 {
+// 		stringChan <- "Hello, " + fmt.Sprintf("%d", i)
+// 	}
+
+//		for {
+//			select {
+//			case v := <-intChan:
+//				fmt.Printf("从 intChan 读取到数据：%d\n", v)
+//			case v := <-stringChan:
+//				fmt.Printf("从 stringChan 读取到数据：%s\n", v)
+//			default:
+//				fmt.Printf("取完所有数据")
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	intChan := make(chan int, 10)
+// 	for i := range 10 {
+// 		intChan <- i
+// 	}
+
+// 	stringChan := make(chan string, 5)
+// 	for i := range 5 {
+// 		stringChan <- "Hello, " + fmt.Sprintf("%d", i)
+// 	}
+
+//		for {
+//			select {
+//			case v := <-intChan:
+//				fmt.Printf("从 intChan 读取的数据：%d\n", v)
+//			case v := <-stringChan:
+//				fmt.Printf("从 stringChan 读取的数据：%s\n", v)
+//			default:
+//				fmt.Printf("取完所有数据")
+//				return
+//			}
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"time"
+// )
+
+// func sayHello() {
+// 	for range 10 {
+// 		time.Sleep(time.Millisecond * 100)
+// 		fmt.Println("Hello World!")
+// 	}
+// }
+
+// func test() {
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Printf("发生错误：%v\n", err)
+// 		}
+// 	}()
+// 	var myMap map[int]string
+// 	myMap[0] = "Golang"
+// }
+
+// func main() {
+// 	go sayHello()
+// 	go test()
+
+//		for i := range 10 {
+//			fmt.Println("main() ok =", i)
+//			time.Sleep(time.Millisecond * 100)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// func sayHello(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	for range 10 {
+// 		time.Sleep(time.Millisecond * 100)
+// 		fmt.Println("Hello World!")
+// 	}
+// }
+
+// func test(wg *sync.WaitGroup) {
+// 	defer wg.Done()
+// 	defer func() {
+// 		if err := recover(); err != nil {
+// 			fmt.Printf("发生错误：%v\n", err)
+// 		}
+// 	}()
+// 	var myMap map[int]string
+// 	myMap[0] = "Golang"
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	wg.Add(2)
+// 	go sayHello(&wg)
+// 	go test(&wg)
+
+// 	for i := range 10 {
+// 		fmt.Println("main() ok =", i)
+// 		time.Sleep(time.Millisecond * 100)
+// 	}
+// 	wg.Wait()
+// }
