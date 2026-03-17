@@ -6406,6 +6406,426 @@
 //		var i int64 = 100
 //		reflectType(i)
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("Type: %v\n", t)
+// }
+
+//	func main() {
+//		var f float32 = 12.5
+//		reflectType(f)
+//		var i int64 = 100
+//		reflectType(i)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("Type: %v\n", t)
+// }
+
+//	func main() {
+//		var f float32 = 12.5
+//		reflectType(f)
+//		var i int64 = 100
+//		reflectType(i)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type MyInt int
+
+// type MyStruct struct{ Name string }
+
+// var a MyInt
+// var b *MyStruct
+
+//	func main() {
+//		fmt.Println(reflect.TypeOf(a).Name())
+//		fmt.Println(reflect.TypeOf(b).Name())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectType(x any) {
+// 	t := reflect.TypeOf(x)
+// 	fmt.Printf("Type: %v\tName: %v\tKind: %v\n", t, t.Name(), t.Kind())
+// }
+
+// type MyInt int64
+
+// type Person struct {
+// 	Name string
+// 	Age  int
+// }
+
+// type Animal struct {
+// 	Name string
+// }
+
+// func main() {
+// 	var ptr *float32
+// 	var mi MyInt
+// 	var c rune
+// 	var p = Person{
+// 		Name: "平泽唯",
+// 		Age:  17,
+// 	}
+// 	var a = Animal{"后藤一里"}
+// 	var slice = []int{1, 2, 3, 4, 5}
+
+//		reflectType(ptr)
+//		reflectType(mi)
+//		reflectType(c)
+//		reflectType(p)
+//		reflectType(a)
+//		reflectType(slice)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	c := v.Int() + 6
+// 	fmt.Println(c)
+// }
+
+//	func main() {
+//		var num int32 = 100
+//		reflectValue(num)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	k := v.Kind()
+// 	switch k {
+// 	case reflect.Int64:
+// 		fmt.Printf("Type: int64\tValue: %d\n", v.Int())
+// 	case reflect.Float32:
+// 		fmt.Printf("Type: float32\tValue: %f\n", v.Float())
+// 	case reflect.Float64:
+// 		fmt.Printf("Type: float64\tValue: %f\n", v.Float())
+// 	default:
+// 		fmt.Println("Type: unknown")
+// 	}
+// }
+
+// func main() {
+// 	var a float32 = 3.14
+// 	var b int64 = 100
+// 	reflectValue(a)
+// 	reflectValue(b)
+
+//		c := reflect.ValueOf(10)
+//		fmt.Printf("Type(c): %T\n", c)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	if v.Elem().Kind() == reflect.Int64 {
+// 		v.Elem().SetInt(200)
+// 	}
+// }
+
+//	func main() {
+//		var a int64 = 100
+//		reflectValue(&a)
+//		fmt.Println(a)
+//	}
+// package main
+
+// import "reflect"
+
+//	func reflectValue(x any) {
+//		v := reflect.ValueOf(x)
+//		if v.Elem().Kind() == reflect.Int64 {
+//			v.Elem().SetInt(200)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// func reflectSetValue(x any) {
+// 	v := reflect.ValueOf(x)
+// 	if v.Elem().Kind() == reflect.Int64 {
+// 		v.Elem().SetInt(200)
+// 	}
+// }
+
+//	func main() {
+//		var a int64 = 100
+//		reflectSetValue(&a)
+//		fmt.Println(a)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v\n", s.Name, s.Age, s.Score)
+// }
+
+// func (s *Student) SetInfo(name string, age, score int) {
+// 	s.Name = name
+// 	s.Age = age
+// 	s.Score = score
+// }
+
+// func (s *Student) Print() {
+// 	fmt.Println("打印方法")
+// }
+
+// func PrintStructField(s any) {
+// 	fmt.Println("----结构体字段————")
+// 	t := reflect.TypeOf(s)
+
+// 	if (t.Kind() != reflect.Struct) && (t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 		return
+// 	}
+
+// 	field0 := t.Field(0)
+// 	fmt.Println(field0.Name)
+// 	fmt.Println(field0.Type)
+// 	fmt.Println(field0.Tag.Get("json"))
+// 	fmt.Println("----")
+
+// 	field1, ok := t.FieldByName("Age")
+// 	if ok {
+// 		fmt.Println(field1.Name)
+// 		fmt.Println(field1.Type)
+// 		fmt.Println(field1.Tag.Get("json"))
+// 		fmt.Println("----")
+// 	}
+
+// 	fmt.Println("字段数量：", t.NumField())
+// }
+
+// func PrintStructFunc(s any) {
+// 	fmt.Println("----结构体方法----")
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if (t.Kind() != reflect.Struct) &&
+// 		(t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 	}
+
+// 	method0 := t.Method(0)
+// 	fmt.Println(method0.Name)
+// 	fmt.Println(method0.Type)
+// 	fmt.Println("----")
+
+// 	fmt.Println(t.NumMethod())
+// 	fmt.Println("----")
+
+// 	v.MethodByName("Print").Call(nil)
+// 	fmt.Println("----")
+
+// 	v.MethodByName("SetInfo").Call([]reflect.Value{
+// 		reflect.ValueOf("后藤独"),
+// 		reflect.ValueOf(16),
+// 		reflect.ValueOf(60),
+// 	})
+// 	fmt.Println(v.MethodByName("GetInfo").Call(nil))
+// }
+
+//	func main() {
+//		stu := Student{
+//			Name:  "平泽唯",
+//			Age:   16,
+//			Score: 100,
+//		}
+//		PrintStructField(stu)
+//		PrintStructFunc(&stu)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v\n", s.Name, s.Age, s.Score)
+// }
+
+// func (s *Student) SetInfo(name string, age, score int) {
+// 	s.Name = name
+// 	s.Age = age
+// 	s.Score = score
+// }
+
+// func (s *Student) Print() {
+// 	fmt.Println("打印方法")
+// }
+
+// func PrintStructField(s any) {
+// 	fmt.Println("----结构体字段----")
+// 	t := reflect.TypeOf(s)
+
+// 	if (t.Kind() != reflect.Struct) &&
+// 		(t.Elem().Kind() != reflect.Struct) {
+// 	}
+
+// 	field0 := t.Field(0)
+// 	fmt.Println(field0.Name)
+// 	fmt.Println(field0.Type.Name())
+// 	fmt.Println(field0.Type.Kind())
+// 	fmt.Println(field0.Tag.Get("json"))
+// 	fmt.Println("----")
+
+// 	field1, ok := t.FieldByName("Age")
+// 	if ok {
+// 		fmt.Println(field1.Name)
+// 		fmt.Println(field1.Type.Name())
+// 		fmt.Println(field1.Type.Kind())
+// 		fmt.Println(field1.Tag.Get("json"))
+// 		fmt.Println("----")
+// 	}
+
+// 	fmt.Println("字段数量：", t.NumField())
+// }
+
+// func PrintStructFunc(s any) {
+// 	fmt.Println("----结构体方法----")
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if (t.Kind() != reflect.Struct) && (t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 		return
+// 	}
+
+// 	method0 := t.Method(0)
+// 	fmt.Println(method0.Name)
+// 	fmt.Println(method0.Type.Name())
+// 	fmt.Println(method0.Type.Kind())
+// 	fmt.Println("----")
+
+// 	fmt.Println(t.NumMethod())
+// 	fmt.Println("----")
+
+// 	v.MethodByName("Print").Call(nil)
+// 	fmt.Println("----")
+
+// 	v.MethodByName("SetInfo").Call([]reflect.Value{
+// 		reflect.ValueOf("后藤独"),
+// 		reflect.ValueOf(16),
+// 		reflect.ValueOf(60),
+// 	})
+// 	fmt.Println(v.MethodByName("GetInfo").Call(nil))
+// }
+
+//	func main() {
+//		stu := Student{
+//			Name:  "平泽唯",
+//			Age:   16,
+//			Score: 100,
+//		}
+//		PrintStructField(stu)
+//		PrintStructFunc(&stu)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf(
+// 		"Name: %v\tAge: %v\tScore: %v", s.Name, s.Age, s.Score,
+// 	)
+// }
+
+// func reflectChangeStruct(s any) {
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if t.Elem().Kind() != reflect.Struct {
+// 		fmt.Println("传入的不是结构体指针类型")
+// 		return
+// 	}
+
+// 	name := v.Elem().FieldByName("Name")
+// 	name.SetString("后藤独")
+
+// 	age := v.Elem().FieldByName("Age")
+// 	age.SetInt(17)
+// }
+
+//	func main() {
+//		stu := Student{
+//			Name:  "平泽唯",
+//			Age:   16,
+//			Score: 100,
+//		}
+//		fmt.Println(stu.GetInfo())
+//		reflectChangeStruct(&stu)
+//		fmt.Println(stu.GetInfo())
+//	}
 package main
 
 import (
@@ -6413,14 +6833,39 @@ import (
 	"reflect"
 )
 
-func reflectType(x any) {
-	t := reflect.TypeOf(x)
-	fmt.Printf("Type: %v\n", t)
+type Student struct {
+	Name  string `json:"name"`
+	Age   int    `json:"age"`
+	Score int    `json:"score"`
+}
+
+func (s Student) GetInfo() string {
+	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v", s.Name, s.Age, s.Score)
+}
+
+func reflectChangeStruct(s any) {
+	t := reflect.TypeOf(s)
+	v := reflect.ValueOf(s)
+
+	if t.Elem().Kind() != reflect.Struct {
+		fmt.Println("传入的不是结构体指针类型")
+		return
+	}
+
+	name := v.Elem().FieldByName("Name")
+	name.SetString("后藤独")
+
+	age := v.Elem().FieldByName("Age")
+	age.SetInt(18)
 }
 
 func main() {
-	var f float32 = 12.5
-	reflectType(f)
-	var i int64 = 100
-	reflectType(i)
+	stu := Student{
+		Name:  "平泽唯",
+		Age:   16,
+		Score: 100,
+	}
+	fmt.Println(stu.GetInfo())
+	reflectChangeStruct(&stu)
+	fmt.Println(stu.GetInfo())
 }
