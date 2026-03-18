@@ -6902,14 +6902,199 @@
 // 	age.SetInt(17)
 // }
 
-// func main() {
-// 	stu := Student{
-// 		Name:  "平泽唯",
-// 		Age:   16,
-// 		Score: 100,
-// 	}
-// 	fmt.Println(stu.GetInfo())
-// 	reflectChangeStruct(&stu)
-// 	fmt.Println(stu.GetInfo())
+//	func main() {
+//		stu := Student{
+//			Name:  "平泽唯",
+//			Age:   16,
+//			Score: 100,
+//		}
+//		fmt.Println(stu.GetInfo())
+//		reflectChangeStruct(&stu)
+//		fmt.Println(stu.GetInfo())
+//	}
+// package main
+
+// import "fmt"
+
+// func toSlice[T any](args ...T) []T {
+// 	return args
 // }
-package main
+
+//	func main() {
+//		strings := toSlice("hello", "world")
+//		nums := toSlice(1, 2, 3)
+//		fmt.Println(strings)
+//		fmt.Println(nums)
+//	}
+// package main
+
+// import "fmt"
+
+// func toSlice[T any](args ...T) []T {
+// 	return args
+// }
+
+//	func main() {
+//		strs := toSlice("hello", "world")
+//		nums := toSlice(1, 2, 3)
+//		fmt.Println(strs)
+//		fmt.Println(nums)
+//	}
+// package main
+
+// import "fmt"
+
+// type Stack[T any] struct {
+// 	data []T
+// }
+
+// func (s *Stack[T]) Push(x T) {
+// 	s.data = append(s.data, x)
+// }
+
+// func (s *Stack[T]) Pop() T {
+// 	n := len(s.data)
+// 	x := s.data[n-1]
+// 	s.data = s.data[:n-1]
+// 	return x
+// }
+
+// func main() {
+// 	var s Stack[int]
+// 	s.Push(10)
+// 	s.Push(20)
+// 	s.Push(30)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+// 	s.Push(40)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+
+//		var s2 Stack[string]
+//		s2.Push("hello")
+//		s2.Push("world")
+//		fmt.Println(s2.Pop())
+//		fmt.Println(s2.Pop())
+//	}
+// package main
+
+// import "fmt"
+
+// type Stack[T any] struct {
+// 	data []T
+// }
+
+// func (s *Stack[T]) Push(x T) {
+// 	s.data = append(s.data, x)
+// }
+
+// func (s *Stack[T]) Pop() T {
+// 	n := len(s.data)
+// 	x := s.data[n-1]
+// 	s.data = s.data[:n-1]
+// 	return x
+// }
+
+// func main() {
+// 	var s Stack[int]
+// 	s.Push(10)
+// 	s.Push(20)
+// 	s.Push(30)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+// 	s.Push(40)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+
+//		var s2 Stack[string]
+//		s2.Push("hello")
+//		s2.Push("world")
+//		fmt.Println(s2.Pop())
+//		fmt.Println(s2.Pop())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// type Container[T any] interface {
+// 	Len() int
+// 	Add(T)
+// 	Remove() T
+// }
+
+// func Swap[T any](x, y *T) {
+// 	*x, *y = *y, *x
+// }
+
+//	func Print[T fmt.Stringer, U io.Reader](x T, y U) {
+//		fmt.Println(x.String())
+//		io.Copy(os.Stdout, y)
+//	}
+// package main
+
+// import "fmt"
+
+// func toSlice[T any](args ...T) []T {
+// 	return args
+// }
+
+//	func main() {
+//		strings := toSlice("hello", "world")
+//		nums := toSlice(1, 2, 3)
+//		fmt.Println(strings)
+//		fmt.Println(nums)
+//	}
+// package main
+
+// import "fmt"
+
+// func toSlice[T any](args ...T) []T {
+// 	return args
+// }
+
+//	func main() {
+//		strings := toSlice("hello", "world")
+//		nums := toSlice(1, 2, 3)
+//		fmt.Println(strings)
+//		fmt.Println(nums)
+//	}
+// package main
+
+// import "fmt"
+
+// type Stack[T any] struct {
+// 	data []T
+// }
+
+// func (s *Stack[T]) Push(x T) {
+// 	s.data = append(s.data, x)
+// }
+
+// func (s *Stack[T]) Pop() T {
+// 	n := len(s.data)
+// 	x := s.data[n-1]
+// 	s.data = s.data[:n-1]
+// 	return x
+// }
+
+// func main() {
+// 	var s Stack[int]
+// 	s.Push(10)
+// 	s.Push(20)
+// 	s.Push(30)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+// 	s.Push(40)
+// 	fmt.Println(s.Pop())
+// 	fmt.Println(s.Pop())
+
+// 	var s2 Stack[string]
+// 	s2.Push("hello")
+// 	s2.Push("world")
+// 	fmt.Println(s2.Pop())
+// 	fmt.Println(s2.Pop())
+// }
