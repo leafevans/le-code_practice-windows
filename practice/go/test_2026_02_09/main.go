@@ -7092,9 +7092,278 @@
 // 	fmt.Println(s.Pop())
 // 	fmt.Println(s.Pop())
 
-// 	var s2 Stack[string]
-// 	s2.Push("hello")
-// 	s2.Push("world")
-// 	fmt.Println(s2.Pop())
-// 	fmt.Println(s2.Pop())
+//		var s2 Stack[string]
+//		s2.Push("hello")
+//		s2.Push("world")
+//		fmt.Println(s2.Pop())
+//		fmt.Println(s2.Pop())
+//	}
+// package main
+
+//	type Container[T any] interface {
+//		Len() int
+//		Add(T)
+//		Remove() T
+//	}
+// package main
+
+// import (
+// 	"cmp"
+// 	"fmt"
+// 	"slices"
+// )
+
+// func Sort[T cmp.Ordered](s []T) {
+// 	slices.Sort(s)
 // }
+
+//	func main() {
+//		nums := []int{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5}
+//		Sort(nums)
+//		fmt.Println(nums)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"slices"
+// )
+
+//	func main() {
+//		nums := []int{1, 2, 3, 3, 3, 4, 5, 6}
+//		x := 3
+//		idx, ok := slices.BinarySearch(nums, x)
+//		if ok {
+//			fmt.Println(idx)
+//		}
+//	}
+// package main
+
+// import (
+// 	"cmp"
+// 	"fmt"
+// 	"slices"
+// )
+
+//	func main() {
+//		nums := []int{6, 5, 4, 4, 3, 3, 3, 2, 1}
+//		x := 3
+//		idx, ok := slices.BinarySearchFunc(nums, x, func(a, b int) int { return cmp.Compare(b, a) })
+//		if ok {
+//			fmt.Println(idx)
+//		}
+//	}
+// package main
+
+// import "fmt"
+
+// type Number interface {
+// 	int | float64
+// }
+
+// func Add[T Number](a, b T) T {
+// 	return a + b
+// }
+
+//	func main() {
+//		fmt.Println(Add(10, 20))
+//		fmt.Println(Add(3.14, 2.86))
+//	}
+// package main
+
+// import "fmt"
+
+// type AnyInt interface {
+// 	~int
+// }
+
+// func PrintDouble[T AnyInt](val T) {
+// 	fmt.Println(val * 2)
+// }
+
+// type MyInt int
+
+// func main() {
+// 	var a int = 10
+// 	var b MyInt = 20
+
+//		PrintDouble(a)
+//		PrintDouble(b)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		fmt.Println(file)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		fmt.Println(file)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		byteSlice := make([]byte, 128)
+//		n, err := file.Read(byteSlice)
+//		if err == io.EOF {
+//			fmt.Println("文件读取完毕")
+//			return
+//		}
+//		fmt.Printf("读取了 %d 字节数据\n", n)
+//		fmt.Println(string(byteSlice[:n]))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		byteSlice := make([]byte, 128)
+//		n, err := file.Read(byteSlice)
+//		if err == io.EOF {
+//			fmt.Println("文件读取完毕")
+//			return
+//		}
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("读取了 %d 字节数据\n", n)
+//		fmt.Println(string(byteSlice[:n]))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		var content []byte
+//		var byteSlice = make([]byte, 128)
+//		for {
+//			n, err := file.Read(byteSlice)
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			content = append(content, byteSlice[:n]...)
+//		}
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		var content []byte
+//		var byteSlice = make([]byte, 128)
+//		for {
+//			n, err := file.Read(byteSlice)
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			content = append(content, byteSlice[:n]...)
+//		}
+//		fmt.Println(string(content))
+//	}
+package main
+
+import (
+	"fmt"
+	"io"
+	"os"
+)
+
+func main() {
+	file, err := os.Open("./data/test.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer file.Close()
+	var content []byte
+	var byteSlice = make([]byte, 128)
+	for {
+		n, err := file.Read(byteSlice)
+		content = append(content, byteSlice[:n]...)
+		if err == io.EOF {
+			fmt.Println("文件读取完毕")
+			break
+		}
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+	fmt.Println(string(content))
+}
