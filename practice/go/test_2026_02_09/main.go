@@ -7336,34 +7336,145 @@
 //		}
 //		fmt.Println(string(content))
 //	}
-package main
+// package main
 
-import (
-	"fmt"
-	"io"
-	"os"
-)
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
 
-func main() {
-	file, err := os.Open("./data/test.txt")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer file.Close()
-	var content []byte
-	var byteSlice = make([]byte, 128)
-	for {
-		n, err := file.Read(byteSlice)
-		content = append(content, byteSlice[:n]...)
-		if err == io.EOF {
-			fmt.Println("文件读取完毕")
-			break
-		}
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
-	fmt.Println(string(content))
-}
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		var content []byte
+//		var byteSlice = make([]byte, 128)
+//		for {
+//			n, err := file.Read(byteSlice)
+//			content = append(content, byteSlice[:n]...)
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//		}
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		reader := bufio.NewReader(file)
+//		fileStr := ""
+//		for {
+//			line, err := reader.ReadString('\n')
+//			fileStr += line
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//		}
+//		fmt.Println(fileStr)
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		reader := bufio.NewReader(file)
+//		fileStr := ""
+//		for {
+//			line, err := reader.ReadString('\n')
+//			fileStr += line
+//			if err == io.EOF {
+//				fmt.Println("文件读取完成")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//		}
+//		fmt.Println(fileStr)
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.Open("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		reader := bufio.NewReader(file)
+//		fileStr := ""
+//		for {
+//			line, err := reader.ReadString('\n')
+//			fileStr += line
+//			if err == io.EOF {
+//				fmt.Println("文件读取完毕")
+//				break
+//			}
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//		}
+//		fmt.Println(fileStr)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	content, err := os.ReadFile("./data/test.txt")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+// 	fmt.Println(string(content))
+// }
