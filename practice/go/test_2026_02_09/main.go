@@ -6826,46 +6826,90 @@
 //		reflectChangeStruct(&stu)
 //		fmt.Println(stu.GetInfo())
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v", s.Name, s.Age, s.Score)
+// }
+
+// func reflectChangeStruct(s any) {
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if t.Elem().Kind() != reflect.Struct {
+// 		fmt.Println("传入的不是结构体指针类型")
+// 		return
+// 	}
+
+// 	name := v.Elem().FieldByName("Name")
+// 	name.SetString("后藤独")
+
+// 	age := v.Elem().FieldByName("Age")
+// 	age.SetInt(18)
+// }
+
+//	func main() {
+//		stu := Student{
+//			Name:  "平泽唯",
+//			Age:   16,
+//			Score: 100,
+//		}
+//		fmt.Println(stu.GetInfo())
+//		reflectChangeStruct(&stu)
+//		fmt.Println(stu.GetInfo())
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v", s.Name, s.Age, s.Score)
+// }
+
+// func reflectChangeStruct(s any) {
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if t.Elem().Kind() != reflect.Struct {
+// 		fmt.Println("传入的不是结构体指针类型")
+// 		return
+// 	}
+
+// 	name := v.Elem().FieldByName("Name")
+// 	name.SetString("后藤一里")
+
+// 	age := v.Elem().FieldByName("Age")
+// 	age.SetInt(17)
+// }
+
+// func main() {
+// 	stu := Student{
+// 		Name:  "平泽唯",
+// 		Age:   16,
+// 		Score: 100,
+// 	}
+// 	fmt.Println(stu.GetInfo())
+// 	reflectChangeStruct(&stu)
+// 	fmt.Println(stu.GetInfo())
+// }
 package main
-
-import (
-	"fmt"
-	"reflect"
-)
-
-type Student struct {
-	Name  string `json:"name"`
-	Age   int    `json:"age"`
-	Score int    `json:"score"`
-}
-
-func (s Student) GetInfo() string {
-	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v", s.Name, s.Age, s.Score)
-}
-
-func reflectChangeStruct(s any) {
-	t := reflect.TypeOf(s)
-	v := reflect.ValueOf(s)
-
-	if t.Elem().Kind() != reflect.Struct {
-		fmt.Println("传入的不是结构体指针类型")
-		return
-	}
-
-	name := v.Elem().FieldByName("Name")
-	name.SetString("后藤独")
-
-	age := v.Elem().FieldByName("Age")
-	age.SetInt(18)
-}
-
-func main() {
-	stu := Student{
-		Name:  "平泽唯",
-		Age:   16,
-		Score: 100,
-	}
-	fmt.Println(stu.GetInfo())
-	reflectChangeStruct(&stu)
-	fmt.Println(stu.GetInfo())
-}
