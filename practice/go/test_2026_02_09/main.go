@@ -7996,10 +7996,245 @@
 // 	}
 // 	defer dst.Close()
 
-// 	n, err := io.Copy(dst, src)
+//		n, err := io.Copy(dst, src)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("成功拷贝了 %d 个字节\n", n)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	err := os.Mkdir("./abc", 0o666)
 // 	if err != nil {
 // 		fmt.Println(err)
 // 		return
 // 	}
-// 	fmt.Printf("成功拷贝了 %d 个字节\n", n)
-// }
+
+//		err = os.MkdirAll("./dir1/dir2/dir3", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		entries, err := os.ReadDir(".")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		for _, entry := range entries {
+//			if entry.IsDir() {
+//				fmt.Printf("[DIR] %s\n", entry.Name())
+//			} else {
+//				fmt.Printf("[FILE] %s\n", entry.Name())
+//			}
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		fmt.Printf("读取目录失败：%v\n", err)
+// 		return
+// 	}
+
+//		fmt.Println("目录内容：")
+//		for _, entry := range entries {
+//			if entry.IsDir() {
+//				fmt.Printf("[DIR] %s\n", entry.Name())
+//			} else {
+//				fmt.Printf("[FILE] %s\n", entry.Name())
+//			}
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		fmt.Printf("读取目录失败：%v\n", err)
+// 		return
+// 	}
+
+//		fmt.Println("目录内容：")
+//		for _, entry := range entries {
+//			if entry.IsDir() {
+//				fmt.Printf("[DIR] %s\n", entry.Name())
+//			} else {
+//				fmt.Printf("[FILE] %s\n", entry.Name())
+//			}
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		fmt.Printf("读取目录失败：%v\n", err)
+// 		return
+// 	}
+
+// 	fmt.Println("目录内容：")
+// 	for _, entry := range entries {
+// 		if entry.IsDir() {
+// 			fmt.Printf("[DIR] %s\n", entry.Name())
+// 		} else {
+// 			fmt.Printf("[FILE] %s\n", entry.Name())
+// 		}
+
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		fmt.Printf("读取目录失败：%v\n", err)
+// 		return
+// 	}
+
+// 	fmt.Println("目录内容：")
+// 	for _, entry := range entries {
+// 		if entry.IsDir() {
+// 			fmt.Printf("[DIR] %s\n", entry.Name())
+// 		} else {
+// 			fmt.Printf("[FILE] %s\n", entry.Name())
+// 		}
+
+//			info, _ := entry.Info()
+//			fmt.Printf("大小：%d 字节\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	for _, entry := range entries {
+// 		info, err := entry.Info()
+// 		if err != nil {
+// 			continue
+// 		}
+
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n", info.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+//		for _, entry := range entries {
+//			info, err := entry.Info()
+//			if err != nil {
+//				continue
+//			}
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n", info.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func main() {
+// 	entries, err := os.ReadDir(".")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+//		for _, entry := range entries {
+//			info, err := entry.Info()
+//			if err != nil {
+//				continue
+//			}
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n", info.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.Remove("./abc")
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	err := os.RemoveAll("./dir")
+	if err != nil {
+		fmt.Println(err)
+	}
+}
