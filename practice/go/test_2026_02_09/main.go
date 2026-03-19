@@ -8238,16 +8238,31 @@
 //			fmt.Println(err)
 //		}
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.RemoveAll("./data")
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"runtime"
+// )
+
+// func main() {
+// 	cpuNum := runtime.NumCPU()
+// 	fmt.Println("cpuNum =", cpuNum)
+
+//		runtime.GOMAXPROCS(cpuNum - 1)
+//		fmt.Println("OK!")
+//	}
 package main
-
-import (
-	"fmt"
-	"os"
-)
-
-func main() {
-	err := os.RemoveAll("./data")
-	if err != nil {
-		fmt.Println(err)
-	}
-}

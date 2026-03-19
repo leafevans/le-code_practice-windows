@@ -1,12 +1,13 @@
 package calc
 
-var a = 100  // 私有变量
-var Age = 20 // 公有变量
-
-func Add[T int | float32 | float64](x, y T) T {
-	return x + y
+func Add(a, b int) int {
+	return a + b
 }
 
-func Sub[T int | float32 | float64](x, y T) T {
-	return x - y
+func Mul(a, b int) int {
+	return a * b
+}
+
+func Div(a, b int) int {
+	return a / b
 }
