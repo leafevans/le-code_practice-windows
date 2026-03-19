@@ -7470,11 +7470,536 @@
 // 	"os"
 // )
 
+//	func main() {
+//		content, err := os.ReadFile("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		content, err := os.ReadFile("./data/test.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println(string(content))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./data/test1.txt",
+//			os.O_CREATE|os.O_RDWR, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		str := "小 Go，你好！"
+//		file.Write([]byte(str))
+//		file.WriteString("写入数据")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./data/test1.txt", os.O_CREATE|os.O_RDWR, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		str := "小 Go，你好！"
+//		file.Write([]byte(str))
+//		file.WriteString("写入数据")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./data/test1.txt", os.O_CREATE|os.O_RDWR, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		str := "小 Go，你好！"
+//		file.Write([]byte(str))
+//		file.WriteString("写入数据")
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./data/test2.txt",
+//			os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		writer := bufio.NewWriter(file)
+//		for range 10 {
+//			writer.WriteString("小 Go，你好！\n")
+//		}
+//		writer.Flush()
+//	}
+// package main
+
+// import (
+// 	"bufio"
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		file, err := os.OpenFile("./data/test.txt",
+//			os.O_CREATE|os.O_RDWR, 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		defer file.Close()
+//		writer := bufio.NewWriter(file)
+//		for range 10 {
+//			writer.WriteString("小 Go，你好！\n")
+//		}
+//		writer.Flush()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		str := "Hello World!"
+//		err := os.WriteFile("./data/test1.txt", []byte(str), 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		str := "Hello World!"
+//		err := os.WriteFile("./testdata/test.txt", []byte(str), 0o644)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func CopyFile(dst, src string) error {
+// 	content, err := os.ReadFile(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	err = os.WriteFile(dst, content, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		err := CopyFile("./data/test.txt", "main.go")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("拷贝成功")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func CopyFile(dst, src string) error {
+// 	content, err := os.ReadFile(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	err = os.WriteFile(dst, content, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		err := CopyFile("./data/test.txt", "./main.go")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("拷贝成功")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func CopyFile(src, dst string) error {
+// 	srcFile, err := os.Open(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer srcFile.Close()
+// 	dstFile, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer dstFile.Close()
+
+// 	buf := make([]byte, 32*1024)
+// 	for {
+// 		n, err := srcFile.Read(buf)
+// 		if n > 0 {
+// 			if _, werr := dstFile.Write(buf[:n]); werr != nil {
+// 				return werr
+// 			}
+// 		}
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		if err := CopyFile("./main.go", "./data/test.txt"); err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("拷贝成功")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"reflect"
+// )
+
+// type Student struct {
+// 	Name  string `json:"name"`
+// 	Age   int    `json:"age"`
+// 	Score int    `json:"score"`
+// }
+
+// func (s Student) GetInfo() string {
+// 	return fmt.Sprintf("Name: %v\tAge: %v\tScore: %v\n", s.Name, s.Age, s.Score)
+// }
+
+// func (s *Student) SetInfo(name string, age, score int) {
+// 	s.Name = name
+// 	s.Age = age
+// 	s.Score = score
+// }
+
+// func (s *Student) Print() {
+// 	fmt.Println("打印方法")
+// }
+
+// func PrintStructField(s any) {
+// 	fmt.Println("---- 结构体字段 ----")
+// 	t := reflect.TypeOf(s)
+
+// 	if (t.Kind() != reflect.Struct) && (t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 		return
+// 	}
+
+// 	field0 := t.Field(0)
+// 	fmt.Println(field0.Name)
+// 	fmt.Println(field0.Type.Name())
+// 	fmt.Println(field0.Type.Kind())
+// 	fmt.Println(field0.Tag.Get("json"))
+// 	fmt.Println("----")
+
+// 	field1, ok := t.FieldByName("Age")
+// 	if ok {
+// 		fmt.Println(field1.Name)
+// 		fmt.Println(field1.Type)
+// 		fmt.Println(field1.Tag.Get("json"))
+// 		fmt.Println("----")
+// 	}
+
+// 	fmt.Printf("字段数量：%v\n", t.NumField())
+// }
+
+// func PrintStructFunc(s any) {
+// 	fmt.Println("---- 结构体方法 ----")
+// 	t := reflect.TypeOf(s)
+// 	v := reflect.ValueOf(s)
+
+// 	if (t.Kind() != reflect.Struct) &&
+// 		(t.Elem().Kind() != reflect.Struct) {
+// 		fmt.Println("传入的不是结构体")
+// 		return
+// 	}
+
+// 	method0 := t.Method(0)
+// 	fmt.Println(method0.Name)
+// 	fmt.Println(method0.Type.Name())
+// 	fmt.Println(method0.Type.Kind())
+// 	fmt.Println("----")
+
+// 	fmt.Println(t.NumMethod())
+// 	fmt.Println("----")
+
+// 	v.MethodByName("Print").Call(nil)
+// 	fmt.Println("----")
+
+// 	v.MethodByName("SetInfo").Call([]reflect.Value{
+// 		reflect.ValueOf("后藤独"),
+// 		reflect.ValueOf(16),
+// 		reflect.ValueOf(60),
+// 	})
+// 	fmt.Println(v.MethodByName("GetInfo").Call(nil))
+// }
+
+//	func main() {
+//		stu := Student{
+//			Name:  "平泽唯",
+//			Age:   16,
+//			Score: 100,
+//		}
+//		PrintStructField(stu)
+//		PrintStructFunc(&stu)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+// func CopyFile(dst, src string) error {
+// 	content, err := os.ReadFile(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	err = os.WriteFile(dst, content, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		err := CopyFile("./data/test5.txt", "./main.go")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("拷贝成功")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func CopyFile(src, dst string) error {
+// 	srcFile, err := os.Open(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer srcFile.Close()
+// 	dstFile, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer dstFile.Close()
+
+// 	buf := make([]byte, 32*1024)
+// 	for {
+// 		n, err := srcFile.Read(buf)
+// 		if n > 0 {
+// 			if _, werr := dstFile.Write(buf[:n]); werr != nil {
+// 				return werr
+// 			}
+// 		}
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		if err := CopyFile("./main.go", "./data/test.txt"); err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("拷贝完成")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func CopyFile(src, dst string) error {
+// 	srcFile, err := os.Open(src)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer srcFile.Close()
+// 	dstFile, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer dstFile.Close()
+
+// 	buf := make([]byte, 32*1024)
+// 	for {
+// 		n, err := srcFile.Read(buf)
+// 		if n > 0 {
+// 			if _, werr := dstFile.Write(buf[:n]); werr != nil {
+// 				return werr
+// 			}
+// 		}
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		if err := CopyFile("./main.go", "./data/test6.txt"); err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Println("拷贝完成")
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
 // func main() {
-// 	content, err := os.ReadFile("./data/test.txt")
+// 	err := os.MkdirAll("./data", 0o755)
 // 	if err != nil {
 // 		fmt.Println(err)
 // 		return
 // 	}
-// 	fmt.Println(string(content))
+
+// 	src, rerr := os.Open("./main.go")
+// 	if rerr != nil {
+// 		fmt.Println(rerr)
+// 		return
+// 	}
+// 	defer src.Close()
+
+// 	dst, werr := os.Create("./data/test.txt")
+// 	if werr != nil {
+// 		fmt.Println(werr)
+// 		return
+// 	}
+// 	defer dst.Close()
+
+//		n, err := io.Copy(dst, src)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("成功拷贝 %v 字节\n", n)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+// func main() {
+// 	err := os.MkdirAll("./data", 0o755)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+
+// 	src, rerr := os.Open("./main.go")
+// 	if rerr != nil {
+// 		fmt.Println(rerr)
+// 		return
+// 	}
+// 	defer src.Close()
+
+// 	dst, werr := os.Create("./data/test.txt")
+// 	if werr != nil {
+// 		fmt.Println(werr)
+// 		return
+// 	}
+// 	defer dst.Close()
+
+// 	n, err := io.Copy(dst, src)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return
+// 	}
+// 	fmt.Printf("成功拷贝了 %d 个字节\n", n)
 // }
