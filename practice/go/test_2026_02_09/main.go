@@ -8225,6 +8225,19 @@
 //			fmt.Println(err)
 //		}
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.RemoveAll("./dir1")
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
 package main
 
 import (
@@ -8233,7 +8246,7 @@ import (
 )
 
 func main() {
-	err := os.RemoveAll("./dir")
+	err := os.RemoveAll("./data")
 	if err != nil {
 		fmt.Println(err)
 	}
