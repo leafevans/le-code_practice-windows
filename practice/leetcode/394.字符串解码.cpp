@@ -28,9 +28,10 @@ public:
                 string prev_str = strs.top();
                 strs.pop();
 
-                for (int i = 0; i < times; ++i) {
+                for (int i = 0; i < times; i++) {
                     prev_str += res;
                 }
+
                 res = prev_str;
             } else {
                 res += c;
