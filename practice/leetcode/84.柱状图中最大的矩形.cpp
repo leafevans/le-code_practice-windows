@@ -21,7 +21,7 @@ public:
                 int height = h[st.top()];
                 st.pop();
                 int width = i - st.top() - 1;
-                ans = max(ans, width * height);
+                ans = max(ans, height * width);
             }
             st.push(i);
         }
