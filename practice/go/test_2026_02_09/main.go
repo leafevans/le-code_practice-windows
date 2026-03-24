@@ -8886,40 +8886,41 @@
 //		body, _ := io.ReadAll(resp.Body)
 //		fmt.Println("响应结果:", string(body))
 //	}
+// package main
+
+// import (
+// 	"crypto/tls"
+// 	"crypto/x509"
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"time"
+// )
+
+// func main() {
+// 	pool, _ := x509.SystemCertPool()
+
+// 	tr := &http.Transport{
+// 		TLSClientConfig:    &tls.Config{RootCAs: pool},
+// 		DisableCompression: true,
+// 	}
+
+// 	client := &http.Client{
+// 		Transport: tr,
+// 		Timeout:   5 * time.Second,
+// 	}
+
+// 	req, _ := http.NewRequest("GET", "http://51mh.com", nil)
+// 	req.Header.Add("If-None-Match", `W/"wyzzy"`)
+
+// 	resp, err := client.Do(req)
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+// 	body, _ := io.ReadAll(resp.Body)
+// 	fmt.Println("响应结果:", string(body))
+// }
 package main
-
-import (
-	"crypto/tls"
-	"crypto/x509"
-	"fmt"
-	"io"
-	"net/http"
-	"time"
-)
-
-func main() {
-	pool, _ := x509.SystemCertPool()
-
-	tr := &http.Transport{
-		TLSClientConfig:    &tls.Config{RootCAs: pool},
-		DisableCompression: true,
-	}
-
-	client := &http.Client{
-		Transport: tr,
-		Timeout:   5 * time.Second,
-	}
-
-	req, _ := http.NewRequest("GET", "http://51mh.com", nil)
-	req.Header.Add("If-None-Match", `W/"wyzzy"`)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("请求失败:", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	body, _ := io.ReadAll(resp.Body)
-	fmt.Println("响应结果:", string(body))
-}
