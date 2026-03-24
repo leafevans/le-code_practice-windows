@@ -8807,6 +8807,85 @@
 //		body, _ := io.ReadAll(resp.Body)
 //		fmt.Println("响应结果:", string(body))
 //	}
+// package main
+
+// import (
+// 	"crypto/tls"
+// 	"crypto/x509"
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"time"
+// )
+
+// func main() {
+// 	// 初始化证书池
+// 	pool, _ := x509.SystemCertPool()
+
+// 	// 自定义 Transport（管理代理、TLS、连接池、压缩等）
+// 	tr := &http.Transport{
+// 		TLSClientConfig:    &tls.Config{RootCAs: pool},
+// 		DisableCompression: true,
+// 	}
+
+// 	// 自定义 Client（管理重定向、超时、挂载 Transport）
+// 	client := &http.Client{
+// 		Transport: tr,
+// 		Timeout:   5 * time.Second,
+// 	}
+
+// 	// 自定义 Request（添加 Header 等）
+// 	req, _ := http.NewRequest("GET", "http://51mh.com", nil)
+// 	req.Header.Add("If-None-Match", `W/"wyzzy"`)
+
+// 	// 发送请求
+// 	resp, err := client.Do(req)
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应结果:", string(body))
+//	}
+// package main
+
+// import (
+// 	"crypto/tls"
+// 	"crypto/x509"
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"time"
+// )
+
+// func main() {
+// 	pool, _ := x509.SystemCertPool()
+
+// 	tr := &http.Transport{
+// 		TLSClientConfig:    &tls.Config{RootCAs: pool},
+// 		DisableCompression: true,
+// 	}
+
+// 	client := &http.Client{
+// 		Transport: tr,
+// 		Timeout:   5 * time.Second,
+// 	}
+
+// 	req, _ := http.NewRequest("GET", "http://51mh.com", nil)
+// 	req.Header.Add("If-None-Match", `W/"wyzzy"`)
+
+// 	resp, err := client.Do(req)
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应结果:", string(body))
+//	}
 package main
 
 import (
@@ -8819,26 +8898,21 @@ import (
 )
 
 func main() {
-	// 初始化证书池
 	pool, _ := x509.SystemCertPool()
 
-	// 自定义 Transport（管理代理、TLS、连接池、压缩等）
 	tr := &http.Transport{
 		TLSClientConfig:    &tls.Config{RootCAs: pool},
 		DisableCompression: true,
 	}
 
-	// 自定义 Client（管理重定向、超时、挂载 Transport）
 	client := &http.Client{
 		Transport: tr,
 		Timeout:   5 * time.Second,
 	}
 
-	// 自定义 Request（添加 Header 等）
 	req, _ := http.NewRequest("GET", "http://51mh.com", nil)
 	req.Header.Add("If-None-Match", `W/"wyzzy"`)
 
-	// 发送请求
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("请求失败:", err)
