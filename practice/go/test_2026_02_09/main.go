@@ -8265,4 +8265,587 @@
 //		runtime.GOMAXPROCS(cpuNum - 1)
 //		fmt.Println("OK!")
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+// func main() {
+// 	apiUrl := "http://127.0.0.1:9090/get"
+
+// 	// 构建 URL 参数
+// 	data := url.Values{}
+// 	data.Set("name", "哈基米")
+// 	data.Set("age", "18")
+
+// 	// 解析并拼接 URL
+// 	u, _ := url.ParseRequestURI(apiUrl)
+// 	u.RawQuery = data.Encode()
+
+// 	// 发送 GET 请求
+// 	resp, err := http.Get(u.String())
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		// 读取响应体
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"strings"
+// )
+
+// func main() {
+// 	url := "http://127.0.0.1:9090/post"
+
+// 	// 场景 A：发送 JSON 数据
+// 	contentType := "application/json"
+// 	data := `{"name": "哈基米", "age": 18}`
+
+// 	// 场景 B：发送表单数据（按需替换）
+// 	// contentType := "application/x-www-form-urlencoded"
+// 	// data := "name=哈基米&age=18"
+
+// 	resp, err := http.Post(url, contentType, strings.NewReader(data))
+// 	if err != nil {
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		b, _ := io.ReadAll(resp.Body)
+//		fmt.Println(string(b))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// )
+
+// // 处理器函数（HandlerFunc）
+// func sayHello(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintln(w, "Hello 哈基米！")
+// }
+
+// func handler(w http.ResponseWriter, r *http.Request) {
+// 	defer r.Body.Close() // 服务端也建议关闭（尽管框架底层会兜底）
+
+// 	// 解析 GET URL 参数（?name=xxx）
+// 	query := r.URL.Query()
+// 	name := query.Get("name")
+
+// 	// 解析 POST Form 表单（application/x-www-form-urlencoded）
+// 	r.ParseForm()
+// 	age := r.PostForm.Get("age")
+
+// 	// 解析 POST JSON 数据（application/json）
+// 	body, _ := io.ReadAll(r.Body)
+// 	// 后续通常使用 json.Unmarshal() 解析 body
+
+// 	// 响应客户端
+// 	w.Header().Set("Content-Type", "application/json") // 设置响应头
+// 	w.Write([]byte(`{"status": "ok"}`))                // 写入响应体
+// }
+
+// func main() {
+// 	// 注册路由
+// 	http.HandleFunc("/", sayHello)
+
+//		// 启动服务，监听端口
+//		err := http.ListenAndServe(":9090", nil)
+//		if err != nil {
+//			fmt.Println("启动服务失败:", err)
+//		}
+//	}
+// package main
+
+// import "os"
+
+//	func CopyFile(dst, src string) error {
+//		content, err := os.ReadFile(src)
+//		if err != nil {
+//			return err
+//		}
+//		err = os.WriteFile(dst, content, 0o644)
+//		if err != nil {
+//			return err
+//		}
+//		return nil
+//	}
+// package main
+
+// import (
+// 	"io"
+// 	"os"
+// )
+
+//	func CopyFile(src, dst string) error {
+//		srcFile, err := os.Open(src)
+//		if err != nil {
+//			return err
+//		}
+//		defer srcFile.Close()
+//		dstFile, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
+//		if err != nil {
+//			return err
+//		}
+//		defer dstFile.Close()
+//		buf := make([]byte, 32*1024)
+//		for {
+//			n, err := srcFile.Read(buf)
+//			if n > 0 {
+//				if _, werr := dstFile.Write(buf[:n]); werr != nil {
+//					return werr
+//				}
+//			}
+//			if err == io.EOF {
+//				break
+//			}
+//			if err != nil {
+//				return err
+//			}
+//		}
+//		return nil
+//	}
+// package main
+
+// import (
+// 	"io"
+// 	"os"
+// )
+
+//	func CopyFile(src, dst string) error {
+//		srcFile, err := os.Open(src)
+//		if err != nil {
+//			return err
+//		}
+//		defer srcFile.Close()
+//		dstFile, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
+//		if err != nil {
+//			return err
+//		}
+//		defer dstFile.Close()
+//		buf := make([]byte, 32*1024)
+//		for {
+//			n, err := srcFile.Read(buf)
+//			if n > 0 {
+//				if _, werr := dstFile.Write(buf); werr != nil {
+//					return werr
+//				}
+//			}
+//			if err == io.EOF {
+//				break
+//			}
+//			if err != nil {
+//				return err
+//			}
+//		}
+//		return nil
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.MkdirAll("./data", 0o755)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		src, rerr := os.Open("./main.go")
+//		if rerr != nil {
+//			fmt.Println(rerr)
+//			return
+//		}
+//		defer src.Close()
+//		dst, werr := os.Create("./data/test.txt")
+//		if werr != nil {
+//			fmt.Println(werr)
+//		}
+//		defer dst.Close()
+//		n, err := io.Copy(dst, src)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("成功拷贝 %d 字节\n", n)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.MkdirAll("./data", 0o755)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		src, rerr := os.Open("./main.go")
+//		if rerr != nil {
+//			fmt.Println(rerr)
+//			return
+//		}
+//		src.Close()
+//		dst, werr := os.Create("./data/test.txt")
+//		if werr != nil {
+//			fmt.Println(werr)
+//			return
+//		}
+//		dst.Close()
+//		n, err := io.Copy(dst, src)
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		fmt.Printf("成功拷贝了 %d 个字节\n", n)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.Mkdir("./abc", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.MkdirAll("dir1/dir2/dir3", 0o666)
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		entries, err := os.ReadDir(".")
+//		if err != nil {
+//			fmt.Println(err)
+//			return
+//		}
+//		for _, entry := range entries {
+//			if entry.IsDir() {
+//				fmt.Printf("[DIR] %s\n", entry.Name())
+//			} else {
+//				fmt.Printf("[FILE] %s\n", entry.Name())
+//			}
+//			info, err := entry.Info()
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			fmt.Printf("Size: %d\n", info.Size())
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		entries, err := os.ReadDir(".")
+//		if err != nil {
+//			panic(err)
+//		}
+//		for _, entry := range entries {
+//			info, err := entry.Info()
+//			if err != nil {
+//				continue
+//			}
+//			fmt.Printf("名称：%-20s | 大小：%-10d | 修改时间：%s\n", info.Name(), info.Size(), info.ModTime().Format("2006-01-02 15:04:05"))
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+// )
+
+//	func main() {
+//		err := os.Remove("./t.txt")
+//		if err != nil {
+//			fmt.Println(err)
+//		}
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+// func main() {
+// 	apiUrl := "http://127.0.0.1:9090/get"
+
+// 	// 构建 URL 参数
+// 	data := url.Values{}
+// 	data.Set("name", "哈基米")
+// 	data.Set("age", "18")
+
+// 	// 解析并拼接 URL
+// 	u, _ := url.ParseRequestURI(apiUrl)
+// 	u.RawQuery = data.Encode()
+
+// 	// 发送 GET 请求
+// 	resp, err := http.Get(u.String())
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		// 读取响应体
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+// func main() {
+// 	apiUrl := "http://127.0.0.1:9090/get"
+
+// 	// 构建 URL 参数
+// 	data := url.Values{}
+// 	data.Set("name", "哈基米")
+// 	data.Set("age", "18")
+
+// 	// 解析并拼接 URL
+// 	u, _ := url.ParseRequestURI(apiUrl)
+// 	u.RawQuery = data.Encode()
+
+// 	// 发送 GET 请求
+// 	resp, err := http.Get(u.String())
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		// 读取响应体
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+// func main() {
+// 	apiUrl := "http://127.0.0.1:9090/get"
+
+// 	data := url.Values{}
+// 	data.Set("name", "哈基米")
+// 	data.Set("age", "18")
+
+// 	u, _ := url.ParseRequestURI(apiUrl)
+// 	u.RawQuery = data.Encode()
+
+// 	resp, err := http.Get(u.String())
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"strings"
+// )
+
+// func main() {
+// 	url := "http://127.0.0.1:9090/post"
+
+// 	contentType := "application/json"
+// 	data := `{"name":"哈基米", "age":18}`
+
+// 	resp, err := http.Post(url, contentType, strings.NewReader(data))
+// 	if err != nil {
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		b, _ := io.ReadAll(resp.Body)
+//		fmt.Println(string(b))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"strings"
+// )
+
+// func main() {
+// 	url := "http://127.0.0.1:9090/post"
+
+// 	contentType := "application/json"
+// 	data := `{"name": "哈基米", "age": 18}`
+
+// 	resp, err := http.Post(url, contentType, strings.NewReader(data))
+// 	if err != nil {
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		b, _ := io.ReadAll(resp.Body)
+//		fmt.Println(string(b))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+// func main() {
+// 	apiUrl := "http://127.0.0.1:9090/post"
+
+// 	// 构建表单数据
+// 	data := url.Values{}
+// 	data.Set("name", "哈基米")
+// 	data.Set("age", "18")
+
+// 	// 直接发起表单 POST 请求
+// 	resp, err := http.PostForm(apiUrl, data)
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		// 读取响应
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应结果:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+// func main() {
+// 	apiUrl := "http://127.0.0.1:9090/post"
+
+// 	// 构建表单参数
+// 	data := url.Values{}
+// 	data.Set("name", "哈基米")
+// 	data.Set("age", "18")
+
+// 	// 直接发起表单 POST 请求
+// 	resp, err := http.PostForm(apiUrl, data)
+// 	if err != nil {
+// 		fmt.Println("请求失败:", err)
+// 		return
+// 	}
+// 	defer resp.Body.Close()
+
+//		// 读取响应
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应结果:", string(body))
+//	}
 package main
+
+import (
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
+	"io"
+	"net/http"
+	"time"
+)
+
+func main() {
+	// 初始化证书池
+	pool, _ := x509.SystemCertPool()
+
+	// 自定义 Transport（管理代理、TLS、连接池、压缩等）
+	tr := &http.Transport{
+		TLSClientConfig:    &tls.Config{RootCAs: pool},
+		DisableCompression: true,
+	}
+
+	// 自定义 Client（管理重定向、超时、挂载 Transport）
+	client := &http.Client{
+		Transport: tr,
+		Timeout:   5 * time.Second,
+	}
+
+	// 自定义 Request（添加 Header 等）
+	req, _ := http.NewRequest("GET", "http://51mh.com", nil)
+	req.Header.Add("If-None-Match", `W/"wyzzy"`)
+
+	// 发送请求
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("请求失败:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println("响应结果:", string(body))
+}
