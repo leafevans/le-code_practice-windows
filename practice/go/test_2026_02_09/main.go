@@ -9738,47 +9738,47 @@
 //		}(ctx)
 //		wg.Wait()
 //	}
-package main
+// package main
 
-import (
-	"context"
-	"fmt"
-	"sync"
-	"time"
-)
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
 
-var wg = sync.WaitGroup{}
+// var wg = sync.WaitGroup{}
 
-func listenCancel(ctx context.Context, name string) {
-	defer wg.Done()
-	select {
-	case <-ctx.Done():
-		fmt.Printf("[%s] 收到取消信号：%s\n", name, ctx.Err())
-	case <-time.After(10 * time.Second):
-		fmt.Printf("[%s] 任务执行完成\n", name)
-	}
-}
+// func listenCancel(ctx context.Context, name string) {
+// 	defer wg.Done()
+// 	select {
+// 	case <-ctx.Done():
+// 		fmt.Printf("[%s] 收到取消信号：%s\n", name, ctx.Err())
+// 	case <-time.After(10 * time.Second):
+// 		fmt.Printf("[%s] 任务执行完成\n", name)
+// 	}
+// }
 
-func main() {
-	start := time.Now()
+// func main() {
+// 	start := time.Now()
 
-	rootCtx, rootCancel := context.WithCancel(context.Background())
-	defer rootCancel()
+// 	rootCtx, rootCancel := context.WithCancel(context.Background())
+// 	defer rootCancel()
 
-	childCtx, childCancel := context.WithCancel(rootCtx)
-	defer childCancel()
+// 	childCtx, childCancel := context.WithCancel(rootCtx)
+// 	defer childCancel()
 
-	grandsonCtx, grandsonCancel := context.WithCancel(childCtx)
-	defer grandsonCancel()
+// 	grandsonCtx, grandsonCancel := context.WithCancel(childCtx)
+// 	defer grandsonCancel()
 
-	wg.Add(3)
-	go listenCancel(rootCtx, "根节点协程")
-	go listenCancel(childCtx, "子节点协程")
-	go listenCancel(grandsonCtx, "孙节点协程")
+// 	wg.Add(3)
+// 	go listenCancel(rootCtx, "根节点协程")
+// 	go listenCancel(childCtx, "子节点协程")
+// 	go listenCancel(grandsonCtx, "孙节点协程")
 
-	time.Sleep(time.Second)
-	rootCancel()
+// 	time.Sleep(time.Second)
+// 	rootCancel()
 
-	wg.Wait()
-	fmt.Println("执行完成:", time.Since(start))
-}
+// 	wg.Wait()
+// 	fmt.Println("执行完成:", time.Since(start))
+// }
