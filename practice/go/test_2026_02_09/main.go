@@ -9088,6 +9088,80 @@
 //		wg.Wait()
 //		fmt.Println("执行完成:", time.Since(start))
 //	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (ip string, err error) {
+// 	go func() {
+// 		<-ctx.Done()
+// 		fmt.Println("协程取消:", ctx.Err().Error())
+// 		err = ctx.Err()
+// 		wg.Done()
+// 	}()
+
+// 	time.Sleep(5 * time.Second)
+// 	ip = "192.168.200.1"
+// 	wg.Done()
+// 	return
+// }
+
+//	func main() {
+//		start := time.Now()
+//		wg.Add(1)
+//		ctx, cancel := context.WithCancel(context.Background())
+//		go func() {
+//			ip, err := GetIP(ctx)
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			fmt.Println(ip)
+//		}()
+//		wg.Go(func() {
+//			time.Sleep(2 * time.Second)
+//			cancel()
+//		})
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (ip string, err error) {
+// 	time.Sleep(5 * time.Second)
+// 	ip = "192.168.200.1"
+// 	return
+// }
+
+//	func main() {
+//		start := time.Now()
+//		wg.Go(func() {
+//			ip, err := GetIP(context.Background())
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			fmt.Println(ip)
+//		})
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
 package main
 
 import (
@@ -9099,25 +9173,23 @@ import (
 
 var wg = sync.WaitGroup{}
 
-func GetIP(ctx context.Context) (ip string, err error) {
-	go func() {
-		<-ctx.Done()
-		fmt.Println("取消", ctx.Err().Error())
-		err = ctx.Err()
-		wg.Done()
-	}()
-
-	time.Sleep(5 * time.Second)
-	ip = "192.168.200.1"
-	wg.Done()
-	return
+func GetIP(ctx context.Context) (string, error) {
+	select {
+	case <-ctx.Done():
+		return "", ctx.Err()
+	case <-time.After(5 * time.Second):
+		return "192.168.200.1", nil
+	}
 }
 
 func main() {
 	start := time.Now()
-	wg.Add(1)
+	wg.Add(2)
+
 	ctx, cancel := context.WithCancel(context.Background())
+
 	go func() {
+		defer wg.Done()
 		ip, err := GetIP(ctx)
 		if err != nil {
 			fmt.Println(err)
@@ -9125,10 +9197,14 @@ func main() {
 		}
 		fmt.Println(ip)
 	}()
-	wg.Go(func() {
+
+	go func() {
+		defer wg.Done()
 		time.Sleep(2 * time.Second)
+		fmt.Println("协程取消")
 		cancel()
-	})
+	}()
+
 	wg.Wait()
 	fmt.Println("执行完成:", time.Since(start))
 }
