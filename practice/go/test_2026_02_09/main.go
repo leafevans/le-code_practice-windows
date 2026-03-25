@@ -8920,7 +8920,215 @@
 // 	}
 // 	defer resp.Body.Close()
 
-// 	body, _ := io.ReadAll(resp.Body)
-// 	fmt.Println("响应结果:", string(body))
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应结果:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+//	func main() {
+//		apiUrl := "http://127.0.0.1:9090/post"
+//		data := url.Values{}
+//		data.Set("name", "哈基米")
+//		data.Set("age", "18")
+//		resp, err := http.PostForm(apiUrl, data)
+//		if err != nil {
+//			fmt.Println("请求失败:", err)
+//		}
+//		defer resp.Body.Close()
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println(string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+//	func main() {
+//		apiUrl := "http://127.0.0.1:9090/get"
+//		data := url.Values{}
+//		data.Set("name", "哈基米")
+//		data.Set("age", "18")
+//		u, _ := url.ParseRequestURI(apiUrl)
+//		u.RawQuery = data.Encode()
+//		resp, err := http.Get(u.String())
+//		if err != nil {
+//			fmt.Println("请求失败:", err)
+//			return
+//		}
+//		defer resp.Body.Close()
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+//	func main() {
+//		apiUrl := "http://127.0.0.1:9090/get"
+//		data := url.Values{}
+//		data.Set("name", "哈基米")
+//		data.Set("age", "18")
+//		u, _ := url.ParseRequestURI(apiUrl)
+//		u.RawQuery = data.Encode()
+//		resp, err := http.Get(u.String())
+//		if err != nil {
+//			fmt.Println("请求失败:", err)
+//			return
+//		}
+//		defer resp.Body.Close()
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"io"
+// 	"net/http"
+// 	"net/url"
+// )
+
+//	func main() {
+//		apiUrl := "http://127.0.0.1:9090/get"
+//		data := url.Values{}
+//		data.Set("name", "哈基米")
+//		data.Set("age", "18")
+//		u, _ := url.ParseRequestURI(apiUrl)
+//		u.RawQuery = data.Encode()
+//		resp, err := http.Get(u.String())
+//		if err != nil {
+//			fmt.Println("请求失败:", err)
+//			return
+//		}
+//		defer resp.Body.Close()
+//		body, _ := io.ReadAll(resp.Body)
+//		fmt.Println("响应内容:", string(body))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// )
+
+// type UserInfo struct {
+// 	Name string
 // }
+
+// func GetUser(ctx context.Context) {
+// 	fmt.Println(ctx.Value("name").(UserInfo).Name)
+// }
+
+//	func main() {
+//		ctx := context.Background()
+//		ctx = context.WithValue(ctx, "name", UserInfo{
+//			Name: "哈基米",
+//		})
+//		GetUser(ctx)
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (ip string, err error) {
+// 	go func() {
+// 		select {
+// 		case <-ctx.Done():
+// 			fmt.Println("协程取消:", ctx.Err())
+// 			err = ctx.Err()
+// 			wg.Done()
+// 			return
+// 		}
+// 	}()
+// 	time.Sleep(5 * time.Second)
+// 	ip = "192.168.200.1"
+// 	wg.Done()
+// 	return
+// }
+
+//	func main() {
+//		start := time.Now()
+//		ctx, cancel := context.WithCancel(context.Background())
+//		wg.Add(1)
+//		go func() {
+//			ip, err := GetIP(ctx)
+//			if err != nil {
+//				fmt.Println(err)
+//				return
+//			}
+//			fmt.Println(ip)
+//		}()
+//		go func() {
+//			time.Sleep(2 * time.Second)
+//			cancel()
+//		}()
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
 package main
+
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+)
+
+var wg = sync.WaitGroup{}
+
+func GetIP(ctx context.Context) (ip string, err error) {
+	go func() {
+		<-ctx.Done()
+		fmt.Println("取消", ctx.Err().Error())
+		err = ctx.Err()
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Second)
+	ip = "192.168.200.1"
+	wg.Done()
+	return
+}
+
+func main() {
+	start := time.Now()
+	wg.Add(1)
+	ctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		ip, err := GetIP(ctx)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(ip)
+	}()
+	wg.Go(func() {
+		time.Sleep(2 * time.Second)
+		cancel()
+	})
+	wg.Wait()
+	fmt.Println("执行完成:", time.Since(start))
+}
