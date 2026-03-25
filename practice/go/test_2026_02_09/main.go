@@ -9162,6 +9162,582 @@
 //		wg.Wait()
 //		fmt.Println("执行完成:", time.Since(start))
 //	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (string, error) {
+// 	select {
+// 	case <-ctx.Done():
+// 		return "", ctx.Err()
+// 	case <-time.After(5 * time.Second):
+// 		return "192.168.200.1", nil
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	wg.Add(2)
+
+// 	ctx, cancel := context.WithCancel(context.Background())
+
+// 	go func() {
+// 		defer wg.Done()
+// 		ip, err := GetIP(ctx)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		fmt.Println(ip)
+// 	}()
+
+// 	go func() {
+// 		defer wg.Done()
+// 		time.Sleep(2 * time.Second)
+// 		fmt.Println("协程取消")
+// 		cancel()
+// 	}()
+
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (string, error) {
+// 	select {
+// 	case <-ctx.Done():
+// 		return "", ctx.Err()
+// 	case <-time.After(5 * time.Second):
+// 		return "192.168.200.1", nil
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	wg.Add(2)
+
+// 	ctx, cancel := context.WithCancel(context.Background())
+
+// 	go func() {
+// 		defer wg.Done()
+// 		ip, err := GetIP(ctx)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		fmt.Println(ip)
+// 	}()
+
+// 	go func() {
+// 		defer wg.Done()
+// 		time.Sleep(2 * time.Second)
+// 		fmt.Println("协程取消")
+// 		cancel()
+// 	}()
+
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (string, error) {
+// 	select {
+// 	case <-ctx.Done():
+// 		return "", ctx.Err()
+// 	case <-time.After(10 * time.Second):
+// 		return "192.168.200.1", nil
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	wg.Add(1)
+
+// 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(5*time.Second))
+// 	defer cancel()
+
+// 	go func() {
+// 		defer wg.Done()
+// 		ip, err := GetIP(ctx)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		fmt.Println(ip)
+// 	}()
+
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func GetIP(ctx context.Context) (string, error) {
+// 	select {
+// 	case <-ctx.Done():
+// 		return "", ctx.Err()
+// 	case <-time.After(5 * time.Second):
+// 		return "192.168.200.1", nil
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+// 	wg.Add(1)
+
+// 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+// 	defer cancel()
+
+// 	go func() {
+// 		defer wg.Done()
+// 		ip, err := GetIP(ctx)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			return
+// 		}
+// 		fmt.Println(ip)
+// 	}()
+
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// )
+
+// type userKey string // 必须自定义 key 类型，防止冲突
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	ctx := context.WithValue(context.Background(), userKey("userID"), "10086")
+
+// 	wg.Add(1)
+// 	go func(c context.Context) {
+// 		defer wg.Done()
+// 		// 并发安全地读取数据
+// 		fmt.Println("User ID:", c.Value(userKey("userID")))
+// 	}(ctx)
+
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg sync.WaitGroup
+
+// func main() {
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	defer cancel() // 只要创建，必跟 defer cancel()
+
+// 	wg.Add(1)
+// 	go func(c context.Context) {
+// 		defer wg.Done()
+// 		select {
+// 		case <-c.Done():
+// 			// 监听到外部调用了 cancel()
+// 			fmt.Println("收到取消信号，立即退出！")
+// 		case <-time.After(5 * time.Second):
+// 			fmt.Println("任务完成")
+// 		}
+// 	}(ctx)
+
+//		time.Sleep(time.Second)
+//		cancel()
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	defer cancel()
+
+// 	wg.Add(1)
+// 	go func(c context.Context) {
+// 		defer wg.Done()
+// 		select {
+// 		case <-c.Done():
+// 			fmt.Println("xxx")
+// 		case <-time.After(5 * time.Second):
+// 			fmt.Println("---")
+// 		}
+// 	}(ctx)
+
+//		time.Sleep(time.Second)
+//		cancel()
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+// 	defer cancel()
+
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			defer wg.Done()
+//			select {
+//			case <-c.Done():
+//				fmt.Println("任务超时，直接丢弃:", c.Err())
+//				return
+//			case <-time.After(3 * time.Second):
+//				fmt.Println("任务处理完毕")
+//			}
+//		}(ctx)
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	deadline := time.Now().Add(2 * time.Second)
+// 	ctx, cancel := context.WithDeadline(context.Background(), deadline)
+// 	defer cancel()
+
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			defer wg.Done()
+//			select {
+//			case <-c.Done():
+//				fmt.Println("任务超时，直接丢弃:", c.Err())
+//			case <-time.After(3 * time.Second):
+//				fmt.Println("任务处理完毕")
+//			}
+//		}(ctx)
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func listenCancel(ctx context.Context, name string) {
+// 	defer wg.Done()
+// 	select {
+// 	case <-ctx.Done():
+// 		fmt.Printf("[%s] 收到取消信号: %s\n", name, ctx.Err())
+// 	case <-time.After(10 * time.Second):
+// 		fmt.Printf("[%s] 任务执行完成\n", name)
+// 	}
+// }
+
+// func main() {
+// 	start := time.Now()
+
+// 	rootCtx, rootCancel := context.WithCancel(context.Background())
+// 	defer rootCancel()
+
+// 	childCtx, childCancel := context.WithCancel(rootCtx)
+// 	defer childCancel()
+
+// 	grandsonCtx, grandsonCancel := context.WithCancel(childCtx)
+// 	defer grandsonCancel()
+
+// 	wg.Add(3)
+// 	go listenCancel(rootCtx, "根节点协程")
+// 	go listenCancel(childCtx, "子节点协程")
+// 	go listenCancel(grandsonCtx, "孙节点协程")
+
+// 	time.Sleep(time.Second)
+// 	rootCancel()
+
+//		wg.Wait()
+//		fmt.Println("执行完成:", time.Since(start))
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// )
+
+// // 必须自定义 key 类型，防止冲突
+// type userKey string
+
+// var wg sync.WaitGroup
+
+// func main() {
+// 	ctx := context.WithValue(context.Background(), userKey("userID"), "10086")
+
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			// 并发安全地读取数据
+//			defer wg.Done()
+//			fmt.Println("User ID:", c.Value(userKey("userID")))
+//		}(ctx)
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// )
+
+// type userKey string
+
+// var wg = sync.WaitGroup{}
+
+//	func main() {
+//		ctx := context.WithValue(context.Background(), userKey("userID"), "10086")
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			defer wg.Done()
+//			fmt.Println("User ID:", c.Value(userKey("userID")))
+//		}(ctx)
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	defer cancel()
+
+// 	wg.Add(1)
+// 	go func(c context.Context) {
+// 		defer wg.Done()
+// 		select {
+// 		case <-c.Done():
+// 			fmt.Println("收到取消信号，立即退出！")
+// 		case <-time.After(5 * time.Second):
+// 			fmt.Println("任务完成")
+// 		}
+// 	}(ctx)
+
+//		time.Sleep(time.Second)
+//		cancel()
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg sync.WaitGroup
+
+// func main() {
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	defer cancel()
+
+// 	wg.Add(1)
+// 	go func(c context.Context) {
+// 		defer wg.Done()
+// 		select {
+// 		case <-c.Done():
+// 			fmt.Println("收到取消信号，立即退出！")
+// 		case <-time.After(5 * time.Second):
+// 			fmt.Println("任务完成")
+// 		}
+// 	}(ctx)
+
+//		time.Sleep(time.Second)
+//		cancel()
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg sync.WaitGroup
+
+// func main() {
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	defer cancel()
+
+// 	wg.Add(1)
+// 	go func(c context.Context) {
+// 		defer wg.Done()
+// 		select {
+// 		case <-c.Done():
+// 			fmt.Println("收到取消信号，立即退出！")
+// 		case <-time.After(5 * time.Second):
+// 			fmt.Println("任务完成")
+// 		}
+// 	}(ctx)
+
+//		time.Sleep(time.Second)
+//		cancel()
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+// 	defer cancel()
+
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			defer wg.Done()
+//			select {
+//			case <-c.Done():
+//				fmt.Println("任务超时，直接丢弃:", c.Err())
+//				return
+//			case <-time.After(3 * time.Second):
+//				fmt.Println("任务处理完成")
+//			}
+//		}(ctx)
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+// 	defer cancel()
+
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			defer wg.Done()
+//			select {
+//			case <-c.Done():
+//				fmt.Println("任务超时，直接丢弃:", c.Err())
+//				return
+//			case <-time.After(3 * time.Second):
+//				fmt.Println("任务处理完毕")
+//			}
+//		}(ctx)
+//		wg.Wait()
+//	}
+// package main
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// var wg = sync.WaitGroup{}
+
+// func main() {
+// 	deadline := time.Now().Add(2 * time.Second)
+// 	ctx, cancel := context.WithDeadline(context.Background(), deadline)
+// 	defer cancel()
+
+//		wg.Add(1)
+//		go func(c context.Context) {
+//			defer wg.Done()
+//			select {
+//			case <-c.Done():
+//				fmt.Println("任务超时，直接丢弃:", c.Err())
+//			case <-time.After(3 * time.Second):
+//				fmt.Println("任务处理完成")
+//			}
+//		}(ctx)
+//		wg.Wait()
+//	}
 package main
 
 import (
@@ -9173,37 +9749,35 @@ import (
 
 var wg = sync.WaitGroup{}
 
-func GetIP(ctx context.Context) (string, error) {
+func listenCancel(ctx context.Context, name string) {
+	defer wg.Done()
 	select {
 	case <-ctx.Done():
-		return "", ctx.Err()
-	case <-time.After(5 * time.Second):
-		return "192.168.200.1", nil
+		fmt.Printf("[%s] 收到取消信号：%s\n", name, ctx.Err())
+	case <-time.After(10 * time.Second):
+		fmt.Printf("[%s] 任务执行完成\n", name)
 	}
 }
 
 func main() {
 	start := time.Now()
-	wg.Add(2)
 
-	ctx, cancel := context.WithCancel(context.Background())
+	rootCtx, rootCancel := context.WithCancel(context.Background())
+	defer rootCancel()
 
-	go func() {
-		defer wg.Done()
-		ip, err := GetIP(ctx)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		fmt.Println(ip)
-	}()
+	childCtx, childCancel := context.WithCancel(rootCtx)
+	defer childCancel()
 
-	go func() {
-		defer wg.Done()
-		time.Sleep(2 * time.Second)
-		fmt.Println("协程取消")
-		cancel()
-	}()
+	grandsonCtx, grandsonCancel := context.WithCancel(childCtx)
+	defer grandsonCancel()
+
+	wg.Add(3)
+	go listenCancel(rootCtx, "根节点协程")
+	go listenCancel(childCtx, "子节点协程")
+	go listenCancel(grandsonCtx, "孙节点协程")
+
+	time.Sleep(time.Second)
+	rootCancel()
 
 	wg.Wait()
 	fmt.Println("执行完成:", time.Since(start))
