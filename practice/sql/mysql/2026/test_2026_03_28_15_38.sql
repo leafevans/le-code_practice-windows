@@ -254,3 +254,5 @@ RETURN total;
 END;
 
 SELECT `fn_sum_to_n` (50);
+---
+
