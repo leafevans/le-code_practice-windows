@@ -106,3 +106,20 @@ END;
 DELETE FROM user WHERE id = 25;
 
 SELECT * FROM user_log;
+---
+SELECT
+    object_type,
+    object_schema,
+    object_name,
+    lock_type,
+    lock_duration
+FROM performance_schema.metadata_locks;
+---
+SELECT
+    object_schema,
+    object_name,
+    index_name,
+    lock_type,
+    lock_mode,
+    lock_data
+FROM performance_schema.data_locks;
