@@ -17,7 +17,6 @@ public:
             for (int j = 0; j < i; ++j) {
                 if (dp[j] && dict.count(s.substr(j, i - j))) {
                     dp[i] = true;
-                    break;
                 }
             }
         }
