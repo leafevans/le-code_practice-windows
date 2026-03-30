@@ -17,8 +17,8 @@ public:
             int prevMax = curMax;
             int prevMin = curMin;
 
-            curMax = max(x, max(prevMax * x, prevMin * x));
-            curMin = min(x, min(prevMax * x, prevMin * x));
+            curMax = max({x, prevMax * x, prevMin * x});
+            curMin = min({x, prevMax * x, prevMin * x});
 
             res = max(res, curMax);
         }
