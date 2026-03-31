@@ -13,7 +13,7 @@ public:
         int i = 0;
         while (i <= p2) {
             if (nums[i] == 0) {
-                swap(nums[p0], nums[i]);
+                swap(nums[i], nums[p0]);
                 ++p0;
                 ++i;
             } else if (nums[i] == 2) {
