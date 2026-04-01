@@ -5,14 +5,15 @@
  */
 
 // @lc code=start
-#include <algorithm>
-#include <vector>
-using namespace std;
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
+        int n = nums.size();
+        if (n <= 1) {
+            return;
+        }
         int j = 0;
-        for (int i = 0; i < nums.size(); ++i) {
+        for (int i = 0; i < n; ++i) {
             if (nums[i] != 0) {
                 if (i != j) {
                     swap(nums[i], nums[j]);

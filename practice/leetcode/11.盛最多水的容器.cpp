@@ -5,22 +5,20 @@
  */
 
 // @lc code=start
-#include <algorithm>
-#include <vector>
-using namespace std;
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        int left = 0, right = height.size() - 1;
+        int l = 0;
+        int r = height.size() - 1;
         int maxArea = 0;
-        while (left < right) {
-            int h = min(height[left], height[right]);
-            int w = right - left;
+        while (l < r) {
+            int h = min(height[l], height[r]);
+            int w = r - l;
             maxArea = max(maxArea, h * w);
-            if (height[left] < height[right]) {
-                ++left;
+            if (height[l] < height[r]) {
+                ++l;
             } else {
-                --right;
+                --r;
             }
         }
         return maxArea;
