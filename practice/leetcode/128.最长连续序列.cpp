@@ -5,10 +5,6 @@
  */
 
 // @lc code=start
-#include <algorithm>
-#include <unordered_set>
-#include <vector>
-using namespace std;
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
@@ -19,7 +15,8 @@ public:
         int maxLen = 0;
         for (int num : s) {
             if (!s.count(num - 1)) {
-                int curr = num, currLen = 1;
+                int curr = num;
+                int currLen = 1;
                 while (s.count(curr + 1)) {
                     ++curr;
                     ++currLen;
@@ -27,6 +24,7 @@ public:
                 maxLen = max(maxLen, currLen);
             }
         }
+
         return maxLen;
     }
 };
