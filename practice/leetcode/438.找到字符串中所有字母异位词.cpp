@@ -5,28 +5,25 @@
  */
 
 // @lc code=start
-#include <string>
-#include <vector>
-using namespace std;
 class Solution {
 public:
     vector<int> findAnagrams(string s, string p) {
-        if (s.size() < p.size()) {
+        int m = s.size(), n = p.size();
+        if (m < n) {
             return {};
         }
         vector<int> res;
-        vector<int> pc(26, 0), sc(26, 0);
+        vector<int> sc(26, 0), pc(26, 0);
         for (char c : p) {
             ++pc[c - 'a'];
         }
-        int wndSize = p.size();
-        for (int i = 0; i < s.size(); ++i) {
+        for (int i = 0; i < m; ++i) {
             ++sc[s[i] - 'a'];
-            if (i >= wndSize) {
-                --sc[s[i - wndSize] - 'a'];
+            if (i >= n) {
+                --sc[s[i - n] - 'a'];
             }
             if (sc == pc) {
-                res.push_back(i - wndSize + 1);
+                res.push_back(i - n + 1);
             }
         }
         return res;

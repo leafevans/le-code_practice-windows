@@ -5,24 +5,25 @@
  */
 
 // @lc code=start
-#include <algorithm>
-#include <cstring>
-#include <string>
-#include <unordered_map>
-using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        if (n <= 1) {
+            return n;
+        }
         int last[256];
-        fill_n(begin(last), 256, -1);
+        for (int i = 0; i < 256; ++i) {
+            last[i] = -1;
+        }
         int maxLen = 0;
-        int left = 0;
-        for (int right = 0; right < s.size(); ++right) {
-            if (last[s[right]] >= left) {
-                left = last[s[right]] + 1;
+        int l = 0;
+        for (int r = 0; r < n; ++r) {
+            if (last[s[r]] >= l) {
+                l = last[s[r]] + 1;
             }
-            last[s[right]] = right;
-            maxLen = max(maxLen, right - left + 1);
+            last[s[r]] = r;
+            maxLen = max(maxLen, r - l + 1);
         }
         return maxLen;
     }
