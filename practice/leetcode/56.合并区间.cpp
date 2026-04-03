@@ -5,19 +5,14 @@
  */
 
 // @lc code=start
-#include <algorithm>
-#include <vector>
-using namespace std;
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        if (intervals.empty()) {
-            return {};
-        }
-        vector<vector<int>> res;
+        int n = intervals.size();
         sort(intervals.begin(), intervals.end());
+        vector<vector<int>> res;
         res.push_back(intervals[0]);
-        for (int i = 1; i < intervals.size(); ++i) {
+        for (int i = 1; i < n; ++i) {
             if (res.back()[1] < intervals[i][0]) {
                 res.push_back(intervals[i]);
             } else {
