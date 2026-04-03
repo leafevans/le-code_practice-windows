@@ -1,0 +1,24 @@
+{{define "default/index.html"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>前台模板</h1>
+    <h3>{{.title}}</h3>
+    <h4>{{.user.Name}}</h4>
+    <h4>{{.user.Age}}</h4>
+    <h4>{{- .Name -}}</h4>
+    {{$obj := .title}}
+    <h4>{{$obj}}</h4>
+    <ul>
+      {{range $key, $value := .hobby}}
+      <li>{{$key}}---{{$value}}</li>
+      {{end}}
+    </ul>
+  </body>
+</html>
+{{end}}

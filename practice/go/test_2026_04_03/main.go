@@ -82,6 +82,76 @@
 
 //		r.Run()
 //	}
+// package main
+
+// import (
+// 	"net/http"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+//	func main() {
+//		r := gin.Default()
+//		r.LoadHTMLGlob("templates/*")
+//		r.GET("/", func(c *gin.Context) {
+//			c.HTML(http.StatusOK, "index.html", gin.H{
+//				"title": "Main Website",
+//			})
+//		})
+//		r.Run()
+//	}
+// package main
+
+// import (
+// 	"net/http"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+//	func main() {
+//		r := gin.Default()
+//		r.LoadHTMLGlob("templates/**/*")
+//		r.GET("/", func(c *gin.Context) {
+//			c.HTML(http.StatusOK, "default/index.html", gin.H{
+//				"title": "前台首页",
+//			})
+//		})
+//		r.GET("/admin", func(c *gin.Context) {
+//			c.HTML(http.StatusOK, "admin/index.html", gin.H{
+//				"titel": "前台首页",
+//			})
+//		})
+//	}
+// package main
+
+// import (
+// 	"net/http"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+// type UserInfo struct {
+// 	Name   string
+// 	Gender string
+// 	Age    int
+// }
+
+//	func main() {
+//		r := gin.Default()
+//		r.LoadHTMLGlob("templates/**/*")
+//		user := &UserInfo{
+//			Name:   "哈基米",
+//			Gender: "女",
+//			Age:    18,
+//		}
+//		r.GET("/", func(c *gin.Context) {
+//			c.HTML(http.StatusOK, "default/index.html", gin.H{
+//				"title": "前台首页",
+//				"user":  user,
+//			})
+//		})
+//		r.Run()
+//	}
 package main
 
 import (
@@ -90,12 +160,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type UserInfo struct {
+	Name   string
+	Gender string
+	Age    int
+}
+
 func main() {
 	r := gin.Default()
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("templates/**/*")
+	user := &UserInfo{
+		Name:   "哈基米",
+		Gender: "女",
+		Age:    18,
+	}
 	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Main Website",
+		c.HTML(http.StatusOK, "default/index.html", gin.H{
+			"title": "前台首页",
+			"user":  user,
+			"hobby": []string{"吃饭", "睡觉", "敲代码"},
 		})
 	})
 	r.Run()
