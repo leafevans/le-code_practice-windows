@@ -651,13 +651,19 @@
 package main
 
 import (
+	"test_2026_04_03/models"
 	"test_2026_04_03/routers"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
+
+	r.SetFuncMap(template.FuncMap{
+		"UnixToTime": models.UnixToTime,
+	})
 
 	r.LoadHTMLGlob("templates/**/*")
 
