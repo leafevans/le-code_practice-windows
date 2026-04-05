@@ -21,15 +21,15 @@ public:
         if (!head->next) {
             return true;
         }
-        ListNode* slow = head;
-        ListNode* fast = head;
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
-        }
         ListNode* p1 = head;
-        ListNode* p2 = reverseList(slow);
-        while (p2) {
+        ListNode* p2 = head;
+        while (p2 && p2->next) {
+            p1 = p1->next;
+            p2 = p2->next->next;
+        }
+        p1 = reverseList(p1);
+        p2 = head;
+        while (p1) {
             if (p1->val != p2->val) {
                 return false;
             }
