@@ -648,6 +648,100 @@
 
 //		r.Run()
 //	}
+// package main
+
+// import (
+// 	"test_2026_04_03/models"
+// 	"test_2026_04_03/routers"
+// 	"text/template"
+
+// 	"github.com/gin-gonic/gin"
+// )
+
+// func main() {
+// 	r := gin.Default()
+
+// 	r.SetFuncMap(template.FuncMap{
+// 		"UnixToTime": models.UnixToTime,
+// 	})
+
+// 	r.LoadHTMLGlob("templates/**/*")
+
+// 	r.Static("/static", "./static")
+
+// 	routers.WebRoutersInit(r)
+
+// 	routers.APIRoutersInit(r)
+
+// 	routers.AdminRoutersInit(r)
+
+//		r.Run()
+//	}
+// package main
+
+// import (
+// 	"test_2026_04_03/models"
+// 	"text/template"
+
+// 	"github.com/gin-contrib/sessions"
+// 	"github.com/gin-contrib/sessions/cookie"
+// 	"github.com/gin-gonic/gin"
+// 	"go.uber.org/zap"
+// )
+
+// func main() {
+// 	logger, _ := zap.NewProduction()
+// 	defer logger.Sync()
+// 	zap.ReplaceGlobals(logger)
+
+// 	r := gin.Default()
+
+// 	r.SetFuncMap(template.FuncMap{
+// 		"UnixToTime": models.UnixToTime,
+// 	})
+
+// 	store := cookie.NewStore([]byte("secret"))
+// 	r.Use(sessions.Sessions("mysession", store))
+
+// 	r.LoadHTMLGlob("templates/**/*")
+
+//		r.Run()
+//	}
+// package main
+
+// import (
+// 	"test_2026_04_03/models"
+// 	"test_2026_04_03/routers"
+// 	"text/template"
+
+// 	"github.com/gin-contrib/sessions"
+// 	"github.com/gin-contrib/sessions/cookie"
+// 	"github.com/gin-gonic/gin"
+// 	"go.uber.org/zap"
+// )
+
+// func main() {
+// 	logger, _ := zap.NewProduction()
+// 	defer logger.Sync()
+// 	zap.ReplaceGlobals(logger)
+
+// 	r := gin.Default()
+
+// 	r.SetFuncMap(template.FuncMap{
+// 		"UnixToTime": models.UnixToTime,
+// 	})
+
+// 	store := cookie.NewStore([]byte("secret"))
+// 	r.Use(sessions.Sessions("mysession", store))
+
+// 	r.LoadHTMLGlob("templates/**/*")
+
+// 	routers.APIRoutersInit(r)
+// 	routers.AdminRoutersInit(r)
+// 	routers.WebRoutersInit(r)
+
+//		r.Run()
+//	}
 package main
 
 import (
@@ -655,24 +749,35 @@ import (
 	"test_2026_04_03/routers"
 	"text/template"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func main() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+	zap.ReplaceGlobals(logger)
+
 	r := gin.Default()
 
 	r.SetFuncMap(template.FuncMap{
 		"UnixToTime": models.UnixToTime,
 	})
 
+	store, err := redis.NewStore(10, "tcp", "localhost:6379", "", "", []byte("secret"))
+
+	if err != nil {
+		panic(err)
+	}
+
+	r.Use(sessions.Sessions("mysession", store))
+
 	r.LoadHTMLGlob("templates/**/*")
 
-	r.Static("/static", "./static")
-
-	routers.WebRoutersInit(r)
-
 	routers.APIRoutersInit(r)
-
+	routers.WebRoutersInit(r)
 	routers.AdminRoutersInit(r)
 
 	r.Run()

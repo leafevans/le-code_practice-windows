@@ -12,5 +12,6 @@ func WebRoutersInit(r *gin.Engine) {
 	{
 		webRouters.GET("/", web.WebController{}.Index)
 		webRouters.GET("/news", web.WebController{}.News)
+		webRouters.GET("/shop", web.WebController{}.Shop)
 	}
 }
