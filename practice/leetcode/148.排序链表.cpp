@@ -21,34 +21,34 @@ public:
         if (!head || !head->next) {
             return head;
         }
-        ListNode* slow = head;
-        ListNode* fast = head->next;
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
+        ListNode* p1 = head;
+        ListNode* p2 = head->next;
+        while (p2 && p2->next) {
+            p1 = p1->next;
+            p2 = p2->next->next;
         }
-        ListNode* mid = slow->next;
-        slow->next = nullptr;
-        ListNode* left = sortList(head);
-        ListNode* right = sortList(mid);
-        return merge(left, right);
+        ListNode* mid = p1->next;
+        p1->next = nullptr;
+        p1 = sortList(head);
+        p2 = sortList(mid);
+        return merge(p1, p2);
     }
 
 private:
     ListNode* merge(ListNode* l1, ListNode* l2) {
-        ListNode* dummy = new ListNode(0);
-        ListNode* curr = dummy;
+        ListNode* dummy = new ListNode();
+        ListNode* p = dummy;
         while (l1 && l2) {
             if (l1->val < l2->val) {
-                curr->next = l1;
+                p->next = l1;
                 l1 = l1->next;
             } else {
-                curr->next = l2;
+                p->next = l2;
                 l2 = l2->next;
             }
-            curr = curr->next;
+            p = p->next;
         }
-        curr->next = l1 ? l1 : l2;
+        p->next = l1 ? l1 : l2;
         return dummy->next;
     }
 };
