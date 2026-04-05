@@ -19,23 +19,24 @@ public:
         if (!head) {
             return nullptr;
         }
-        ListNode *slow = head, *fast = head;
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
-            if (slow == fast) {
+        ListNode* p1 = head;
+        ListNode* p2 = head;
+        while (p2 && p2->next) {
+            p1 = p1->next;
+            p2 = p2->next->next;
+            if (p1 == p2) {
                 break;
             }
         }
-        if (!fast || !fast->next) {
+        if (!p2 || !p2->next) {
             return nullptr;
         }
-        ListNode* p = head;
-        while (p != slow) {
-            p = p->next;
-            slow = slow->next;
+        p2 = head;
+        while (p1 != p2) {
+            p1 = p1->next;
+            p2 = p2->next;
         }
-        return p;
+        return p1;
     }
 };
 // @lc code=end
