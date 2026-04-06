@@ -28,15 +28,16 @@ public:
                 pq.push(list);
             }
         }
-        ListNode* dummy = new ListNode(0);
+        ListNode* dummy = new ListNode();
         ListNode* curr = dummy;
         while (!pq.empty()) {
-            ListNode* node = pq.top();
+            ListNode* p = pq.top();
             pq.pop();
-            curr->next = node;
+            curr->next = p;
             curr = curr->next;
-            if (node->next) {
-                pq.push(node->next);
+            if (p->next) {
+                p = p->next;
+                pq.push(p);
             }
         }
         return dummy->next;

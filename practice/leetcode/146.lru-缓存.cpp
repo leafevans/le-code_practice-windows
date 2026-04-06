@@ -63,8 +63,8 @@ private:
     }
 
     void removeNode(Node* node) {
-        node->prev->next = node->next;
         node->next->prev = node->prev;
+        node->prev->next = node->next;
     }
 };
 
@@ -74,4 +74,3 @@ private:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
-// @lc code=end
