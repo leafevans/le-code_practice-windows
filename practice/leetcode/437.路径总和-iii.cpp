@@ -26,8 +26,9 @@ public:
 
 private:
     int count = 0;
-    unordered_map<long, int> prefix;
-    void dfs(TreeNode* node, long currSum, int targetSum) {
+    unordered_map<long long, int> prefix;
+
+    void dfs(TreeNode* node, long long currSum, int targetSum) {
         if (!node) {
             return;
         }

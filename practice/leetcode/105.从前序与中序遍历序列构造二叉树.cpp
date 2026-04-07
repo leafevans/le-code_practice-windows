@@ -27,7 +27,9 @@ public:
 
 private:
     unordered_map<int, int> inPos;
-    TreeNode* build(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd) {
+
+    TreeNode* build(const vector<int>& preorder, int preStart, int preEnd, const vector<int>& inorder, int inStart,
+                    int inEnd) {
         if (preStart > preEnd) {
             return nullptr;
         }

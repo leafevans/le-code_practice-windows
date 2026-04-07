@@ -26,11 +26,11 @@ public:
         queue<TreeNode*> q;
         q.push(root);
         while (!q.empty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; ++i) {
+            int n = q.size();
+            for (int i = 0; i < n; ++i) {
                 TreeNode* node = q.front();
                 q.pop();
-                if (i == sz - 1) {
+                if (i == n - 1) {
                     res.push_back(node->val);
                 }
                 if (node->left) {

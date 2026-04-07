@@ -20,7 +20,7 @@ class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
         int count = 0;
-        return inorder(root, k, count);
+        return inorder(node, k, count);
     }
 
 private:
@@ -28,7 +28,7 @@ private:
         if (!node) {
             return -1;
         }
-        int left = inorder(node->left, k, count);
+        int left = inorder(node, k, count);
         if (left != -1) {
             return left;
         }
