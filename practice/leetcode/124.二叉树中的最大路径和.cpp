@@ -29,12 +29,9 @@ private:
         if (!node) {
             return 0;
         }
-
         int left = max(0, dfs(node->left, res));
         int right = max(0, dfs(node->right, res));
-
         res = max(res, node->val + left + right);
-
         return node->val + max(left, right);
     }
 };
