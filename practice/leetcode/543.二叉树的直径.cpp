@@ -19,9 +19,6 @@
 class Solution {
 public:
     int diameterOfBinaryTree(TreeNode* root) {
-        if (!root) {
-            return 0;
-        }
         int maxDiameter = 0;
         depth(root, maxDiameter);
         return maxDiameter;

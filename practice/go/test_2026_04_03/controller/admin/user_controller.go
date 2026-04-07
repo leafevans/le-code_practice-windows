@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"fmt"
 	"net/http"
 	"path"
 	"test_2026_04_03/models"
@@ -20,21 +19,18 @@ type Result struct {
 }
 
 func (uc UserController) Index(c *gin.Context) {
-	var res Result
-	models.DB.Raw("SELECT username, age FROM users WHERE username = ?", "曼波").Scan(&res)
+	var count int
+	models.DB.Raw("SELECT COUNT(*) FROM users").Scan(&count)
 	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"result":  res,
+		"result": count,
 	})
 }
 
 func (uc UserController) Edit(c *gin.Context) {
-	user := models.User{ID: 7}
-	models.DB.Find(&user)
-	user.Username = "曼波"
-	user.Age = 1
-	models.DB.Save(&user)
-	c.String(http.StatusOK, "Edit")
+	res := models.DB.Exec("UPDATE users SET username = ? WHERE id = 2", "叮咚鸡")
+	c.JSON(http.StatusOK, gin.H{
+		"result": res.RowsAffected,
+	})
 }
 
 func (uc UserController) Add(c *gin.Context) {
@@ -45,17 +41,15 @@ func (uc UserController) Add(c *gin.Context) {
 		AddTime:  int(time.Now().Unix()),
 	}
 
-	res := models.DB.Create(&user)
-	if res.Error != nil {
-		fmt.Println("添加用户失败", res.Error)
-		c.String(http.StatusInternalServerError, "添加失败")
-		return
+	tx := models.DB.Begin()
+
+	if err := tx.Create(&user).Error; err != nil {
+		tx.Rollback()
+		c.String(http.StatusInternalServerError, "add 失败")
 	}
 
-	if res.RowsAffected == 1 {
-		fmt.Println(user.ID)
-	}
-	fmt.Println(res.RowsAffected)
+	tx.Commit()
+
 	c.String(http.StatusOK, "add 成功")
 }
 
@@ -76,6 +70,8 @@ func (uc UserController) DoAdd(c *gin.Context) {
 }
 
 func (uc UserController) Delete(c *gin.Context) {
-	models.DB.Where("id > 9").Delete(&models.User{})
-	c.String(http.StatusOK, "DeleteAll")
+	res := models.DB.Exec("DELETE FROM users WHERE id = ?", 3)
+	c.JSON(http.StatusOK, gin.H{
+		"result": res.RowsAffected,
+	})
 }

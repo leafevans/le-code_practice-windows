@@ -26,10 +26,10 @@ public:
         queue<TreeNode*> q;
         q.push(root);
         while (!q.empty()) {
-            int sz = q.size();
+            int n = q.size();
             vector<int> level;
-            level.reserve(sz);
-            for (int i = 0; i < sz; ++i) {
+            level.reserve(n);
+            for (int i = 0; i < n; ++i) {
                 TreeNode* node = q.front();
                 q.pop();
                 level.push_back(node->val);
@@ -40,7 +40,7 @@ public:
                     q.push(node->right);
                 }
             }
-            res.push_back(std::move(level));
+            res.push_back(move(level));
         }
         return res;
     }

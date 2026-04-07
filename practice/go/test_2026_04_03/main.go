@@ -742,6 +742,68 @@
 
 //		r.Run()
 //	}
+// package main
+
+// import (
+// 	"test_2026_04_03/models"
+// 	"test_2026_04_03/routers"
+// 	"text/template"
+
+// 	"github.com/gin-contrib/sessions"
+// 	"github.com/gin-contrib/sessions/redis"
+// 	"github.com/gin-gonic/gin"
+// 	"go.uber.org/zap"
+// )
+
+// func main() {
+// 	logger, _ := zap.NewProduction()
+// 	defer logger.Sync()
+// 	zap.ReplaceGlobals(logger)
+
+// 	r := gin.Default()
+
+// 	r.SetFuncMap(template.FuncMap{
+// 		"UnixToTime": models.UnixToTime,
+// 	})
+
+// 	store, err := redis.NewStore(10, "tcp", "localhost:6379", "", "", []byte("secret"))
+
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	r.Use(sessions.Sessions("mysession", store))
+
+// 	r.LoadHTMLGlob("templates/**/*")
+
+// 	routers.APIRoutersInit(r)
+// 	routers.WebRoutersInit(r)
+// 	routers.AdminRoutersInit(r)
+
+//		r.Run()
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"os"
+
+// 	"gopkg.in/ini.v1"
+// )
+
+// func main() {
+// 	cfg, err := ini.Load("./conf/app.ini")
+// 	if err != nil {
+// 		fmt.Printf("Fail to read file: %v", err)
+// 		os.Exit(1)
+// 	}
+
+// 	fmt.Println("App Mode:", cfg.Section("").Key("app_name").String())
+// 	fmt.Println("Data Path:", cfg.Section("mysql").Key("ip").String())
+
+//		cfg.Section("").Key("app_name").SetValue("hachimi")
+//		cfg.SaveTo("./conf/app.ini")
+//	}
 package main
 
 import (

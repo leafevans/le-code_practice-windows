@@ -2,19 +2,40 @@ package models
 
 import (
 	"fmt"
+	"os"
 
+	"gopkg.in/ini.v1"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
+var err error
+
 func init() {
-	dsn := "leafevans:Qq20050514@tcp(127.0.0.1:3307)/test?charset=utf8mb4&parseTime=True&loc=Local"
-	var err error
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	cfg, err := ini.Load("./conf/app.ini")
+	if err != nil {
+		fmt.Printf("Fail to read file: %v", err)
+		os.Exit(1)
+	}
+
+	ip := cfg.Section("mysql").Key("ip").String()
+	port := cfg.Section("mysql").Key("port").String()
+	user := cfg.Section("mysql").Key("user").String()
+	password := cfg.Section("mysql").Key("password").String()
+	database := cfg.Section("mysql").Key("database").String()
+
+	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", user, password, ip, port, database)
+
+	fmt.Println(dsn)
+
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		QueryFields: true,
+	})
 
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 }
