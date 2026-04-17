@@ -996,13 +996,83 @@
 //		res := method.Call(nil)
 //		fmt.Println("Method Result:", res[0].String())
 //	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		a := []int{1, 2, 3, 4, 5}
+//		fmt.Println(len(a), cap(a), a)
+//		b := a[1:3:4]
+//		fmt.Println(len(b), cap(b), b)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		nums := []int{1, 2, 3, 4, 5}
+//		ch := make(chan int)
+//		for _, num := range nums {
+//			go func(n int) {
+//				ch <- n
+//			}(num)
+//		}
+//		sum := 0
+//		for range len(nums) {
+//			sum += <-ch
+//		}
+//		fmt.Println("Sum:", sum)
+//	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+//	func main() {
+//		var mu sync.Mutex
+//		var count int
+//		increment := func() {
+//			mu.Lock()
+//			defer mu.Unlock()
+//			count++
+//			fmt.Println("Count:", count)
+//		}
+//		for range 5 {
+//			go increment()
+//		}
+//		time.Sleep(time.Second)
+//	}
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 func main() {
-	a := []int{1, 2, 3, 4, 5}
-	fmt.Println(len(a), cap(a), a)
-	b := a[1:3:3]
-	fmt.Println(len(b), cap(b), b)
+	var mutexA, mutexB sync.Mutex
+
+	go func() {
+		mutexA.Lock()
+		fmt.Println("Goroutine 1: Locked mutexA")
+		mutexB.Lock()
+		fmt.Println("Goroutine 1: Locked mutexB")
+		mutexB.Unlock()
+		mutexA.Unlock()
+	}()
+
+	go func() {
+		mutexB.Lock()
+		fmt.Println("Goroutine 2: Locked mutexB")
+		mutexA.Lock()
+		fmt.Println("Goroutine 2: Locked mutexA")
+		mutexA.Unlock()
+		mutexB.Unlock()
+	}()
+
+	select {}
 }
