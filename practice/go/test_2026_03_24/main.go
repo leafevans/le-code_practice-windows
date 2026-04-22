@@ -1046,33 +1046,69 @@
 //		}
 //		time.Sleep(time.Second)
 //	}
+// package main
+
+// import (
+// 	"fmt"
+// 	"sync"
+// )
+
+// func main() {
+// 	var mutexA, mutexB sync.Mutex
+
+// 	go func() {
+// 		mutexA.Lock()
+// 		fmt.Println("Goroutine 1: Locked mutexA")
+// 		mutexB.Lock()
+// 		fmt.Println("Goroutine 1: Locked mutexB")
+// 		mutexB.Unlock()
+// 		mutexA.Unlock()
+// 	}()
+
+// 	go func() {
+// 		mutexB.Lock()
+// 		fmt.Println("Goroutine 2: Locked mutexB")
+// 		mutexA.Lock()
+// 		fmt.Println("Goroutine 2: Locked mutexA")
+// 		mutexA.Unlock()
+// 		mutexB.Unlock()
+// 	}()
+
+//		select {}
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		a := 666
+//		fmt.Println(a)
+//	}
+// package main
+
+// import "fmt"
+
+//	func main() {
+//		fmt.Println("Hello, world!")
+//	}
 package main
 
 import (
 	"fmt"
-	"sync"
+	"os"
+	"runtime/trace"
 )
 
 func main() {
-	var mutexA, mutexB sync.Mutex
-
-	go func() {
-		mutexA.Lock()
-		fmt.Println("Goroutine 1: Locked mutexA")
-		mutexB.Lock()
-		fmt.Println("Goroutine 1: Locked mutexB")
-		mutexB.Unlock()
-		mutexA.Unlock()
-	}()
-
-	go func() {
-		mutexB.Lock()
-		fmt.Println("Goroutine 2: Locked mutexB")
-		mutexA.Lock()
-		fmt.Println("Goroutine 2: Locked mutexA")
-		mutexA.Unlock()
-		mutexB.Unlock()
-	}()
-
-	select {}
+	f, err := os.Create("trace.out")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+	err = trace.Start(f)
+	if err != nil {
+		panic(err)
+	}
+	defer trace.Stop()
+	fmt.Println("Hello, world!")
 }
