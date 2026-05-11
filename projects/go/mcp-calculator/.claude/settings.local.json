@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/Users/31866/Documents/Code/le-code_practice-windows/projects/go/mcp-rag-server\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\31866\\Documents\\Code\\le-code_practice-windows\\projects\\go"
+    ]
+  }
+}
