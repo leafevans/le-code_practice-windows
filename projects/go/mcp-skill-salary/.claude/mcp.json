@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "salary-calc": {
+      "command": "C:\\Users\\31866\\Documents\\Code\\le-code_practice-windows\\projects\\go\\mcp-skill-salary\\mcp-salary-skill.exe",
+      "cwd": "C:\\Users\\31866\\Documents\\Code\\le-code_practice-windows\\projects\\go\\mcp-skill-salary"
+    }
+  }
+}

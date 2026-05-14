@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Recurse -Depth 2 -Name)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(go get *)",
+      "Bash(go build *)",
+      "Bash(go doc *)",
+      "Bash(.\\\\mcp-salary-skill.exe)",
+      "Bash(ls ~/.claude/mcp.json 2>/dev/null && echo \"exists\" || echo \"no user-level mcp.json\")",
+      "Read(//c/Users/31866/.claude/**)"
+    ]
+  }
+}
