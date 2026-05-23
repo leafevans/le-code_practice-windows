@@ -1,0 +1,28 @@
+# Environment & secrets
+.env
+*.env.local
+
+# Go build outputs
+*.exe
+*.test
+*.out
+/bin/
+/vendor/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Debug
+__debug_bin
+
+# Docker volumes
+volumes/
