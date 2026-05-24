@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"os"
 
+	ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
 	"github.com/cloudwego/eino-ext/components/model/deepseek"
+	"github.com/cloudwego/eino/callbacks"
 	"github.com/cloudwego/eino/compose"
 	"github.com/cloudwego/eino/schema"
 	"github.com/joho/godotenv"
+	"github.com/coze-dev/cozeloop-go"
 )
 
 type State struct {
@@ -27,7 +30,14 @@ func main() {
 		panic("Error loading .env file")
 	}
 	ctx := context.Background()
-	g := compose.NewGraph[map[string]string, *schema.Message](
+	client, err := cozeloop.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	defer client.Close(ctx)
+	handler := ccb.NewLoopHandler(client)
+	callbacks.AppendGlobalHandlers(handler)
+	insideGraph := compose.NewGraph[map[string]string, *schema.Message](
 		compose.WithGenLocalState(getFunc),
 	)
 	lambda := compose.InvokableLambda(func(ctx context.Context, input map[string]string) (output map[string]string, err error) {
@@ -62,10 +72,6 @@ func main() {
 		}, nil
 	})
 	cuteLambda := compose.InvokableLambda(func(ctx context.Context, input map[string]string) (output []*schema.Message, err error) {
-		_ = compose.ProcessState(ctx, func(_ context.Context, state *State) error {
-			input["content"] = input["content"] + state.History["cute_action"].(string)
-			return nil
-		})
 		return []*schema.Message{
 			{
 				Role:    schema.System,
@@ -85,23 +91,23 @@ func main() {
 		APIKey: os.Getenv("DEEPSEEK_API_KEY"),
 		Model:  os.Getenv("MODEL"),
 	})
-	err = g.AddLambdaNode("lambda", lambda)
+	err = insideGraph.AddLambdaNode("lambda", lambda)
 	if err != nil {
 		panic(err)
 	}
-	err = g.AddLambdaNode("tsundere", tsundereLambda)
+	err = insideGraph.AddLambdaNode("tsundere", tsundereLambda)
 	if err != nil {
 		panic(err)
 	}
-	err = g.AddLambdaNode("cute", cuteLambda, compose.WithStatePreHandler(cutePreHandler))
+	err = insideGraph.AddLambdaNode("cute", cuteLambda, compose.WithStatePreHandler(cutePreHandler))
 	if err != nil {
 		panic(err)
 	}
-	err = g.AddChatModelNode("model", model)
+	err = insideGraph.AddChatModelNode("model", model)
 	if err != nil {
 		panic(err)
 	}
-	g.AddBranch("lambda", compose.NewGraphBranch(func(ctx context.Context, in map[string]string) (endNode string, err error) {
+	insideGraph.AddBranch("lambda", compose.NewGraphBranch(func(ctx context.Context, in map[string]string) (endNode string, err error) {
 		switch in["role"] {
 		case "傲娇":
 			return "tsundere", nil
@@ -111,33 +117,87 @@ func main() {
 			return "tsundere", nil
 		}
 	}, map[string]bool{"tsundere": true, "cute": true}))
-	err = g.AddEdge(compose.START, "lambda")
+	err = insideGraph.AddEdge(compose.START, "lambda")
 	if err != nil {
 		panic(err)
 	}
-	err = g.AddEdge("tsundere", "model")
+	err = insideGraph.AddEdge("tsundere", "model")
 	if err != nil {
 		panic(err)
 	}
-	err = g.AddEdge("cute", "model")
+	err = insideGraph.AddEdge("cute", "model")
 	if err != nil {
 		panic(err)
 	}
-	err = g.AddEdge("model", compose.END)
+	err = insideGraph.AddEdge("model", compose.END)
 	if err != nil {
 		panic(err)
 	}
-	r, err := g.Compile(ctx)
+	outsideGraph := compose.NewGraph[map[string]string, string]()
+	outLambda1 := compose.InvokableLambda(func(ctx context.Context, input map[string]string) (output map[string]string, err error) {
+		return input, nil
+	})
+	writeLambda := compose.InvokableLambda(func(ctx context.Context, input *schema.Message) (output string, err error) {
+		f, err := os.OpenFile("orc_graph_withgraph.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			return "", err
+		}
+		defer f.Close()
+		if _, err := f.WriteString(input.Content + "\n---\n"); err != nil {
+			return "", err
+		}
+		return "已经写入文件，请前往文件内查看内容", nil
+	})
+	err = outsideGraph.AddLambdaNode("outLambda1", outLambda1)
+	if err != nil {
+		panic(err)
+	}
+	err = outsideGraph.AddGraphNode("insideGraph", insideGraph)
+	if err != nil {
+		panic(err)
+	}
+	err = outsideGraph.AddLambdaNode("writeLambda", writeLambda)
+	if err != nil {
+		panic(err)
+	}
+	err = outsideGraph.AddEdge(compose.START, "outLambda1")
+	if err != nil {
+		panic(err)
+	}
+	err = outsideGraph.AddEdge("outLambda1", "insideGraph")
+	if err != nil {
+		panic(err)
+	}
+	err = outsideGraph.AddEdge("insideGraph", "writeLambda")
+	if err != nil {
+		panic(err)
+	}
+	err = outsideGraph.AddEdge("writeLambda", compose.END)
+	if err != nil {
+		panic(err)
+	}
+	r, err := outsideGraph.Compile(ctx)
 	if err != nil {
 		panic(err)
 	}
 	input := map[string]string{
 		"role":    "tsundere",
-		"content": "我喜欢你",
+		"content": "你好鸭WWW",
 	}
-	answer, err := r.Invoke(ctx, input)
+	answer, err := r.Invoke(ctx, input, compose.WithCallbacks(genCallback()))
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(answer.Content)
+	fmt.Println(answer)
+}
+
+func genCallback() callbacks.Handler {
+	handler := callbacks.NewHandlerBuilder().OnStartFn(func(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
+		fmt.Printf("当前%s节点输入：%s\n", info.Component, input)
+		return ctx
+	}).OnEndFn(func(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
+		fmt.Printf("当前%s节点输出：%s\n", info.Component, output)
+		return ctx
+	}).Build()
+	return handler
 }
