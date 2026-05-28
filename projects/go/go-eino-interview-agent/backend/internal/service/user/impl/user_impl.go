@@ -24,6 +24,24 @@ func NewUserServer() *UserServer {
 	}
 }
 
+func (s *UserServer) Login(_ context.Context, req userapi.LoginRequest) (*userapi.LoginResponse, error) {
+	userRecord, err := model.UserDao.FindByEmail(req.GetEmail())
+	if err != nil {
+		return nil, err
+	}
+
+	if userRecord.PasswordHash != req.GetPassword() {
+		return nil, errors.New("密码错误")
+	}
+
+	token, err := middleware.GenerateToken(userRecord.ID, userRecord.Username, userRecord.Role)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.buildLoginResponse(token, userRecord), nil
+}
+
 func (s *UserServer) Register(_ context.Context, req userapi.RegisterRequest) (*userapi.LoginResponse, error) {
 	_, err := model.UserDao.FindByUsernameOrEmail(req.GetUsername(), req.GetEmail())
 	if err == nil {

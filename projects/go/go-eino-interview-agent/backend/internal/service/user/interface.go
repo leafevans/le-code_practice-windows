@@ -32,4 +32,5 @@ type ModelManager interface {
 
 type UserManager interface {
 	Register(ctx context.Context, req userapi.RegisterRequest) (*userapi.LoginResponse, error)
+	Login(ctx context.Context, req userapi.LoginRequest) (*userapi.LoginResponse, error)
 }
