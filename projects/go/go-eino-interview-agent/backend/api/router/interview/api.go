@@ -4,7 +4,6 @@ package interview
 
 import (
 	interview "ai-eino-interview-agent/api/handler/interview"
-
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -22,6 +21,7 @@ func Register(r *server.Hertz) {
 		_api := root.Group("/api", _apiMw()...)
 		{
 			_user := _api.Group("/user", _userMw()...)
+			_user.POST("/login", append(_loginMw(), interview.Login)...)
 			_user.POST("/register", append(_registerMw(), interview.Register)...)
 		}
 	}

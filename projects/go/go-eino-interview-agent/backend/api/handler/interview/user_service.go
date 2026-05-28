@@ -4,10 +4,13 @@ package interview
 
 import (
 	user "ai-eino-interview-agent/api/model/user"
+	"ai-eino-interview-agent/api/response"
 	"context"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+
+	userservice "ai-eino-interview-agent/internal/service/user"
 )
 
 // Register .
@@ -15,6 +18,28 @@ import (
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user.RegisterRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	manager := userservice.NewUserManager()
+
+	resp, err := manager.Register(ctx, req)
+	if err != nil {
+		c.String(consts.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response.Success(ctx, c, resp)
+}
+
+// Login .
+// @router /api/user/login [POST]
+func Login(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.LoginRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
