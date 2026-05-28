@@ -17,4 +17,3 @@ service UserService {
         api.gen_path = "user",
     )
 }
-thrift

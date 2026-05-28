@@ -8,6 +8,7 @@ require (
 	github.com/cloudwego/eino-ext/components/document/parser/pdf v0.0.0-20260526020246-4f23205bd559
 	github.com/cloudwego/eino-ext/components/model/openai v0.1.13
 	github.com/cloudwego/hertz v0.10.4
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/joho/godotenv v1.5.1
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.6.0

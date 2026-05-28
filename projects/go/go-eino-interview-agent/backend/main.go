@@ -3,13 +3,26 @@
 package main
 
 import (
+	router "ai-eino-interview-agent/api/router"
+	interviewRouter "ai-eino-interview-agent/api/router/interview"
+	routerMiddleware "ai-eino-interview-agent/api/router/middleware"
 	"ai-eino-interview-agent/internal/config"
+	appMiddleware "ai-eino-interview-agent/internal/middleware"
 	"ai-eino-interview-agent/internal/repository"
+	"context"
+	"errors"
+	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"runtime"
+	"syscall"
+	"time"
 
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/joho/godotenv"
 )
 
@@ -41,6 +54,63 @@ func main() {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 	log.Println("Database initialized successfully")
+
+	// 初始化Hertz服务器
+	s := server.Default(server.WithHostPorts(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)))
+
+	// 添加错误处理中间件（必须在最前面）
+	// Recovery: 捕获请求处理中的 panic，防止服务崩溃
+	// ErrorHandler: 统一处理业务错误，返回标准格式的错误响应
+	s.Use(routerMiddleware.Recovery()) // 捕获 Panic
+
+	// 添加全局CORS中间件，处理OPTIONS预检请求
+	s.Use(func(ctx context.Context, c *app.RequestContext) {
+		// 设置CORS头
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Cache-Control, X-Auth-Token")
+		c.Header("Access-Control-Max-Age", "86400")
+
+		// 如果是OPTIONS请求，直接返回204
+		if string(c.Method()) == "OPTIONS" {
+			log.Printf("[CORS] OPTIONS request: %s", c.Path())
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next(ctx)
+	})
+
+	s.Use(appMiddleware.JWTMiddlewareWithSkipper(interviewRouter.AuthSkipper()))
+	router.GeneratedRegister(s)
+
+	// 创建一个通道来监听中断信号
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+	// 在单独的goroutine中启动服务器
+	go func() {
+		log.Printf("Server is running on %s:%d", cfg.Host, cfg.Port)
+		if err := s.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("Failed to start server: %v", err)
+		}
+	}()
+
+	// 等待中断信号
+	<-quit
+	log.Println("Shutting down server...")
+
+	// 创建一个带有超时的上下文，用于关闭
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// 关闭服务器
+	if err := s.Shutdown(shutdownCtx); err != nil {
+		log.Fatalf("Server forced to shutdown: %v", err)
+	}
+
+	log.Println("Server exiting")
+
 }
 
 // findConfigFile 查找配置文件路径

@@ -3,7 +3,7 @@
 package interview
 
 import (
-	_ "ai-eino-interview-agent/api/handler/interview"
+	interview "ai-eino-interview-agent/api/handler/interview"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
@@ -17,4 +17,12 @@ import (
 // Register register routes based on the IDL 'api.${HTTP Method}' annotation.
 func Register(r *server.Hertz) {
 
+	root := r.Group("/", rootMw()...)
+	{
+		_api := root.Group("/api", _apiMw()...)
+		{
+			_user := _api.Group("/user", _userMw()...)
+			_user.POST("/register", append(_registerMw(), interview.Register)...)
+		}
+	}
 }
