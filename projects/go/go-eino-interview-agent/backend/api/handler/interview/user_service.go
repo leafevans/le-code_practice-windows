@@ -5,6 +5,7 @@ package interview
 import (
 	user "ai-eino-interview-agent/api/model/user"
 	"ai-eino-interview-agent/api/response"
+	"ai-eino-interview-agent/internal/middleware"
 	"context"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -55,4 +56,96 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	}
 
 	response.Success(ctx, c, resp)
+}
+
+// CreateUserModel .
+// @router /api/user/create/model [POST]
+func CreateUserModel(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.CreateUserModelRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
+	state, err := userservice.NewModelManager().CreateUserModel(ctx, int64(userID), req)
+	if err != nil {
+		response.InternalServerError(ctx, c, err.Error())
+		return
+	}
+
+	resp := user.NewCreateUserModelResponse()
+	resp.State = state
+	response.Success(ctx, c, resp)
+
+}
+
+// ListUserModels .
+// @router /api/user/model/list [GET]
+func ListUserModels(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.ListUserModelsRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(user.ListUserModelsResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// GetUserModel .
+// @router /api/user/model/details/:id [GET]
+func GetUserModel(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.IDRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(user.GetUserModelResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// UpdateUserModel .
+// @router /api/user/model/update/:id [PUT]
+func UpdateUserModel(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.UpdateUserModelRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(user.UpdateUserModelResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// DeleteUserModel .
+// @router /api/user/model/delete/:id [DELETE]
+func DeleteUserModel(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.IDRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(user.DeleteUserModelResponse)
+
+	c.JSON(consts.StatusOK, resp)
 }

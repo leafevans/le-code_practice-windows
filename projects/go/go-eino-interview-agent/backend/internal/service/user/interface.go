@@ -7,17 +7,37 @@ import (
 	"context"
 )
 
+// NewModelManager 返回用户模型管理接口的默认实现
+func NewModelManager() ModelManager {
+	return impl.NewUserModelServer()
+}
+
 // NewUserManager 返回用户管理接口的默认实现
 func NewUserManager() UserManager {
 	return impl.NewUserServer()
 }
 
 type ModelManager interface {
+	CreateUserModel(
+		ctx context.Context,
+		userID int64,
+		req userapi.CreateUserModelRequest,
+	) (string, error)
+	ListUserModels(
+		ctx context.Context,
+		userID int64,
+		req userapi.ListUserModelsRequest,
+	) ([]*model.UserModel, int64, error)
 	UserModelDetail(
 		ctx context.Context,
 		userID int64,
 		modelID int64,
 	) (*model.UserModel, error)
+	UpdateUserModel(
+		ctx context.Context,
+		userID int64,
+		req userapi.UpdateUserModelRequest,
+	) error
 	DeleteUserModel(
 		ctx context.Context,
 		userID int64,

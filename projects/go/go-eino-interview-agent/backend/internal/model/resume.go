@@ -1,15 +1,12 @@
 package model
 
-import (
-	"time"
-)
+import "time"
 
 var ResumeDao _Resume
 
-// Resume 简历模型
 type (
-	_Resume struct {
-	}
+	_Resume struct{}
+
 	Resume struct {
 		ID        uint64    `json:"id" gorm:"primaryKey;autoIncrement;comment:简历ID"`
 		UserID    uint      `json:"user_id" gorm:"index;not null;comment:用户ID"`
@@ -24,146 +21,54 @@ type (
 	}
 )
 
-// TableName 指定表名
-func (r *Resume) TableName() string {
-	return "resume"
+func (Resume) TableName() string {
+	return "resumes"
 }
 
-// CreateResume 创建简历记录，返回简历ID
-func (r *_Resume) CreateResume(resume *Resume) (uint64, error) {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
-	if err := getDB().Create(resume).Error; err != nil {
-		return 0, err
-	}
-	return resume.ID, nil
+// Create 创建简历记录
+func (r *_Resume) Create(resume *Resume) error {
+	return getDB().Create(resume).Error
 }
 
-// GetResumeByID 根据ID查询简历
-func (r *_Resume) GetResumeByID(id uint64) (*Resume, error) {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
+// GetByID 根据ID获取简历
+func (r *_Resume) GetByID(id uint, userID int64) (*Resume, error) {
 	var resume Resume
-	err := getDB().Where("id = ? AND deleted = 0", id).First(&resume).Error
-	if err != nil {
-		return nil, err
-	}
-	return &resume, nil
+	err := getDB().Where("id = ? AND user_id = ?", id, userID).First(&resume).Error
+	return &resume, err
 }
 
-// GetResumeByUserID 根据用户ID查询用户的简历列表
-func (r *_Resume) GetResumeByUserID(userID uint) ([]*Resume, error) {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
-	var resumes []*Resume
-	err := getDB().
-		Where("user_id = ? AND deleted = 0", userID).
-		Order("is_default DESC, created_at DESC").
-		Find(&resumes).Error
-	if err != nil {
-		return nil, err
-	}
-	return resumes, nil
-}
-
-// GetDefaultResumeByUserID 根据用户ID查询默认简历
-func (r *_Resume) GetDefaultResumeByUserID(userID uint) (*Resume, error) {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
-	var resume Resume
-	err := getDB().
-		Where("user_id = ? AND deleted = 0 AND is_default = 1", userID).
-		First(&resume).Error
-	if err != nil {
-		return nil, err
-	}
-	return &resume, nil
-}
-
-// UpdateResume 更新简历
-func (r *_Resume) UpdateResume(id uint64, updates map[string]interface{}) error {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
-	if len(updates) == 0 {
-		return nil
-	}
-	return getDB().
-		Model(&Resume{}).
-		Where("id = ? AND deleted = 0", id).
-		Updates(updates).Error
-}
-
-// DeleteResume 软删除简历
-func (r *_Resume) DeleteResume(id uint64) error {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
-	return getDB().
-		Model(&Resume{}).
-		Where("id = ?", id).
-		Update("deleted", 1).Error
-}
-
-// SetDefaultResume 设置用户的默认简历
-func (r *_Resume) SetDefaultResume(userID uint, resumeID uint64) error {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
-	}
-	// 先将该用户的所有简历设置为非默认
-	if err := getDB().
-		Model(&Resume{}).
-		Where("user_id = ? AND deleted = 0", userID).
-		Update("is_default", 0).Error; err != nil {
-		return err
-	}
-	// 再将指定简历设置为默认
-	return getDB().
-		Model(&Resume{}).
-		Where("id = ? AND user_id = ? AND deleted = 0", resumeID, userID).
-		Update("is_default", 1).Error
-}
-
-// ListResumesByUserID 分页查询用户的简历列表
-func (r *_Resume) ListResumesByUserID(userID uint, page, pageSize int32) ([]*Resume, int64, error) {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
+// 获取用户简历列表分页
+func (r *_Resume) ListByUser(userID int64, page, pageSize int) ([]*Resume, int64, error) {
+	if getDB() == nil {
+		panic("数据库连接未初始化")
 	}
 	var resumes []*Resume
 	var total int64
-
-	query := getDB().Where("user_id = ? AND deleted = 0", userID)
+	query := getDB().Model(&Resume{}).Where("user_id = ?", userID).Count(&total)
 
 	// 获取总数
-	if err := query.Model(&Resume{}).Count(&total).Error; err != nil {
+	if err := query.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
 
 	// 分页查询
-	if err := query.
-		Offset(int((page - 1) * pageSize)).
-		Limit(int(pageSize)).
-		Order("is_default DESC, created_at DESC").
-		Find(&resumes).Error; err != nil {
+	if err := query.Offset((page - 1) * pageSize).Limit(pageSize).Order("created_at DESC").Find(&resumes).Error; err != nil {
 		return nil, 0, err
 	}
 
 	return resumes, total, nil
 }
 
-// CountResumesByUserID 统计用户的简历数量
-func (r *_Resume) CountResumesByUserID(userID uint) (int64, error) {
-	if getDB == nil {
-		panic("getDB function not initialized, please call model.SetDBGetter first")
+func (r *_Resume) Delete(id uint, userID int64) error {
+	if getDB() == nil {
+		panic("数据库连接未初始化")
 	}
-	var count int64
-	err := getDB().
-		Model(&Resume{}).
-		Where("user_id = ? AND deleted = 0", userID).
-		Count(&count).Error
-	return count, err
+	return getDB().Where("id = ? AND user_id = ?", id, userID).Delete(&Resume{}).Error
+}
+
+func (r *_Resume) DeleteResume(id uint, userID int64) error {
+	if getDB() == nil {
+		panic("数据库连接未初始化")
+	}
+	return getDB().Model(&Resume{}).Where("id = ? AND user_id = ?", id, userID).Update("deleted", 1).Error
 }
