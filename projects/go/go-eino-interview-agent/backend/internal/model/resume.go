@@ -26,19 +26,32 @@ func (Resume) TableName() string {
 }
 
 // Create 创建简历记录
-func (r *_Resume) Create(resume *Resume) error {
-	return getDB().Create(resume).Error
+func (r *_Resume) Create(resume *Resume) (uint64, error) {
+	err := getDB().Create(resume).Error
+	if err != nil {
+		return 0, err
+	}
+	return resume.ID, nil
 }
 
-// GetByID 根据ID获取简历
+// GetByID 根据ID和用户ID获取简历
 func (r *_Resume) GetByID(id uint, userID int64) (*Resume, error) {
 	var resume Resume
 	err := getDB().Where("id = ? AND user_id = ?", id, userID).First(&resume).Error
 	return &resume, err
 }
 
+func (r *_Resume) GetResumeByID(id uint64) (*Resume, error) {
+	var resume Resume
+	err := getDB().Where("id = ? AND deleted = ?", id, 0).First(&resume).Error
+	if err != nil {
+		return nil, err
+	}
+	return &resume, nil
+}
+
 // 获取用户简历列表分页
-func (r *_Resume) ListByUser(userID int64, page, pageSize int) ([]*Resume, int64, error) {
+func (r *_Resume) ListByUser(userID uint, page, pageSize int32) ([]*Resume, int64, error) {
 	if getDB() == nil {
 		panic("数据库连接未初始化")
 	}
@@ -52,7 +65,7 @@ func (r *_Resume) ListByUser(userID int64, page, pageSize int) ([]*Resume, int64
 	}
 
 	// 分页查询
-	if err := query.Offset((page - 1) * pageSize).Limit(pageSize).Order("created_at DESC").Find(&resumes).Error; err != nil {
+	if err := query.Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Order("created_at DESC").Find(&resumes).Error; err != nil {
 		return nil, 0, err
 	}
 
@@ -66,9 +79,9 @@ func (r *_Resume) Delete(id uint, userID int64) error {
 	return getDB().Where("id = ? AND user_id = ?", id, userID).Delete(&Resume{}).Error
 }
 
-func (r *_Resume) DeleteResume(id uint, userID int64) error {
+func (r *_Resume) DeleteResume(id uint64) error {
 	if getDB() == nil {
 		panic("数据库连接未初始化")
 	}
-	return getDB().Model(&Resume{}).Where("id = ? AND user_id = ?", id, userID).Update("deleted", 1).Error
+	return getDB().Model(&Resume{}).Where("id = ?", id).Update("deleted", 1).Error
 }

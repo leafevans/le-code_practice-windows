@@ -12,7 +12,7 @@ import (
 	"github.com/cloudwego/eino/compose"
 )
 
-func NewResumeAgent() (adk.Agent, error) {
+func NewResumeAgent(userID uint) (adk.Agent, error) {
 	ctx := context.Background()
 
 	model, err := chat.CreateOpenAIChatModel(ctx)

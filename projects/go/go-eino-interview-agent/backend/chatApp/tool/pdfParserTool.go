@@ -39,7 +39,7 @@ type PDFPageText struct {
 // ConvertPDFToText 核心逻辑：PDF转纯文本（工具执行入口）
 func ConvertPDFToText(ctx context.Context, req *PDFToTextRequest) (*PDFToTextResult, error) {
 	result := PDFToTextResult{
-		Meta: map[string]interface{}{
+		Meta: map[string]any{
 			"file_path":  req.FilePath,
 			"to_pages":   req.ToPages,
 			"parse_time": time.Now().Format("2006-01-02 15:04:05"),
