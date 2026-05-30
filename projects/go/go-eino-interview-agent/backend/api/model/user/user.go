@@ -16,17 +16,17 @@ type CreateUserModelRequest struct {
 	BaseURL      string `thrift:"base_url,4,required" form:"base_url,required" json:"base_url,required"`
 	APIKey       string `thrift:"api_key,5,required" form:"api_key,required" json:"api_key,required"`
 	ProviderName string `thrift:"provider_name,6,required" form:"provider_name,required" json:"provider_name,required"`
-	MetaID       *int64 `thrift:"meta_id,7,optional" form:"meta_id" json:"meta_id"`
+	MetaID       *int64 `thrift:"meta_id,7,optional" form:"meta_id" json:"meta_id,omitempty"`
 	// JSON string
-	DefaultParams *string `thrift:"default_params,8,optional" form:"default_params" json:"default_params"`
+	DefaultParams *string `thrift:"default_params,8,optional" form:"default_params" json:"default_params,omitempty"`
 	// JSON string
-	ConfigJSON *string `thrift:"config_json,9,optional" form:"config_json" json:"config_json"`
+	ConfigJSON *string `thrift:"config_json,9,optional" form:"config_json" json:"config_json,omitempty"`
 	// 默认 7
-	Scope *int32 `thrift:"scope,10,optional" form:"scope" json:"scope"`
+	Scope *int32 `thrift:"scope,10,optional" form:"scope" json:"scope,omitempty"`
 	// 默认 1
-	Status *int32 `thrift:"status,11,optional" form:"status" json:"status"`
+	Status *int32 `thrift:"status,11,optional" form:"status" json:"status,omitempty"`
 	// 是否为默认（0=不是, 1=是）
-	IsDefault *int32 `thrift:"is_default,12,optional" form:"is_default" json:"is_default"`
+	IsDefault *int32 `thrift:"is_default,12,optional" form:"is_default" json:"is_default,omitempty"`
 }
 
 func NewCreateUserModelRequest() *CreateUserModelRequest {
@@ -921,19 +921,19 @@ func (p *CreateUserModelResponse) String() string {
 // 获取用户模型列表请求
 type ListUserModelsRequest struct {
 	// 状态筛选
-	Status *int32 `thrift:"status,1,optional" json:"status" query:"status"`
+	Status *int32 `thrift:"status,1,optional" json:"status,omitempty" query:"status"`
 	// 使用范围筛选
-	Scope *int32 `thrift:"scope,2,optional" json:"scope" query:"scope"`
+	Scope *int32 `thrift:"scope,2,optional" json:"scope,omitempty" query:"scope"`
 	// 协议类型筛选
-	Protocol *string `thrift:"protocol,3,optional" json:"protocol" query:"protocol"`
+	Protocol *string `thrift:"protocol,3,optional" json:"protocol,omitempty" query:"protocol"`
 	// 提供商名称筛选
-	ProviderName *string `thrift:"provider_name,4,optional" json:"provider_name" query:"provider_name"`
+	ProviderName *string `thrift:"provider_name,4,optional" json:"provider_name,omitempty" query:"provider_name"`
 	// 关键词搜索
-	Keyword *string `thrift:"keyword,5,optional" json:"keyword" query:"keyword"`
+	Keyword *string `thrift:"keyword,5,optional" json:"keyword,omitempty" query:"keyword"`
 	// 页码，默认 1
-	Page *int32 `thrift:"page,6,optional" json:"page" query:"page" vd:"$>=1"`
+	Page *int32 `thrift:"page,6,optional" json:"page,omitempty" query:"page" vd:"$>=1"`
 	// 每页数量，默认 20
-	Size *int32 `thrift:"size,7,optional" json:"size" query:"size" vd:"$>=1&&$<=100"`
+	Size *int32 `thrift:"size,7,optional" json:"size,omitempty" query:"size" vd:"$>=1&&$<=100"`
 }
 
 func NewListUserModelsRequest() *ListUserModelsRequest {
@@ -1427,15 +1427,15 @@ type UserModelItem struct {
 	Protocol      string  `thrift:"protocol,4,required" form:"protocol,required" json:"protocol,required" query:"protocol,required"`
 	BaseURL       string  `thrift:"base_url,5,required" form:"base_url,required" json:"base_url,required" query:"base_url,required"`
 	ProviderName  string  `thrift:"provider_name,6,required" form:"provider_name,required" json:"provider_name,required" query:"provider_name,required"`
-	MetaID        *int64  `thrift:"meta_id,7,optional" form:"meta_id" json:"meta_id" query:"meta_id"`
-	DefaultParams *string `thrift:"default_params,8,optional" form:"default_params" json:"default_params" query:"default_params"`
-	ConfigJSON    *string `thrift:"config_json,9,optional" form:"config_json" json:"config_json" query:"config_json"`
+	MetaID        *int64  `thrift:"meta_id,7,optional" form:"meta_id" json:"meta_id,omitempty" query:"meta_id"`
+	DefaultParams *string `thrift:"default_params,8,optional" form:"default_params" json:"default_params,omitempty" query:"default_params"`
+	ConfigJSON    *string `thrift:"config_json,9,optional" form:"config_json" json:"config_json,omitempty" query:"config_json"`
 	Scope         int32   `thrift:"scope,10,required" form:"scope,required" json:"scope,required" query:"scope,required"`
 	Status        int32   `thrift:"status,11,required" form:"status,required" json:"status,required" query:"status,required"`
 	CreatedAt     int64   `thrift:"created_at,12,required" form:"created_at,required" json:"created_at,required" query:"created_at,required"`
 	UpdatedAt     int64   `thrift:"updated_at,13,required" form:"updated_at,required" json:"updated_at,required" query:"updated_at,required"`
 	HasSecret     bool    `thrift:"has_secret,14,required" form:"has_secret,required" json:"has_secret,required" query:"has_secret,required"`
-	SecretHint    *string `thrift:"secret_hint,15,optional" form:"secret_hint" json:"secret_hint" query:"secret_hint"`
+	SecretHint    *string `thrift:"secret_hint,15,optional" form:"secret_hint" json:"secret_hint,omitempty" query:"secret_hint"`
 	IsDefault     int32   `thrift:"is_default,16,required" form:"is_default,required" json:"is_default,required" query:"is_default,required"`
 }
 
@@ -2864,11 +2864,11 @@ type UserModelDetail struct {
 	Protocol     string `thrift:"protocol,4,required" form:"protocol,required" json:"protocol,required" query:"protocol,required"`
 	BaseURL      string `thrift:"base_url,5,required" form:"base_url,required" json:"base_url,required" query:"base_url,required"`
 	ProviderName string `thrift:"provider_name,6,required" form:"provider_name,required" json:"provider_name,required" query:"provider_name,required"`
-	MetaID       *int64 `thrift:"meta_id,7,optional" form:"meta_id" json:"meta_id" query:"meta_id"`
+	MetaID       *int64 `thrift:"meta_id,7,optional" form:"meta_id" json:"meta_id,omitempty" query:"meta_id"`
 	// JSON string
-	DefaultParams *string `thrift:"default_params,8,optional" form:"default_params" json:"default_params" query:"default_params"`
+	DefaultParams *string `thrift:"default_params,8,optional" form:"default_params" json:"default_params,omitempty" query:"default_params"`
 	// JSON string
-	ConfigJSON *string `thrift:"config_json,9,optional" form:"config_json" json:"config_json" query:"config_json"`
+	ConfigJSON *string `thrift:"config_json,9,optional" form:"config_json" json:"config_json,omitempty" query:"config_json"`
 	Scope      int32   `thrift:"scope,10,required" form:"scope,required" json:"scope,required" query:"scope,required"`
 	Status     int32   `thrift:"status,11,required" form:"status,required" json:"status,required" query:"status,required"`
 	CreatedAt  int64   `thrift:"created_at,12,required" form:"created_at,required" json:"created_at,required" query:"created_at,required"`
@@ -2876,7 +2876,7 @@ type UserModelDetail struct {
 	// 是否已配置密钥
 	HasSecret bool `thrift:"has_secret,14,required" form:"has_secret,required" json:"has_secret,required" query:"has_secret,required"`
 	// 密钥脱敏提示
-	SecretHint *string `thrift:"secret_hint,15,optional" form:"secret_hint" json:"secret_hint" query:"secret_hint"`
+	SecretHint *string `thrift:"secret_hint,15,optional" form:"secret_hint" json:"secret_hint,omitempty" query:"secret_hint"`
 	// 是否为默认（0=不是, 1=是）
 	IsDefault int32 `thrift:"is_default,16,required" form:"is_default,required" json:"is_default,required" query:"is_default,required"`
 }
@@ -3985,17 +3985,17 @@ type UpdateUserModelRequest struct {
 	Protocol string `thrift:"protocol,4,required" form:"protocol,required" json:"protocol,required"`
 	BaseURL  string `thrift:"base_url,5,required" form:"base_url,required" json:"base_url,required"`
 	// 可选，不传则不更新密钥
-	APIKey       *string `thrift:"api_key,6,optional" form:"api_key" json:"api_key"`
+	APIKey       *string `thrift:"api_key,6,optional" form:"api_key" json:"api_key,omitempty"`
 	ProviderName string  `thrift:"provider_name,7,required" form:"provider_name,required" json:"provider_name,required"`
-	MetaID       *int64  `thrift:"meta_id,8,optional" form:"meta_id" json:"meta_id"`
+	MetaID       *int64  `thrift:"meta_id,8,optional" form:"meta_id" json:"meta_id,omitempty"`
 	// JSON string
-	DefaultParams *string `thrift:"default_params,9,optional" form:"default_params" json:"default_params"`
+	DefaultParams *string `thrift:"default_params,9,optional" form:"default_params" json:"default_params,omitempty"`
 	// JSON string
-	ConfigJSON *string `thrift:"config_json,10,optional" form:"config_json" json:"config_json"`
-	Scope      *int32  `thrift:"scope,11,optional" form:"scope" json:"scope"`
-	Status     *int32  `thrift:"status,12,optional" form:"status" json:"status"`
+	ConfigJSON *string `thrift:"config_json,10,optional" form:"config_json" json:"config_json,omitempty"`
+	Scope      *int32  `thrift:"scope,11,optional" form:"scope" json:"scope,omitempty"`
+	Status     *int32  `thrift:"status,12,optional" form:"status" json:"status,omitempty"`
 	// 是否为默认（0=不是, 1=是）
-	IsDefault *int32 `thrift:"is_default,13,optional" form:"is_default" json:"is_default"`
+	IsDefault *int32 `thrift:"is_default,13,optional" form:"is_default" json:"is_default,omitempty"`
 }
 
 func NewUpdateUserModelRequest() *UpdateUserModelRequest {
@@ -5424,12 +5424,12 @@ type UserProfile struct {
 	Username      string  `thrift:"username,2,required" form:"username,required" json:"username,required" query:"username,required"`
 	Email         string  `thrift:"email,3,required" form:"email,required" json:"email,required" query:"email,required"`
 	Role          string  `thrift:"role,4,required" form:"role,required" json:"role,required" query:"role,required"`
-	WechatOpenID  *string `thrift:"wechat_open_id,5,optional" form:"wechat_open_id" json:"wechat_open_id" query:"wechat_open_id"`
-	WechatUnionID *string `thrift:"wechat_union_id,6,optional" form:"wechat_union_id" json:"wechat_union_id" query:"wechat_union_id"`
-	Nickname      *string `thrift:"nickname,7,optional" form:"nickname" json:"nickname" query:"nickname"`
-	Avatar        *string `thrift:"avatar,8,optional" form:"avatar" json:"avatar" query:"avatar"`
-	CreatedAt     *int64  `thrift:"created_at,9,optional" form:"created_at" json:"created_at" query:"created_at"`
-	UpdatedAt     *int64  `thrift:"updated_at,10,optional" form:"updated_at" json:"updated_at" query:"updated_at"`
+	WechatOpenID  *string `thrift:"wechat_open_id,5,optional" form:"wechat_open_id" json:"wechat_open_id,omitempty" query:"wechat_open_id"`
+	WechatUnionID *string `thrift:"wechat_union_id,6,optional" form:"wechat_union_id" json:"wechat_union_id,omitempty" query:"wechat_union_id"`
+	Nickname      *string `thrift:"nickname,7,optional" form:"nickname" json:"nickname,omitempty" query:"nickname"`
+	Avatar        *string `thrift:"avatar,8,optional" form:"avatar" json:"avatar,omitempty" query:"avatar"`
+	CreatedAt     *int64  `thrift:"created_at,9,optional" form:"created_at" json:"created_at,omitempty" query:"created_at"`
+	UpdatedAt     *int64  `thrift:"updated_at,10,optional" form:"updated_at" json:"updated_at,omitempty" query:"updated_at"`
 }
 
 func NewUserProfile() *UserProfile {

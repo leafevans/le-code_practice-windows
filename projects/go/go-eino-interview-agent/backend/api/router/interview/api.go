@@ -20,6 +20,28 @@ func Register(r *server.Hertz) {
 	{
 		_api := root.Group("/api", _apiMw()...)
 		{
+			_mianshi := _api.Group("/mianshi", _mianshiMw()...)
+			_mianshi.GET("/answer-record", append(_getmianshianswerrecordMw(), interview.GetMianshiAnswerRecord)...)
+			_mianshi.GET("/evaluation", append(_getmianshievaluationMw(), interview.GetMianshiEvaluation)...)
+			_mianshi.GET("/records", append(_getmianshirecordsMw(), interview.GetMianshiRecords)...)
+			{
+				_answer := _mianshi.Group("/answer", _answerMw()...)
+				_answer.POST("/submit", append(_submitmianshianswerMw(), interview.SubmitMianshiAnswer)...)
+			}
+			{
+				_interview := _mianshi.Group("/interview", _interviewMw()...)
+				_interview.POST("/end", append(_endmianshiMw(), interview.EndMianshi)...)
+			}
+			{
+				_session := _mianshi.Group("/session", _sessionMw()...)
+				_session.GET("/info", append(_getsessionMw(), interview.GetSession)...)
+			}
+			{
+				_stream := _mianshi.Group("/stream", _streamMw()...)
+				_stream.POST("/start", append(_startmianshistreamMw(), interview.StartMianshiStream)...)
+			}
+		}
+		{
 			_resume := _api.Group("/resume", _resumeMw()...)
 			_resume.GET("/list", append(_getuserresumesMw(), interview.GetUserResumes)...)
 			_resume.DELETE("/:resume_id", append(_deleteresumeMw(), interview.DeleteResume)...)

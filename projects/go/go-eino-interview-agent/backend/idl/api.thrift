@@ -1,10 +1,11 @@
 include "./user/user.thrift"
 include "./interviews/interviews.thrift"
+include "./mianshi/mianshi.thrift"
 
 namespace go interview
 
-service UserService extends user.UserService {
-    // 可在此添加新的接口方法
-}
+service UserService extends user.UserService {}
 
 service InterviewsService extends interviews.InterviewsService {}
+
+service MianshiService extends mianshi.MianshiService {}
