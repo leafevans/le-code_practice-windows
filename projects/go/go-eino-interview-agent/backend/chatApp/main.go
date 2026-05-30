@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ai-eino-interview-agent/agent/comprehensive"
-	"ai-eino-interview-agent/agent/resume"
+	"ai-eino-interview-agent/chatApp/agent/comprehensive"
+	"ai-eino-interview-agent/chatApp/agent/resume"
 	"bufio"
 	"context"
 	"fmt"
@@ -15,14 +15,17 @@ import (
 )
 
 func main() {
-	schoolAgent, err := comprehensive.NewSchoolAgent()
+	ctx := context.Background()
+
+	schoolAgent, err := comprehensive.NewSchoolComprehensiveAgent(2, true)
 	if err != nil {
 		log.Fatalf("学校智能体创建失败：%v", err)
 	}
-	resumeAgent, err := resume.NewResumeAgent(uint(adk.AfterChatModel))
+	resumeAgent, err := resume.NewResumeAgent(2)
 	if err != nil {
 		log.Fatalf("简历智能体创建失败：%v", err)
 	}
+
 	// 按顺序执行
 	agent := &adk.SequentialAgentConfig{
 		Name:        "SequentialAgent",
@@ -32,10 +35,12 @@ func main() {
 			schoolAgent,
 		},
 	}
-	sequentialAgent, err := adk.NewSequentialAgent(context.Background(), agent)
+
+	sequentialAgent, err := adk.NewSequentialAgent(ctx, agent)
 	if err != nil {
 		log.Fatalf("顺序智能体创建失败：%v", err)
 	}
+
 	AgentTest(sequentialAgent)
 }
 

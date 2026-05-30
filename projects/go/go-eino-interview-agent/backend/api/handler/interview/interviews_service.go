@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"ai-eino-interview-agent/agent/service"
 	interviews "ai-eino-interview-agent/api/model/interviews"
 	"ai-eino-interview-agent/api/response"
+	"ai-eino-interview-agent/chatApp/agent/service"
 	"ai-eino-interview-agent/internal/middleware"
 	interviewservice "ai-eino-interview-agent/internal/service/interviews"
 

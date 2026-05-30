@@ -15,7 +15,7 @@ import (
 func NewResumeAgent(userID uint) (adk.Agent, error) {
 	ctx := context.Background()
 
-	model, err := chat.CreateOpenAIChatModel(ctx)
+	model, err := chat.CreateOpenAIChatModel(ctx, userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create chat model: %v", err)

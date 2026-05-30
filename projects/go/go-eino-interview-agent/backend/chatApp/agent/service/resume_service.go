@@ -1,7 +1,7 @@
 package service
 
 import (
-	"ai-eino-interview-agent/agent/resume"
+	"ai-eino-interview-agent/chatApp/agent/resume"
 	"ai-eino-interview-agent/internal/model"
 	"context"
 	"fmt"
