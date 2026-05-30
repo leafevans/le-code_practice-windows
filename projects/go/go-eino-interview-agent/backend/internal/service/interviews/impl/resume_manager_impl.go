@@ -77,7 +77,7 @@ func toResumeInfo(dataMap map[string]any) *interviews.ResumeInfo {
 }
 
 // 上传简历
-func (*ResumeServer) UploadResume(_ context.Context, userID uint, fileName string, fileSize int64, fileType string, content string) (uint64, error) {
+func (*ResumeServer) UploadResume(_ context.Context, userID uint, fileName string, fileType string, fileSize int64, content string) (uint64, error) {
 	resume := &model.Resume{
 		UserID:    userID,
 		Content:   content,
@@ -114,7 +114,7 @@ func (*ResumeServer) DeleteResume(_ context.Context, userID uint, resumeID uint6
 	return nil
 }
 
-func (*ResumeServer) GetResumeInfoByID(_ context.Context, userID uint, resumeID uint64) (any, error) {
+func (*ResumeServer) GetResumeInfoByID(_ context.Context, resumeID uint64) (any, error) {
 	resume, err := model.ResumeDao.GetResumeByID(resumeID)
 	if err != nil {
 		return nil, err

@@ -49,25 +49,6 @@ struct GetUserResumesResponse {
     4: required i32 page_size            // 每页数量
 }
 
-// 获取默认简历请求
-struct GetDefaultResumeRequest {
-}
-
-// 获取默认简历响应
-struct GetDefaultResumeResponse {
-    1: required ResumeInfo resume // 简历信息
-}
-
-// 设置默认简历请求
-struct SetDefaultResumeRequest {
-    1: required i64 resume_id (api.body = "resume_id") // 简历ID
-}
-
-// 设置默认简历响应
-struct SetDefaultResumeResponse {
-    1: required string message // 消息说明
-}
-
 // 更新简历请求（仅支持更新文件名，文件内容通过重新上传）
 struct UpdateResumeRequest {
     1: required i64 resume_id (api.path = "resume_id")    // 简历ID
@@ -111,20 +92,6 @@ service InterviewsService {
     // 获取用户简历列表
     GetUserResumesResponse GetUserResumes(1: GetUserResumesRequest request) (
         api.get = "/api/resume/list",
-        api.category = "resumes",
-        api.gen_path = "interviews"
-    )
-
-    // 获取默认简历
-    GetDefaultResumeResponse GetDefaultResume(1: GetDefaultResumeRequest request) (
-        api.get = "/api/resume/default",
-        api.category = "resumes",
-        api.gen_path = "interviews"
-    )
-
-    // 设置默认简历
-    SetDefaultResumeResponse SetDefaultResume(1: SetDefaultResumeRequest request) (
-        api.post = "/api/resume/set-default",
         api.category = "resumes",
         api.gen_path = "interviews"
     )

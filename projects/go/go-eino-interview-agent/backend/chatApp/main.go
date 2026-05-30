@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("学校智能体创建失败：%v", err)
 	}
-	resumeAgent, err := resume.NewResumeAgent()
+	resumeAgent, err := resume.NewResumeAgent(uint(adk.AfterChatModel))
 	if err != nil {
 		log.Fatalf("简历智能体创建失败：%v", err)
 	}

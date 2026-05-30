@@ -33,7 +33,7 @@ func Success(ctx context.Context, c *app.RequestContext, data interface{}) {
 }
 
 // SuccessWithMessage 带自定义消息的成功响应
-func SuccessWithMessage(ctx context.Context, c *app.RequestContext, message string, data interface{}) {
+func SuccessWithMessage(ctx context.Context, c *app.RequestContext, message string, data any) {
 	resp := NewResponse(200, message, data)
 	c.JSON(consts.StatusOK, resp)
 }
