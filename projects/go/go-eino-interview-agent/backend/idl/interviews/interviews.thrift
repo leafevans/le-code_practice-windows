@@ -6,7 +6,7 @@ namespace go interviews
 struct Message {
     1: required string role     // 消息角色（user/assistant/system）
     2: required string content  // 消息内容
-    3: optional string name     // 发送消息的名称
+    3: optional string agent     // 发送消息的名称
 }
 
 // 面试结果

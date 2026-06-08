@@ -16,7 +16,7 @@ type Message struct {
 	// 消息内容
 	Content string `thrift:"content,2,required" form:"content,required" json:"content,required" query:"content,required"`
 	// 发送消息的名称
-	Name *string `thrift:"name,3,optional" form:"name" json:"name,omitempty" query:"name"`
+	Agent *string `thrift:"agent,3,optional" form:"agent" json:"agent,omitempty" query:"agent"`
 }
 
 func NewMessage() *Message {
@@ -34,23 +34,23 @@ func (p *Message) GetContent() (v string) {
 	return p.Content
 }
 
-var Message_Name_DEFAULT string
+var Message_Agent_DEFAULT string
 
-func (p *Message) GetName() (v string) {
-	if !p.IsSetName() {
-		return Message_Name_DEFAULT
+func (p *Message) GetAgent() (v string) {
+	if !p.IsSetAgent() {
+		return Message_Agent_DEFAULT
 	}
-	return *p.Name
+	return *p.Agent
 }
 
 var fieldIDToName_Message = map[int16]string{
 	1: "role",
 	2: "content",
-	3: "name",
+	3: "agent",
 }
 
-func (p *Message) IsSetName() bool {
-	return p.Name != nil
+func (p *Message) IsSetAgent() bool {
+	return p.Agent != nil
 }
 
 func (p *Message) Read(iprot thrift.TProtocol) (err error) {
@@ -170,7 +170,7 @@ func (p *Message) ReadField3(iprot thrift.TProtocol) error {
 	} else {
 		_field = &v
 	}
-	p.Name = _field
+	p.Agent = _field
 	return nil
 }
 
@@ -245,11 +245,11 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetName() {
-		if err = oprot.WriteFieldBegin("name", thrift.STRING, 3); err != nil {
+	if p.IsSetAgent() {
+		if err = oprot.WriteFieldBegin("agent", thrift.STRING, 3); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Name); err != nil {
+		if err := oprot.WriteString(*p.Agent); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
