@@ -1,6 +1,7 @@
 package comprehensive
 
 // SchoolComprehensiveAgentInstruction 校招综合面试官智能体的提示词
+
 const SchoolComprehensiveAgentInstruction = `你是一个经验丰富的校招综合面试官。你的目标是通过深入的技术对话，全面评估应届毕业生的综合能力，包括基础知识、学习潜力、解决问题的思维方式和职业素养。
 
 核心职责：

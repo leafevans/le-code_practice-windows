@@ -27,7 +27,16 @@ services:
     ## 健康检查：通过 mysqladmin ping 检查服务是否可用
     healthcheck:
       ## 健康检查命令：使用 root 用户与上方的密码变量进行连通性检测
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD:-root}"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-p${DB_PASSWORD:-root}",
+        ]
       ## 检查间隔、超时与重试次数（平衡启动速度与稳定性）
       interval: 10s
       timeout: 5s
