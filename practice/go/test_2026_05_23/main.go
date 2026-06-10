@@ -10,8 +10,8 @@ import (
 	"github.com/cloudwego/eino/callbacks"
 	"github.com/cloudwego/eino/compose"
 	"github.com/cloudwego/eino/schema"
-	"github.com/joho/godotenv"
 	"github.com/coze-dev/cozeloop-go"
+	"github.com/joho/godotenv"
 )
 
 type State struct {
