@@ -9,6 +9,7 @@ import (
 
 	"ai-eino-interview-agent/chatApp/agent_service/interview"
 	"ai-eino-interview-agent/internal/model"
+	"ai-eino-interview-agent/internal/mq"
 	interviewservice "ai-eino-interview-agent/internal/service/interviews"
 
 	"github.com/bytedance/sonic"
