@@ -61,10 +61,14 @@ func GetInterviewRecords(ctx context.Context, c *app.RequestContext) {
 func UploadResume(ctx context.Context, c *app.RequestContext) {
 	// 用户认证
 	userID := middleware.GetUserID(c)
+
+	// 安全校验：确保用户已认证
 	if userID == 0 {
 		response.Unauthorized(ctx, c, "Authorization token is required")
 		return
 	}
+
+	// 安全校验：限制上传文件大小和类型
 	resumeFilePath, err := handleResumeUpload(c)
 	if err != nil {
 		response.BadRequest(ctx, c, fmt.Sprintf("上传简历失败: %v", err))
@@ -90,6 +94,7 @@ func UploadResume(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// 构造响应
 	resp := &interviews.UploadResumeResponse{
 		ResumeID: int64(dbResumeID),
 		Message:  "简历上传并解析成功",
@@ -104,20 +109,24 @@ func GetResume(ctx context.Context, c *app.RequestContext) {
 	// 参数绑定和校验
 	var req interviews.GetResumeRequest
 
+	// 绑定和校验请求参数
 	err := c.BindAndValidate(&req)
 	if err != nil {
 		response.BadRequest(ctx, c, err.Error())
 		return
 	}
 
+	// 用户认证
 	userID := middleware.GetUserID(c)
 	if userID == 0 {
 		response.Unauthorized(ctx, c, "Authorization token is required")
 		return
 	}
 
+	// 调用服务层获取简历信息
 	resumeService := interviewservice.NewResumeService()
 
+	// 安全校验：确保用户只能访问自己的简历
 	data, err := resumeService.GetResumeInfoByID(ctx, uint64(req.ResumeID))
 	if err != nil {
 		log.Printf("获取简历信息失败: %v", err)
@@ -125,6 +134,7 @@ func GetResume(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// 数据类型转换
 	resumeInfo, ok := data.(*interviews.ResumeInfo)
 	if !ok {
 		log.Printf("数据类型转换失败")

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 	"time"
 
 	"ai-eino-interview-agent/chatApp/agent_service/interview"
@@ -60,9 +61,10 @@ func (e *InterviewEngine) RunInterviewLoop(ctx context.Context, session *Intervi
 		Answer   string
 	}
 
-	//
+	// recentHistory 用于存储最近的历史记录，初始为空
 	var recentHistory []HistoryItem
 
+	// 循环生成面试问题
 	for questionIndex := 1; questionIndex <= maxQuestions; questionIndex++ {
 		// 检查上下文是否被取消
 		select {
@@ -90,10 +92,11 @@ func (e *InterviewEngine) RunInterviewLoop(ctx context.Context, session *Intervi
 }`, session.ResumeID, session.Difficulty)
 		} else {
 			// 后续问题：包含最近5道题的历史上下文
-			historyText := ""
+			var historyBuilder strings.Builder
 			for i, h := range recentHistory {
-				historyText += fmt.Sprintf("问题%d：%s\n回答%d：%s\n\n", i+1, h.Question, i+1, h.Answer)
+				fmt.Fprintf(&historyBuilder, "问题%d：%s\n回答%d：%s\n\n", i+1, h.Question, i+1, h.Answer)
 			}
+			historyText := historyBuilder.String()
 
 			prompt = fmt.Sprintf(`根据简历ID、难度等级和最近的问答历史，生成下一道面试问题。
 
@@ -114,7 +117,6 @@ func (e *InterviewEngine) RunInterviewLoop(ctx context.Context, session *Intervi
   "question_text": "问题内容"
 }`, session.ResumeID, session.Difficulty, len(recentHistory), historyText)
 		}
-
 		// 调用智能体服务生成问题
 		var questionResult map[string]any
 

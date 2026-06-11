@@ -59,7 +59,7 @@ func WaitForAnswerWithHeartbeat(ctx context.Context, manager *SessionManager, se
 
 // SetupSSEResonse 设置 SSE 响应头
 // 参数 c 是一个接口，包含设置 HTTP 状态码和响应头的方法
-func SetupSSEResonse(c interface {
+func SetupSSEResponse(c interface {
 	SetStatusCode(int)     // 设置 HTTP 状态码
 	Header(string, string) // 设置响应头（key, value）
 }) {

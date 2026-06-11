@@ -20,8 +20,9 @@ import (
 
 // StartMianshiStream .
 // @router /api/mianshi/stream/start [POST]
+// 开始面试流程，返回一个 SSE 流，持续推送面试问题和反馈，直到面试结束
 func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
-	//
+	// 解析请求参数
 	var err error
 	var req mianshiapi.MianshiStartInterviewRequest
 	err = c.BindAndValidate(&req)
@@ -33,12 +34,14 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 	// 用户认证
 	userID := middleware.GetUserID(c)
 	if userID == 0 {
+		// 未认证用户，返回 401 Unauthorized
 		response.Unauthorized(ctx, c, "Unauthorized")
 		return
 	}
 
 	// 调用服务层开始面试
 	interviewService := interviewservice.NewInterviewService()
+	// 创建面试记录DTO
 	recordDTO := &interviews.InterviewRecordDTO{
 		UserID:       int32(userID),
 		Type:         req.Type,
@@ -52,7 +55,7 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 	// 创建面试记录
 	recordID, err := interviewService.CreateInterviewRecord(ctx, recordDTO)
 	if err != nil {
-		c.String(consts.StatusInternalServerError, err.Error())
+		response.InternalServerError(ctx, c, "Failed to create interview record:"+err.Error())
 		return
 	}
 
@@ -64,8 +67,9 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 		resumeID = *req.ResumeID
 	}
 
-	// 创建面试会话
+	// 面试管理器，负责管理面试会话和状态
 	manager := mianshi.GetGlobalSessionManager()
+	// 这里可以根据需要传递更多的参数，比如职位信息、公司信息等
 	var companyName, positionName string
 	if req.CompanyName != nil {
 		companyName = *req.CompanyName
@@ -73,6 +77,7 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 	if req.PositionName != nil {
 		positionName = *req.PositionName
 	}
+	// 创建面试会话，记录用户ID、面试记录ID、简历ID等信息
 	session := manager.CreateSessionWithDetails(userID, recordID, resumeID, hasResume, "", req.Type, req.Domain, req.Difficulty, companyName, positionName)
 
 	// 启动面试流程
@@ -80,19 +85,23 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 	session.CancelFunc = cancelFunc
 
 	// 启动面试流程的goroutine
-	mianshi.SetupSSEResonse(c)
+	mianshi.SetupSSEResponse(c)
 
-	// 这里可以启动一个新的goroutine来处理面试流程
-	pipe, writer := io.Pipe()
-	c.SetBodyStream(pipe, -1)
+	// 创建一个管道，将面试问题和反馈写入管道，HTTP 响应从管道读取，实现 SSE 流式传输
+	reader, writer := io.Pipe()
+	c.SetBodyStream(reader, -1)
 
+	// 在一个新的 goroutine 中运行面试流程，持续向管道写入数据，直到面试结束或被取消
 	go func() {
-		defer func(pipe *io.PipeWriter) {
+		// 确保在面试流程结束时关闭管道写入端，通知 HTTP 响应流结束
+		defer func(writer *io.PipeWriter) {
 			err = writer.Close()
 			if err != nil {
-
+				log.Printf("Failed to close pipe writer: sessionID=%s, error=%v", session.SessionID, err)
+				return
 			}
 		}(writer)
+		// 面试流程开始，发送初始事件通知客户端面试已开始
 		startTime := session.StartTime.UnixMilli()
 		err := mianshi.SendSSEEvent(writer, map[string]any{
 			"type":       "session_id",
@@ -102,11 +111,13 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 			"start_time": startTime,
 		})
 		if err != nil {
+			log.Printf("Failed to send initial SSE event: sessionID=%s, error=%v", session.SessionID, err)
 			return
 		}
-
+		// 创建面试引擎，负责执行面试流程，生成问题和反馈，并通过管道写入 SSE 流
 		engine := mianshi.NewInterviewEngine(manager, interviewService, writer)
-		engine.RunInterviewLoop(ctx, session)
+		// 运行面试循环，持续生成问题和反馈，直到面试结束或被取消
+		engine.RunInterviewLoop(cancel, session)
 	}()
 }
 
