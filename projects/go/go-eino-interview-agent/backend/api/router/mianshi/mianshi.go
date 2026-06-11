@@ -3,7 +3,8 @@
 package mianshi
 
 import (
-	mianshi "ai-eino-interview-agent/api/handler/mianshi"
+	mianshi "ai-eino-interview-agent/api/handler/interview"
+
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

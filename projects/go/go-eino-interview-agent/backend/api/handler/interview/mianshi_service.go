@@ -3,11 +3,14 @@ package interview
 import (
 	"context"
 	"io"
+	"log"
+	"time"
 
 	"ai-eino-interview-agent/api/handler/interview/mianshi"
 	interviews "ai-eino-interview-agent/api/model/interviews"
 	mianshiapi "ai-eino-interview-agent/api/model/mianshi"
 	"ai-eino-interview-agent/api/response"
+	"ai-eino-interview-agent/chatApp/agent_service/evaluation"
 	"ai-eino-interview-agent/internal/middleware"
 	interviewservice "ai-eino-interview-agent/internal/service/interviews"
 
@@ -18,6 +21,7 @@ import (
 // StartMianshiStream .
 // @router /api/mianshi/stream/start [POST]
 func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
+	//
 	var err error
 	var req mianshiapi.MianshiStartInterviewRequest
 	err = c.BindAndValidate(&req)
@@ -83,10 +87,27 @@ func StartMianshiStream(ctx context.Context, c *app.RequestContext) {
 	c.SetBodyStream(pipe, -1)
 
 	go func() {
-		defer func() {
-			
-		}()
-	}
+		defer func(pipe *io.PipeWriter) {
+			err = writer.Close()
+			if err != nil {
+
+			}
+		}(writer)
+		startTime := session.StartTime.UnixMilli()
+		err := mianshi.SendSSEEvent(writer, map[string]any{
+			"type":       "session_id",
+			"session_id": session.SessionID,
+			"record_id":  recordID,
+			"message":    "Interview started successfully",
+			"start_time": startTime,
+		})
+		if err != nil {
+			return
+		}
+
+		engine := mianshi.NewInterviewEngine(manager, interviewService, writer)
+		engine.RunInterviewLoop(ctx, session)
+	}()
 }
 
 // SubmitMianshiAnswer .
@@ -99,10 +120,41 @@ func SubmitMianshiAnswer(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	if req.SessionID == "" {
+		response.BadRequest(ctx, c, "session_id is required")
+		return
+	}
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
+	manager := mianshi.GetGlobalSessionManager()
+	session := manager.GetSession(req.SessionID)
+	if session.UserID != userID {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
+	answerToSubmit := req.Answer
+	if req.Action != nil && (*req.Action == "quit" || *req.Action == "continue") {
+		answerToSubmit = *req.Action
+	}
+	if err := manager.SubmitAnswer(req.SessionID, answerToSubmit); err != nil {
+		response.InternalServerError(ctx, c, err.Error())
+	}
 
-	resp := new(mianshiapi.MianshiSubmitInterviewAnswerResponse)
+	questionIndex := session.QuestionCount
+	isLastQuesion := false
 
-	c.JSON(consts.StatusOK, resp)
+	resp := &mianshiapi.MianshiSubmitInterviewAnswerResponse{
+		Status:         "received",
+		Message:        &req.Answer,
+		SessionID:      &req.SessionID,
+		QuestionIndex:  &questionIndex,
+		IsLastQuestion: &isLastQuesion,
+	}
+
+	response.Success(ctx, c, *resp)
 }
 
 // GetSession .
@@ -115,10 +167,55 @@ func GetSession(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
+	sm := mianshi.GetGlobalSessionManager()
+	session := sm.GetSession(req.SessionID)
+	if session == nil {
+		response.NotFound(ctx, c, "Session Not Found")
+		return
+	}
+	if session.UserID != userID {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
 
-	resp := new(mianshiapi.MianshiGetSessionResponse)
+	// 构建完的会话信息
+	interviewSession := &mianshiapi.InterviewSession{
+		SessionID:  session.SessionID,
+		UserID:     int32(session.UserID),
+		RecordID:   int64(session.RecordID),
+		Type:       session.Type,
+		Domain:     session.Domain,
+		Difficulty: session.Difficulty,
+		ResumeID:   &session.ResumeID,
+		HasResume:  &session.HasResume,
+		StartTime:  session.StartTime.UnixMilli(),
+		Status:     session.Status,
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	if session.StartTime != (time.Time{}) {
+		endTime := session.LastActivity.UnixMilli()
+		interviewSession.EndTime = &endTime
+	}
+
+	duration := int64(time.Since(session.StartTime).Seconds())
+	currentQuestionIndex := session.QuestionCount
+	answeredCount := session.QuestionCount
+	totalCount := session.QuestionCount
+
+	resp := &mianshiapi.MianshiGetSessionResponse{
+		Session:              interviewSession,
+		CurrentQuestionIndex: &currentQuestionIndex,
+		AnsweredCount:        &answeredCount,
+		TotalCount:           &totalCount,
+		ElapsedTime:          &duration,
+	}
+
+	response.Success(ctx, c, resp)
 }
 
 // EndMianshi .
@@ -131,10 +228,66 @@ func EndMianshi(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
+	sm := mianshi.GetGlobalSessionManager()
+	session := sm.GetSession(req.SessionID)
+	if session == nil {
+		response.NotFound(ctx, c, "Session Not Found")
+		return
+	}
+	if session.UserID != userID {
+		response.Unauthorized(ctx, c, "Unauthorized")
+		return
+	}
 
-	resp := new(mianshiapi.MianshiEndInterviewResponse)
+	session.Status = "completed"
+	endTime := time.Now()
+	session.LastActivity = endTime
 
-	c.JSON(consts.StatusOK, resp)
+	duration := int64(time.Since(session.StartTime).Seconds())
+	endTimeMs := endTime.UnixMilli()
+	totalQuestions := session.QuestionCount
+	answeredQuestions := session.QuestionCount
+
+	// 取消面试循环,立即关闭 SSE 连接
+	if session.CancelFunc != nil {
+		session.CancelFunc()
+	}
+
+	interviewService := interviewservice.NewInterviewService()
+	updateDTO := &interviews.InterviewRecordDTO{
+		ID:       int64(session.RecordID),
+		UserID:   int32(session.UserID),
+		Status:   "completed",
+		Duration: &duration,
+	}
+
+	if err = interviewService.UpdateInterviewRecord(ctx, updateDTO); err != nil {
+		response.InternalServerError(ctx, c, "Failed to interview record:"+err.Error())
+		return
+	}
+
+	go func() {
+		time.Sleep(1 * time.Second)
+		sm.DeleteSession(req.SessionID)
+	}()
+	log.Printf("[EndMianshi] Interview ended, sessionID:%s, UserID: %d, duration:%d seconds", req.SessionID, userID, duration)
+
+	msg := "Interview ended successfully"
+	resp := &mianshiapi.MianshiEndInterviewResponse{
+		Status:            "success",
+		Message:           &msg,
+		Duration:          &duration,
+		EndTime:           &endTimeMs,
+		TotalQuestions:    &totalQuestions,
+		AnsweredQuestions: &answeredQuestions,
+	}
+
+	response.Success(ctx, c, resp)
 }
 
 // GetMianshiEvaluation .
@@ -148,9 +301,32 @@ func GetMianshiEvaluation(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(mianshiapi.GetMianshiEvaluationResponse)
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		response.Unauthorized(ctx, c, "unauthorized")
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	reportID := uint64(req.ReportID)
+	interviewservice := interviewservice.NewInterviewService()
+	existingEvaluation, err := interviewservice.GetInterviewEvaluation(ctx, userID, reportID)
+	if err == nil && existingEvaluation != nil {
+		response.Success(ctx, c, existingEvaluation)
+		return
+	}
+
+	resp, err := evaluation.GenerateRecordEvaluation(ctx, userID, reportID)
+	if err != nil {
+		response.ErrorFromErr(ctx, c, err)
+		return
+	}
+
+	if resp == nil {
+		response.InternalServerError(ctx, c, "Evaluation response is nil")
+		return
+	}
+
+	response.Success(ctx, c, resp)
 }
 
 // GetMianshiAnswerRecord .

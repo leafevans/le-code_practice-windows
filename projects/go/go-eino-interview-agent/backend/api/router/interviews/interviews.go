@@ -3,7 +3,8 @@
 package interviews
 
 import (
-	interviews "ai-eino-interview-agent/api/handler/interviews"
+	interviews "ai-eino-interview-agent/api/handler/interview"
+
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
