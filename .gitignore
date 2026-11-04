@@ -150,3 +150,6 @@ logs/
 *.bak
 
 .jj
+
+# Claude Code 本地配置
+**/.claude/settings.local.json
